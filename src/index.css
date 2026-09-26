@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Colors are CSS variables so light/dark swap in one place,
+ * and Tailwind utilities (bg-surface, text-muted…) read them via @theme.
+ */
+:root {
+  --bg: #f4f6f1;
+  --surface: #ffffff;
+  --surface-2: #eaede5;
+  --ink: #111613;
+  --muted: #5d6a62;
+  --line: #dde2d8;
+  --brand: #1f8a4c;
+  --brand-ink: #ffffff;
+  --accent: #c3f53c;
+  --accent-ink: #0f1512;
+  --danger: #d6384b;
+  --kcal: #1f8a4c;
+  --protein: #e0457b;
+  --carbs: #e9a100;
+  --fat: #4c6ef5;
+  --water: #1c9bd6;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c110e;
+    --surface: #151b17;
+    --surface-2: #1e2621;
+    --ink: #edf2ec;
+    --muted: #93a198;
+    --line: #29322c;
+    --brand: #3ecf73;
+    --brand-ink: #07140c;
+    --accent: #c3f53c;
+    --accent-ink: #0f1512;
+    --danger: #ff6b7d;
+    --kcal: #3ecf73;
+    --protein: #ff6b9d;
+    --carbs: #ffc233;
+    --fat: #7b93ff;
+    --water: #45b8f0;
+    color-scheme: dark;
+}
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-danger: var(--danger);
+  --color-kcal: var(--kcal);
+  --color-protein: var(--protein);
+  --color-carbs: var(--carbs);
+  --color-fat: var(--fat);
+  --color-water: var(--water);
+  --font-sans: 'Inter', 'IBM Plex Sans Arabic', system-ui, sans-serif;
+}
+
+html[dir='rtl'] {
+  --font-sans: 'IBM Plex Sans Arabic', 'Inter', system-ui, sans-serif;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+/* Numbers stay LTR and tabular even inside Arabic text. */
+.num {
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: isolate;
+  direction: ltr;
+  display: inline-block;
+}
+
+
+@utility card {
+  @apply rounded-2xl border border-line bg-surface p-4;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-brand-ink;
+}
+@utility btn-accent {
+  @apply btn bg-accent text-accent-ink;
+}
+@utility btn-ghost {
+  @apply btn bg-surface-2 text-ink;
+}
+@utility btn-danger {
+  @apply btn bg-danger/10 text-danger;
+}
+@utility input {
+  @apply w-full rounded-xl border border-line bg-surface px-3 py-2.5 text-base text-ink outline-none placeholder:text-muted/70 focus:border-brand focus:ring-2 focus:ring-brand/20;
+}
+@utility label {
+  @apply mb-1 block text-xs font-medium text-muted;
+}
+@utility chip {
+  @apply inline-flex items-center gap-1 rounded-full border border-line bg-surface px-3 py-1.5 text-sm font-medium whitespace-nowrap;
+}
+@utility chip-active {
+  @apply chip border-brand bg-brand text-brand-ink;
+}
+
+/* Mirror directional icons (arrows, chevrons) in RTL. */
+html[dir='rtl'] .flip-rtl {
+  transform: scaleX(-1);
+}
