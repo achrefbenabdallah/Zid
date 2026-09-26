@@ -21,6 +21,12 @@
   --carbs: #e9a100;
   --fat: #4c6ef5;
   --water: #1c9bd6;
+  /* Chart marks (validated: lightness band + >=3:1 vs surface; one series per chart). */
+  --chart-kcal: #1f8a4c;
+  --chart-weight: #4263eb;
+  --chart-protein: #d6336c;
+  --chart-burned: #a86f00;
+  --chart-grid: #e6e9e2;
   color-scheme: light;
 }
 
@@ -42,6 +48,11 @@
     --carbs: #ffc233;
     --fat: #7b93ff;
     --water: #45b8f0;
+    --chart-kcal: #27a059;
+    --chart-weight: #6380f0;
+    --chart-protein: #e04d85;
+    --chart-burned: #c08a12;
+    --chart-grid: #232b26;
     color-scheme: dark;
 }
 }

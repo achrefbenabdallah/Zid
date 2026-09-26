@@ -18,7 +18,10 @@ export function useLiveQuery<T extends { id: string }>(build: () => Query | null
     return onSnapshot(
       q,
       (snap) => setState({ data: snap.docs.map((d) => ({ id: d.id, ...d.data() }) as T), loading: false }),
-      (error) => setState({ data: [], loading: false, error }),
+      (error) => {
+        console.error(`[firestore] query ${key} failed:`, error);
+        setState({ data: [], loading: false, error });
+      },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
