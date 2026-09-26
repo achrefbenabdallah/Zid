@@ -9,7 +9,18 @@ import type { IncomingMessage } from 'node:http';
  * through Vite's SSR loader. Lets `npm run dev` exercise the Gemini function without
  * installing netlify-cli. In production Netlify serves the real function.
  */
-function netlifyFunctionsDev(): Plugin {
+function netlifyFunctionsDev(mode: string): Plugin {
+  const injected = new Set<string>();
+  /** Re-read .env files on every call so keys added after startup work without a restart. */
+  const syncEnv = (root: string) => {
+    for (const k of injected) delete process.env[k];
+    for (const [k, v] of Object.entries(loadEnv(mode, root, ''))) {
+      if (k in process.env) continue; // real shell env wins
+      process.env[k] = v;
+      injected.add(k);
+    }
+  };
+
   return {
     name: 'zid:netlify-functions-dev',
     apply: 'serve',
@@ -21,6 +32,7 @@ function netlifyFunctionsDev(): Plugin {
           return res.end('Not found');
         }
         try {
+          syncEnv(server.config.root);
           const mod = await server.ssrLoadModule(`/netlify/functions/${name}.ts`);
           const body = await readBody(req);
           const request = new Request(`http://localhost${req.originalUrl ?? req.url}`, {
@@ -52,12 +64,8 @@ function readBody(req: IncomingMessage): Promise<Buffer> {
 }
 
 export default defineConfig(({ mode }) => {
-  // Expose non-VITE_ vars (GEMINI_API_KEY…) to the dev function runtime only.
-  const env = loadEnv(mode, process.cwd(), '');
-  for (const [k, v] of Object.entries(env)) if (!(k in process.env)) process.env[k] = v;
-
   return {
-    plugins: [react(), tailwindcss(), netlifyFunctionsDev()],
+    plugins: [react(), tailwindcss(), netlifyFunctionsDev(mode)],
     resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
   };
 });
