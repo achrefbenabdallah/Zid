@@ -89,7 +89,7 @@ export default function AddMealPage() {
       ]);
     } catch (e) {
       console.error(e);
-      setAiError(e instanceof VisionError && e.status === 429 ? e.message : t('meals.analyzeFailed'));
+      setAiError(e instanceof VisionError && (e.status === 429 || e.status === 503) ? t('meals.busy') : t('meals.analyzeFailed'));
     }
     setStep('review');
   };

@@ -81,7 +81,7 @@ export function TodayPage() {
     <Screen title={title}>
       {/* Day switcher + streak */}
       <div className="mb-4 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1 rounded-full border border-line bg-surface p-1">
+        <div className="flex shrink-0 items-center gap-1 rounded-full border border-line bg-surface p-1">
           <button className="rounded-full p-1.5 hover:bg-surface-2" onClick={() => goDay(-1)} aria-label="Previous day">
             <ChevronLeft size={18} className="flip-rtl" />
           </button>
@@ -92,9 +92,9 @@ export function TodayPage() {
             <ChevronRight size={18} className="flip-rtl" />
           </button>
         </div>
-        <span className="chip border-transparent bg-carbs/15 text-ink" key={i18n.language}>
-          <Flame size={16} className="text-carbs" />
-          {streak > 0 ? t('today.streak', { count: streak }) : t('today.noStreak')}
+        <span className="chip min-w-0 border-transparent bg-carbs/15 text-ink" key={i18n.language}>
+          <Flame size={16} className="shrink-0 text-carbs" />
+          <span className="truncate">{streak > 0 ? t('today.streak', { count: streak }) : t('today.noStreak')}</span>
         </span>
       </div>
 

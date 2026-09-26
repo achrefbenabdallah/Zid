@@ -77,6 +77,8 @@ body {
   font-family: var(--font-sans);
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+  /* Safety net: never let one wide element make the whole page scroll sideways. */
+  overflow-x: clip;
 }
 
 body {

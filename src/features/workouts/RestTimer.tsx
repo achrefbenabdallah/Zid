@@ -57,7 +57,8 @@ export function RestTimer({ endAt, onChange }: { endAt: number | null; onChange:
   const ss = String(left % 60).padStart(2, '0');
 
   return (
-    <div className="fixed inset-x-0 bottom-[calc(env(safe-area-inset-bottom)+5.25rem)] z-40 flex justify-center px-4">
+    // Pinned under the header so it never covers the set inputs or the Finish button.
+    <div className="fixed inset-x-0 top-[calc(env(safe-area-inset-top)+4.25rem)] z-40 flex justify-center px-4">
       <div className={`flex w-full max-w-md items-center gap-2 rounded-2xl px-3 py-2 shadow-xl ${done ? 'bg-accent text-accent-ink' : 'bg-ink text-bg'}`}>
         <Timer size={20} />
         <div className="flex-1 text-sm font-semibold">

@@ -69,6 +69,80 @@ async function verifyUser(req: Request): Promise<string | null> {
   }
 }
 
+/**
+ * Models tried in order: a pinned Flash model (best estimates), then Google's `-latest`
+ * aliases, which keep working when a pinned model is retired (gemini-2.5-flash was closed
+ * to new keys in 2026). Override the first with GEMINI_MODEL.
+ */
+function modelChain(): string[] {
+  const primary = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+  return [...new Set([primary, 'gemini-flash-lite-latest', 'gemini-flash-latest'])];
+}
+
+/** Gemini 3 models accept a thinking level; "low" roughly halves latency with similar estimates. */
+const thinkingFor = (model: string) => (/^gemini-3/.test(model) ? { thinkingConfig: { thinkingLevel: 'low' } } : {});
+
+/** Netlify's free tier stops synchronous functions at ~10 s; stay under it. */
+const BUDGET_MS = Number(process.env.VISION_BUDGET_MS) || 9_000;
+const RETRYABLE = new Set([429, 500, 504]);
+
+type GeminiResult = { items: unknown[]; model: string } | { error: string; status: number };
+
+/** Try each model (one quick retry on transient errors) until one answers or time runs out. */
+async function callGemini(apiKey: string, image: string, mimeType: string): Promise<GeminiResult> {
+  const deadline = Date.now() + BUDGET_MS;
+  let last = { status: 502, detail: '' };
+
+  const chain = modelChain();
+  for (const [i, model] of chain.entries()) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const remaining = deadline - Date.now();
+      // The primary model may use at most ~6 s, leaving ~3 s for the fast fallback.
+      const timeout = i === 0 ? Math.min(6_000, remaining - 3_000) : remaining;
+      if (timeout < 1_500) break;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-goog-api-key': apiKey },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ inline_data: { mime_type: mimeType, data: image } }, { text: PROMPT }] }],
+          generationConfig: { temperature: 0.2, responseMimeType: 'application/json', responseSchema: RESPONSE_SCHEMA, ...thinkingFor(model) },
+        }),
+        signal: AbortSignal.timeout(timeout),
+      }).catch((e: Error) => e);
+
+      if (res instanceof Error) {
+        last = { status: 504, detail: res.message };
+        console.error('Gemini timeout', model, res.message);
+        break; // too slow: move on to the next model
+      }
+      if (res.ok) {
+        const data = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
+        const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? '';
+        try {
+          const parsed = JSON.parse(text) as { items?: unknown[] };
+          return { items: Array.isArray(parsed.items) ? parsed.items : [], model };
+        } catch {
+          console.error('Unparseable Gemini output', model, text.slice(0, 300));
+          last = { status: 502, detail: 'unparseable' };
+          break;
+        }
+      }
+
+      last = { status: res.status, detail: (await res.text()).slice(0, 300) };
+      console.error('Gemini error', model, res.status, last.detail);
+      // Unavailable for this key, or overloaded: move straight to the next model.
+      if (res.status === 400 || res.status === 404 || res.status === 503) break;
+      if (!RETRYABLE.has(res.status)) return { error: 'Vision provider error.', status: 502 };
+      await new Promise((r) => setTimeout(r, 400 + attempt * 600));
+    }
+  }
+
+  if (last.status === 429) return { error: 'Vision quota exceeded, try again later.', status: 429 };
+  if (last.status === 503 || last.status === 504) return { error: 'The vision service is busy. Please try again in a moment.', status: 503 };
+  return { error: 'Vision provider error.', status: 502 };
+}
+
 export default async (req: Request) => {
   if (req.method !== 'POST') return json(405, { error: 'Method not allowed' });
 
@@ -88,35 +162,7 @@ export default async (req: Request) => {
   if (!image || typeof image !== 'string' || image.length > MAX_BASE64) return json(400, { error: 'Missing or oversized image.' });
   if (!/^image\/(jpeg|png|webp|heic|heif)$/.test(mimeType)) return json(400, { error: 'Unsupported image type.' });
 
-  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-goog-api-key': apiKey },
-    body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ inline_data: { mime_type: mimeType, data: image } }, { text: PROMPT }] }],
-      generationConfig: {
-        temperature: 0.2,
-        responseMimeType: 'application/json',
-        responseSchema: RESPONSE_SCHEMA,
-      },
-    }),
-    signal: AbortSignal.timeout(25_000),
-  }).catch((e: Error) => e);
-
-  if (res instanceof Error) return json(504, { error: `Vision request failed: ${res.message}` });
-  if (!res.ok) {
-    const detail = await res.text();
-    console.error('Gemini error', res.status, detail.slice(0, 500));
-    return json(res.status === 429 ? 429 : 502, { error: res.status === 429 ? 'Vision quota exceeded, try again later.' : 'Vision provider error.' });
-  }
-
-  const data = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
-  const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('') ?? '';
-  try {
-    const parsed = JSON.parse(text) as { items?: unknown[] };
-    return json(200, { items: Array.isArray(parsed.items) ? parsed.items : [] });
-  } catch {
-    console.error('Unparseable Gemini output', text.slice(0, 500));
-    return json(502, { error: 'Vision provider returned an unexpected format.' });
-  }
+  const result = await callGemini(apiKey, image, mimeType);
+  if ('error' in result) return json(result.status, { error: result.error });
+  return json(200, { items: result.items, model: result.model });
 };

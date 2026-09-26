@@ -10,12 +10,17 @@ import type { IncomingMessage } from 'node:http';
  * installing netlify-cli. In production Netlify serves the real function.
  */
 function netlifyFunctionsDev(mode: string): Plugin {
+  // Snapshot the real shell env once per process (the config re-runs on every server restart).
+  const g = globalThis as { __zidShellEnv?: Record<string, string | undefined> };
+  const shellEnv = (g.__zidShellEnv ??= { ...process.env });
+  /** Re-read .env files on every call so edits apply without restarting the dev server. */
   const injected = new Set<string>();
-  /** Re-read .env files on every call so keys added after startup work without a restart. */
   const syncEnv = (root: string) => {
+    // loadEnv lets process.env override files, so drop our own earlier injections first.
     for (const k of injected) delete process.env[k];
+    injected.clear();
     for (const [k, v] of Object.entries(loadEnv(mode, root, ''))) {
-      if (k in process.env) continue; // real shell env wins
+      if (shellEnv[k]) continue; // a real shell env var wins
       process.env[k] = v;
       injected.add(k);
     }
