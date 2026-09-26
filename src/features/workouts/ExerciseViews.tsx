@@ -81,7 +81,8 @@ export function ExerciseDetail({ exercise, onClose, onAdd }: { exercise: Exercis
         <span className="chip">{t(`muscles.${exercise.group}`)}</span>
         <span className="chip">{eq(exercise.equipment)}</span>
       </div>
-      {ar && <p className="mt-2 text-sm text-muted" dir="ltr">{exercise.name}</p>}
+      {/* English name kept for gym talk; LTR text, aligned with the RTL column. */}
+      {ar && <p className="mt-2 text-end text-sm text-muted" dir="ltr">{exercise.name}</p>}
       <h3 className="mt-4 mb-1 font-semibold">{t('workouts.howTo')}</h3>
       <p className="leading-relaxed">{ar ? exercise.howToAr : exercise.howTo}</p>
       <p className="mt-6 text-[11px] text-muted">{t('workouts.attribution')}</p>
@@ -112,7 +113,7 @@ export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
         <Search size={18} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-muted" />
         <input type="search" className="input ps-10" placeholder={t('workouts.searchExercises')} value={q} onChange={(e) => setQ(e.target.value)} />
       </div>
-      <div className="-mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1">
+      <div className="no-scrollbar -mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1">
         {(['all', ...MUSCLE_GROUPS] as const).map((g) => (
           <button key={g} className={group === g ? 'chip-active' : 'chip'} onClick={() => setGroup(g)}>
             {g === 'all' ? t('workouts.allGroups') : t(`muscles.${g}`)}

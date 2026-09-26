@@ -90,11 +90,13 @@ function TooltipBox({ active, payload, unit, valueLabel, goalLabel, digits = 0 }
   goalLabel?: string;
   digits?: number;
 }) {
+  const { i18n } = useTranslation();
   if (!active || !payload?.length) return null;
   const p = payload[0].payload as DailyPoint & { kg?: number };
   const value = p.kg ?? p.value;
   return (
-    <div className="rounded-xl border border-line bg-surface px-3 py-2 text-xs shadow-lg">
+    // The chart area is forced LTR; the tooltip follows the UI language.
+    <div dir={i18n.dir()} className="rounded-xl border border-line bg-surface px-3 py-2 text-xs shadow-lg">
       <div className="mb-1 font-semibold">{p.label}</div>
       <div className="flex items-center gap-2">
         <span className="inline-block h-2 w-2 rounded-full" style={{ background: payload[0].color ?? payload[0].stroke }} />

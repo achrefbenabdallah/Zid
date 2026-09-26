@@ -33,7 +33,7 @@ export function ReviewItem({ item, onChange, onRemove, onSaveToFoods }: {
           {item.origin === 'ai' && (
             <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-muted">
               <span className="inline-flex items-center gap-1">
-                <Sparkles size={12} /> AI
+                <Sparkles size={12} /> {t('meals.ai')}
               </span>
               {item.confidence !== undefined && (
                 <span className={lowConfidence ? 'font-semibold text-carbs' : ''}>
@@ -50,11 +50,11 @@ export function ReviewItem({ item, onChange, onRemove, onSaveToFoods }: {
       </div>
 
       <div className="flex items-end gap-2">
-        <button className="btn-ghost h-11 w-11 p-0" onClick={() => step(-10)} aria-label="-10 g">
+        <button className="btn-ghost h-11 w-11 p-0" onClick={() => step(-10)} aria-label={'-10 ' + t('common.g')}>
           <Minus size={16} />
         </button>
         <NumberField className="flex-1" label={t('meals.grams')} suffix={t('common.g')} value={item.grams} onChange={(g) => onChange({ ...item, grams: g })} />
-        <button className="btn-ghost h-11 w-11 p-0" onClick={() => step(10)} aria-label="+10 g">
+        <button className="btn-ghost h-11 w-11 p-0" onClick={() => step(10)} aria-label={'+10 ' + t('common.g')}>
           <Plus size={16} />
         </button>
       </div>

@@ -140,3 +140,11 @@ body {
 html[dir='rtl'] .flip-rtl {
   transform: scaleX(-1);
 }
+
+/* Horizontal chip rows / carousels: scrollable, but without a visible bar. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

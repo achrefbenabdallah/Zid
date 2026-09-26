@@ -153,7 +153,7 @@ export default function SessionPage() {
             <div className="flex gap-1">
               {REST_PRESETS.map((s) => (
                 <button key={s} className={`flex-1 rounded-lg py-2.5 text-xs font-semibold ${restSeconds === s ? 'bg-ink text-bg' : 'bg-surface-2'}`} onClick={() => pickRest(s)}>
-                  <span className="num">{s < 120 ? `${s}s` : `${s / 60}m`}</span>
+                  <span className="num">{s < 120 ? s : s / 60}</span> {s < 120 ? t('common.sec') : t('common.min')}
                 </button>
               ))}
             </div>

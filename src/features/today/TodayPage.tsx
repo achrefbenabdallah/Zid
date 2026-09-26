@@ -82,13 +82,13 @@ export function TodayPage() {
       {/* Day switcher + streak */}
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="flex shrink-0 items-center gap-1 rounded-full border border-line bg-surface p-1">
-          <button className="rounded-full p-1.5 hover:bg-surface-2" onClick={() => goDay(-1)} aria-label="Previous day">
+          <button className="rounded-full p-1.5 hover:bg-surface-2" onClick={() => goDay(-1)} aria-label={t('today.prevDay')}>
             <ChevronLeft size={18} className="flip-rtl" />
           </button>
           <span className="min-w-24 text-center text-sm font-semibold">
             {isToday ? t('common.today') : date === addDays(today, -1) ? t('common.yesterday') : formatDay(date, locale, { day: 'numeric', month: 'short' })}
           </span>
-          <button className="rounded-full p-1.5 hover:bg-surface-2 disabled:opacity-30" onClick={() => goDay(1)} disabled={isToday} aria-label="Next day">
+          <button className="rounded-full p-1.5 hover:bg-surface-2 disabled:opacity-30" onClick={() => goDay(1)} disabled={isToday} aria-label={t('today.nextDay')}>
             <ChevronRight size={18} className="flip-rtl" />
           </button>
         </div>
@@ -147,7 +147,7 @@ export function TodayPage() {
               <span className="num">{water}</span> / <span className="num">{goals.waterMl}</span> {t('common.ml')}
             </div>
           </div>
-          <button className="btn-ghost px-3" onClick={() => void setWater(uid, date, water - 250)} aria-label="-250 ml" disabled={water <= 0}>
+          <button className="btn-ghost px-3" onClick={() => void setWater(uid, date, water - 250)} aria-label={'-250 ' + t('common.ml')} disabled={water <= 0}>
             <Minus size={16} />
           </button>
           <button className="btn-ghost px-3" onClick={() => void addWater(uid, date, 250)}>

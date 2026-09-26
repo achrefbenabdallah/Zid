@@ -246,7 +246,7 @@ export default function AddMealPage() {
             </div>
           )}
 
-          <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1" role="radiogroup" aria-label={t('meals.mealType')}>
+          <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" role="radiogroup" aria-label={t('meals.mealType')}>
             {MEAL_TYPES.map((m) => (
               <button key={m} role="radio" aria-checked={mealType === m} className={mealType === m ? 'chip-active' : 'chip'} onClick={() => setMealType(m)}>
                 {t(`mealTypes.${m}`)}

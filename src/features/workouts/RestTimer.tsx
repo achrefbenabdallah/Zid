@@ -71,10 +71,10 @@ export function RestTimer({ endAt, onChange }: { endAt: number | null; onChange:
         </div>
         {!done && (
           <>
-            <button className="rounded-lg p-2 hover:bg-white/10" onClick={() => onChange(endAt - 15_000)} aria-label="-15s">
+            <button className="rounded-lg p-2 hover:bg-white/10" onClick={() => onChange(endAt - 15_000)} aria-label={t('workouts.minus15')}>
               <Minus size={16} />
             </button>
-            <button className="rounded-lg p-2 hover:bg-white/10" onClick={() => onChange(endAt + 15_000)} aria-label="+15s">
+            <button className="rounded-lg p-2 hover:bg-white/10" onClick={() => onChange(endAt + 15_000)} aria-label={t('workouts.plus15')}>
               <Plus size={16} />
             </button>
           </>

@@ -6,14 +6,14 @@ import type { Lang } from '@/types';
 
 /** EN / عربي toggle. Persists locally and, when signed in, on the profile (syncs across devices). */
 export function LangSwitch() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { uid } = useAuth();
   const change = (lang: Lang) => {
     setLang(lang);
     if (uid) void updateProfile(uid, { language: lang });
   };
   return (
-    <div className="inline-flex rounded-full border border-line bg-surface p-0.5 text-sm font-semibold" role="group" aria-label="Language">
+    <div className="inline-flex rounded-full border border-line bg-surface p-0.5 text-sm font-semibold" role="group" aria-label={t('common.language')}>
       {(['en', 'ar'] as const).map((l) => (
         <button
           key={l}

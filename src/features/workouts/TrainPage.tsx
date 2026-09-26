@@ -36,7 +36,7 @@ export default function TrainPage() {
           <BookOpen size={16} /> <ChevronRight size={16} className="flip-rtl" />
         </Link>
       </div>
-      <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
+      <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
         {MUSCLE_GROUPS.map((g) => (
           <Link key={g} to={`/train/library?g=${g}`} className="w-24 shrink-0 text-center">
             <img src={groupCover(g)} alt="" loading="lazy" className="aspect-square w-24 rounded-2xl border border-line bg-white object-cover" />
