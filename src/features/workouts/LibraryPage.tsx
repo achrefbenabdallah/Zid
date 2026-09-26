@@ -1,12 +1,20 @@
+import { useState } from 'react';
+import { useSearchParams } from 'react-router';
+import { MUSCLE_GROUPS } from '@/data/exercises';
 import { useTranslation } from 'react-i18next';
-import { Screen, Empty } from '@/components/Screen';
+import { Screen } from '@/components/Screen';
+import type { Exercise, MuscleGroup } from '@/types';
+import { ExerciseBrowser, ExerciseDetail } from './ExerciseViews';
 
-// Placeholder — implemented in a later build stage.
 export default function LibraryPage() {
   const { t } = useTranslation();
+  const [open, setOpen] = useState<Exercise | null>(null);
+  const g = useSearchParams()[0].get('g') as MuscleGroup | null;
+  const initialGroup = g && MUSCLE_GROUPS.includes(g) ? g : 'all';
   return (
-    <Screen title={t('nav.train')} back>
-      <Empty>Coming soon</Empty>
+    <Screen title={t('workouts.library')} back>
+      <ExerciseBrowser onPick={setOpen} initialGroup={initialGroup} />
+      <ExerciseDetail exercise={open} onClose={() => setOpen(null)} />
     </Screen>
   );
 }

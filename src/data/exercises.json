@@ -1,0 +1,1692 @@
+[
+ {
+  "id": "Barbell_Bench_Press_-_Medium_Grip",
+  "group": "chest",
+  "name": "Barbell Bench Press - Medium Grip",
+  "nameAr": "ضغط البنش بالبار",
+  "howTo": "Lie on a flat bench, lower the bar to mid-chest, then press it back up until your arms are straight.",
+  "howToAr": "استلقِ على البنش، أنزل البار إلى منتصف الصدر ثم ادفعه للأعلى حتى تستقيم ذراعاك.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Bench_Press_-_Medium_Grip/0.webp",
+   "Barbell_Bench_Press_-_Medium_Grip/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Incline_Bench_Press_-_Medium_Grip",
+  "group": "chest",
+  "name": "Barbell Incline Bench Press - Medium Grip",
+  "nameAr": "ضغط مائل بالبار",
+  "howTo": "On a bench tilted 30–45°, lower the bar to your upper chest and press it back up.",
+  "howToAr": "على بنش مائل بزاوية ٣٠–٤٥°، أنزل البار إلى أعلى الصدر ثم ادفعه للأعلى.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Incline_Bench_Press_-_Medium_Grip/0.webp",
+   "Barbell_Incline_Bench_Press_-_Medium_Grip/1.webp"
+  ]
+ },
+ {
+  "id": "Decline_Barbell_Bench_Press",
+  "group": "chest",
+  "name": "Decline Barbell Bench Press",
+  "nameAr": "ضغط منحدر بالبار",
+  "howTo": "On a decline bench with your feet hooked, lower the bar to your lower chest and press up.",
+  "howToAr": "على بنش منحدر مع تثبيت القدمين، أنزل البار إلى أسفل الصدر ثم ادفعه للأعلى.",
+  "equipment": "barbell",
+  "images": [
+   "Decline_Barbell_Bench_Press/0.webp",
+   "Decline_Barbell_Bench_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Bench_Press",
+  "group": "chest",
+  "name": "Dumbbell Bench Press",
+  "nameAr": "ضغط البنش بالدمبل",
+  "howTo": "Lie flat holding dumbbells over your chest. Lower them to chest level with elbows at about 45°, then press up.",
+  "howToAr": "استلقِ ممسكاً الدمبل فوق صدرك، أنزلها لمستوى الصدر والمرفقان بزاوية ٤٥° تقريباً ثم ادفع للأعلى.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Bench_Press/0.webp",
+   "Dumbbell_Bench_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Incline_Dumbbell_Press",
+  "group": "chest",
+  "name": "Incline Dumbbell Press",
+  "nameAr": "ضغط مائل بالدمبل",
+  "howTo": "On an incline bench, press the dumbbells from shoulder level up over your upper chest.",
+  "howToAr": "على بنش مائل، ادفع الدمبل من مستوى الكتفين إلى الأعلى فوق أعلى الصدر.",
+  "equipment": "dumbbell",
+  "images": [
+   "Incline_Dumbbell_Press/0.webp",
+   "Incline_Dumbbell_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Flyes",
+  "group": "chest",
+  "name": "Dumbbell Flyes",
+  "nameAr": "تفتيح بالدمبل",
+  "howTo": "Lying flat with elbows slightly bent, open your arms wide until you feel a chest stretch, then bring them back together like a hug.",
+  "howToAr": "مستلقياً مع ثني خفيف في المرفقين، افتح ذراعيك جانباً حتى تشعر بتمدد الصدر ثم اجمعهما كأنك تحضن.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Flyes/0.webp",
+   "Dumbbell_Flyes/1.webp"
+  ]
+ },
+ {
+  "id": "Incline_Dumbbell_Flyes",
+  "group": "chest",
+  "name": "Incline Dumbbell Flyes",
+  "nameAr": "تفتيح مائل بالدمبل",
+  "howTo": "Same movement as flyes but on an incline bench, to focus on the upper chest.",
+  "howToAr": "نفس حركة التفتيح لكن على بنش مائل للتركيز على أعلى الصدر.",
+  "equipment": "dumbbell",
+  "images": [
+   "Incline_Dumbbell_Flyes/0.webp",
+   "Incline_Dumbbell_Flyes/1.webp"
+  ]
+ },
+ {
+  "id": "Cable_Crossover",
+  "group": "chest",
+  "name": "Cable Crossover",
+  "nameAr": "كروس أوفر بالكابل",
+  "howTo": "Stand between two high pulleys, pull the handles down and together in front of your hips, then return slowly.",
+  "howToAr": "قف بين بكرتين عاليتين، اسحب المقبضين للأسفل حتى يلتقيا أمام الحوض ثم ارجع ببطء.",
+  "equipment": "cable",
+  "images": [
+   "Cable_Crossover/0.webp",
+   "Cable_Crossover/1.webp"
+  ]
+ },
+ {
+  "id": "Low_Cable_Crossover",
+  "group": "chest",
+  "name": "Low Cable Crossover",
+  "nameAr": "كروس أوفر من الأسفل",
+  "howTo": "Pull the handles from the low pulleys up and together at chest height.",
+  "howToAr": "اسحب المقبضين من البكرات السفلية للأعلى حتى يلتقيا أمام الصدر.",
+  "equipment": "cable",
+  "images": [
+   "Low_Cable_Crossover/0.webp",
+   "Low_Cable_Crossover/1.webp"
+  ]
+ },
+ {
+  "id": "Butterfly",
+  "group": "chest",
+  "name": "Butterfly",
+  "nameAr": "آلة الفراشة (Pec Deck)",
+  "howTo": "Sit tall on the machine, bring the handles together in front of your chest, then open slowly.",
+  "howToAr": "اجلس مستقيماً على الآلة واجمع المقبضين أمام صدرك ثم افتح ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Butterfly/0.webp",
+   "Butterfly/1.webp"
+  ]
+ },
+ {
+  "id": "Leverage_Chest_Press",
+  "group": "chest",
+  "name": "Leverage Chest Press",
+  "nameAr": "آلة ضغط الصدر",
+  "howTo": "Sit with the handles at chest height and push them forward until your arms are straight.",
+  "howToAr": "اجلس والمقابض بمستوى الصدر وادفعها للأمام حتى تستقيم ذراعاك.",
+  "equipment": "machine",
+  "images": [
+   "Leverage_Chest_Press/0.webp",
+   "Leverage_Chest_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Smith_Machine_Incline_Bench_Press",
+  "group": "chest",
+  "name": "Smith Machine Incline Bench Press",
+  "nameAr": "ضغط مائل على السميث",
+  "howTo": "On an incline bench under the Smith machine, lower the bar to your upper chest and press up.",
+  "howToAr": "على بنش مائل تحت آلة السميث، أنزل البار إلى أعلى الصدر ثم ادفع.",
+  "equipment": "machine",
+  "images": [
+   "Smith_Machine_Incline_Bench_Press/0.webp",
+   "Smith_Machine_Incline_Bench_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Pushups",
+  "group": "chest",
+  "name": "Pushups",
+  "nameAr": "تمرين الضغط (Pompes)",
+  "howTo": "Hands under shoulders, body in a straight line. Lower your chest toward the floor and push back up.",
+  "howToAr": "اليدان تحت الكتفين والجسم مستقيم. أنزل صدرك نحو الأرض ثم ادفع للأعلى.",
+  "equipment": "body only",
+  "images": [
+   "Pushups/0.webp",
+   "Pushups/1.webp"
+  ]
+ },
+ {
+  "id": "Straight-Arm_Dumbbell_Pullover",
+  "group": "chest",
+  "name": "Straight-Arm Dumbbell Pullover",
+  "nameAr": "بول أوفر بالدمبل",
+  "howTo": "Lying on a bench, lower one dumbbell behind your head with almost straight arms, then pull it back over your chest.",
+  "howToAr": "مستلقياً على البنش، أنزل دمبل واحد خلف رأسك بذراعين شبه مستقيمتين ثم أعده فوق صدرك.",
+  "equipment": "dumbbell",
+  "images": [
+   "Straight-Arm_Dumbbell_Pullover/0.webp",
+   "Straight-Arm_Dumbbell_Pullover/1.webp"
+  ]
+ },
+ {
+  "id": "Pullups",
+  "group": "back",
+  "name": "Pullups",
+  "nameAr": "العقلة (Traction)",
+  "howTo": "Hang from a bar with palms facing away and pull yourself up until your chin passes the bar.",
+  "howToAr": "تعلّق بالبار وراحتا اليدين للأمام، واسحب جسمك حتى يتجاوز ذقنك البار.",
+  "equipment": "body only",
+  "images": [
+   "Pullups/0.webp",
+   "Pullups/1.webp"
+  ]
+ },
+ {
+  "id": "Chin-Up",
+  "group": "back",
+  "name": "Chin-Up",
+  "nameAr": "العقلة بقبضة عكسية",
+  "howTo": "Palms facing you, pull your chin over the bar, then lower yourself slowly.",
+  "howToAr": "راحتا اليدين نحوك، اسحب ذقنك فوق البار ثم انزل ببطء.",
+  "equipment": "body only",
+  "images": [
+   "Chin-Up/0.webp",
+   "Chin-Up/1.webp"
+  ]
+ },
+ {
+  "id": "Wide-Grip_Lat_Pulldown",
+  "group": "back",
+  "name": "Wide-Grip Lat Pulldown",
+  "nameAr": "سحب أمامي واسع",
+  "howTo": "Seated at the machine, pull the wide bar down to your upper chest while squeezing your shoulder blades down.",
+  "howToAr": "جالساً على الآلة، اسحب البار العريض إلى أعلى الصدر مع ضمّ لوحي الكتف للأسفل.",
+  "equipment": "cable",
+  "images": [
+   "Wide-Grip_Lat_Pulldown/0.webp",
+   "Wide-Grip_Lat_Pulldown/1.webp"
+  ]
+ },
+ {
+  "id": "Close-Grip_Front_Lat_Pulldown",
+  "group": "back",
+  "name": "Close-Grip Front Lat Pulldown",
+  "nameAr": "سحب أمامي بقبضة ضيقة",
+  "howTo": "Hold the bar with a narrow grip and pull it to your upper chest, leaning back slightly.",
+  "howToAr": "امسك البار بقبضة ضيقة واسحبه إلى أعلى الصدر مع ميلان خفيف للخلف.",
+  "equipment": "cable",
+  "images": [
+   "Close-Grip_Front_Lat_Pulldown/0.webp",
+   "Close-Grip_Front_Lat_Pulldown/1.webp"
+  ]
+ },
+ {
+  "id": "V-Bar_Pulldown",
+  "group": "back",
+  "name": "V-Bar Pulldown",
+  "nameAr": "سحب بالمقبض V",
+  "howTo": "Using the V handle, pull down to your chest keeping elbows close to your body.",
+  "howToAr": "بالمقبض V، اسحب نحو صدرك مع إبقاء المرفقين قريبين من الجسم.",
+  "equipment": "cable",
+  "images": [
+   "V-Bar_Pulldown/0.webp",
+   "V-Bar_Pulldown/1.webp"
+  ]
+ },
+ {
+  "id": "Seated_Cable_Rows",
+  "group": "back",
+  "name": "Seated Cable Rows",
+  "nameAr": "تجديف جالس بالكابل",
+  "howTo": "Sit with knees slightly bent. Pull the handle to your stomach with a straight back, then extend your arms.",
+  "howToAr": "اجلس والركبتان مثنيتان قليلاً. اسحب المقبض نحو بطنك والظهر مستقيم ثم مدّ ذراعيك.",
+  "equipment": "cable",
+  "images": [
+   "Seated_Cable_Rows/0.webp",
+   "Seated_Cable_Rows/1.webp"
+  ]
+ },
+ {
+  "id": "Bent_Over_Barbell_Row",
+  "group": "back",
+  "name": "Bent Over Barbell Row",
+  "nameAr": "تجديف بالبار منحنياً",
+  "howTo": "Hinge forward with a flat back, pull the bar to your lower ribs, then lower it.",
+  "howToAr": "انحنِ للأمام والظهر مستقيم، اسحب البار نحو أسفل الأضلاع ثم أنزله.",
+  "equipment": "barbell",
+  "images": [
+   "Bent_Over_Barbell_Row/0.webp",
+   "Bent_Over_Barbell_Row/1.webp"
+  ]
+ },
+ {
+  "id": "One-Arm_Dumbbell_Row",
+  "group": "back",
+  "name": "One-Arm Dumbbell Row",
+  "nameAr": "تجديف بالدمبل بيد واحدة",
+  "howTo": "One knee and hand on a bench, pull the dumbbell up to your hip, then lower it.",
+  "howToAr": "ركبة ويد على البنش، اسحب الدمبل نحو الورك ثم أنزله.",
+  "equipment": "dumbbell",
+  "images": [
+   "One-Arm_Dumbbell_Row/0.webp",
+   "One-Arm_Dumbbell_Row/1.webp"
+  ]
+ },
+ {
+  "id": "Bent_Over_Two-Dumbbell_Row",
+  "group": "back",
+  "name": "Bent Over Two-Dumbbell Row",
+  "nameAr": "تجديف بالدمبلين منحنياً",
+  "howTo": "Bent forward with a flat back, row both dumbbells to your sides.",
+  "howToAr": "منحنياً والظهر مستقيم، اسحب الدمبلين نحو جانبي جسمك.",
+  "equipment": "dumbbell",
+  "images": [
+   "Bent_Over_Two-Dumbbell_Row/0.webp",
+   "Bent_Over_Two-Dumbbell_Row/1.webp"
+  ]
+ },
+ {
+  "id": "T-Bar_Row_with_Handle",
+  "group": "back",
+  "name": "T-Bar Row with Handle",
+  "nameAr": "تجديف T-Bar",
+  "howTo": "Straddle the bar, bend forward with a flat back and row the handle to your chest.",
+  "howToAr": "قف فوق البار، انحنِ والظهر مستقيم واسحب المقبض نحو صدرك.",
+  "equipment": "barbell",
+  "images": [
+   "T-Bar_Row_with_Handle/0.webp",
+   "T-Bar_Row_with_Handle/1.webp"
+  ]
+ },
+ {
+  "id": "Leverage_High_Row",
+  "group": "back",
+  "name": "Leverage High Row",
+  "nameAr": "آلة التجديف العالي",
+  "howTo": "Seated at the machine, pull the handles down and back, squeezing your shoulder blades.",
+  "howToAr": "جالساً على الآلة، اسحب المقابض للأسفل والخلف مع ضمّ لوحي الكتف.",
+  "equipment": "machine",
+  "images": [
+   "Leverage_High_Row/0.webp",
+   "Leverage_High_Row/1.webp"
+  ]
+ },
+ {
+  "id": "Straight-Arm_Pulldown",
+  "group": "back",
+  "name": "Straight-Arm Pulldown",
+  "nameAr": "سحب بذراعين مستقيمتين",
+  "howTo": "Standing at a high pulley, push the bar down to your thighs with straight arms.",
+  "howToAr": "واقفاً أمام بكرة عالية، ادفع البار نحو فخذيك بذراعين مستقيمتين.",
+  "equipment": "cable",
+  "images": [
+   "Straight-Arm_Pulldown/0.webp",
+   "Straight-Arm_Pulldown/1.webp"
+  ]
+ },
+ {
+  "id": "Inverted_Row",
+  "group": "back",
+  "name": "Inverted Row",
+  "nameAr": "تجديف معكوس",
+  "howTo": "Hang under a bar set at waist height, body straight, and pull your chest up to the bar.",
+  "howToAr": "تعلّق تحت بار بمستوى الخصر والجسم مستقيم، واسحب صدرك نحو البار.",
+  "equipment": "body only",
+  "images": [
+   "Inverted_Row/0.webp",
+   "Inverted_Row/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Deadlift",
+  "group": "back",
+  "name": "Barbell Deadlift",
+  "nameAr": "الرفعة الميتة (Deadlift)",
+  "howTo": "Bar over mid-foot, grip it, keep your back flat and stand up by pushing through your legs. Lower with control.",
+  "howToAr": "البار فوق منتصف القدم، امسكه والظهر مستقيم وقف بدفع الأرجل. أنزله بتحكّم.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Deadlift/0.webp",
+   "Barbell_Deadlift/1.webp"
+  ]
+ },
+ {
+  "id": "Rack_Pulls",
+  "group": "back",
+  "name": "Rack Pulls",
+  "nameAr": "رفعة من الحامل (Rack Pull)",
+  "howTo": "A deadlift starting from pins at knee height — lock out your hips and lower back to the pins.",
+  "howToAr": "رفعة ميتة تبدأ من الحامل بمستوى الركبة — قف مستقيماً ثم أعد البار للحامل.",
+  "equipment": "barbell",
+  "images": [
+   "Rack_Pulls/0.webp",
+   "Rack_Pulls/1.webp"
+  ]
+ },
+ {
+  "id": "Hyperextensions_Back_Extensions",
+  "group": "back",
+  "name": "Hyperextensions (Back Extensions)",
+  "nameAr": "تمديد أسفل الظهر (Lombaires)",
+  "howTo": "On the hyperextension bench, lower your torso, then raise it until your body is straight.",
+  "howToAr": "على بنش التمديد، أنزل جذعك ثم ارفعه حتى يستقيم جسمك.",
+  "equipment": "other",
+  "images": [
+   "Hyperextensions_Back_Extensions/0.webp",
+   "Hyperextensions_Back_Extensions/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Military_Press",
+  "group": "shoulders",
+  "name": "Standing Military Press",
+  "nameAr": "ضغط عسكري واقفاً",
+  "howTo": "Standing, press the bar from your collarbone straight overhead, then lower it.",
+  "howToAr": "واقفاً، ادفع البار من مستوى الترقوة إلى فوق الرأس ثم أنزله.",
+  "equipment": "barbell",
+  "images": [
+   "Standing_Military_Press/0.webp",
+   "Standing_Military_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Seated_Barbell_Military_Press",
+  "group": "shoulders",
+  "name": "Seated Barbell Military Press",
+  "nameAr": "ضغط عسكري جالساً",
+  "howTo": "Seated with back support, press the bar from your upper chest overhead.",
+  "howToAr": "جالساً مع سند للظهر، ادفع البار من أعلى الصدر إلى فوق الرأس.",
+  "equipment": "barbell",
+  "images": [
+   "Seated_Barbell_Military_Press/0.webp",
+   "Seated_Barbell_Military_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Seated_Dumbbell_Press",
+  "group": "shoulders",
+  "name": "Seated Dumbbell Press",
+  "nameAr": "ضغط الكتف بالدمبل جالساً",
+  "howTo": "Seated, press the dumbbells from shoulder height overhead, then lower.",
+  "howToAr": "جالساً، ادفع الدمبل من مستوى الكتفين إلى فوق الرأس ثم أنزلها.",
+  "equipment": "dumbbell",
+  "images": [
+   "Seated_Dumbbell_Press/0.webp",
+   "Seated_Dumbbell_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Arnold_Dumbbell_Press",
+  "group": "shoulders",
+  "name": "Arnold Dumbbell Press",
+  "nameAr": "ضغط أرنولد",
+  "howTo": "Start with palms facing you, rotate them outward as you press the dumbbells overhead.",
+  "howToAr": "ابدأ وراحتا اليدين نحوك، ثم أدرهما للخارج أثناء دفع الدمبل للأعلى.",
+  "equipment": "dumbbell",
+  "images": [
+   "Arnold_Dumbbell_Press/0.webp",
+   "Arnold_Dumbbell_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Machine_Shoulder_Military_Press",
+  "group": "shoulders",
+  "name": "Machine Shoulder (Military) Press",
+  "nameAr": "آلة ضغط الكتف",
+  "howTo": "Sit at the machine and press the handles overhead, then lower slowly.",
+  "howToAr": "اجلس على الآلة وادفع المقابض فوق رأسك ثم أنزلها ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Machine_Shoulder_Military_Press/0.webp",
+   "Machine_Shoulder_Military_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Smith_Machine_Overhead_Shoulder_Press",
+  "group": "shoulders",
+  "name": "Smith Machine Overhead Shoulder Press",
+  "nameAr": "ضغط الكتف على السميث",
+  "howTo": "Seated under the Smith bar, press it overhead and lower it to chin level.",
+  "howToAr": "جالساً تحت بار السميث، ادفعه فوق رأسك ثم أنزله لمستوى الذقن.",
+  "equipment": "machine",
+  "images": [
+   "Smith_Machine_Overhead_Shoulder_Press/0.webp",
+   "Smith_Machine_Overhead_Shoulder_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Side_Lateral_Raise",
+  "group": "shoulders",
+  "name": "Side Lateral Raise",
+  "nameAr": "رفع جانبي بالدمبل",
+  "howTo": "Raise the dumbbells out to the sides up to shoulder height, elbows slightly bent, then lower.",
+  "howToAr": "ارفع الدمبل جانباً حتى مستوى الكتفين والمرفقان مثنيان قليلاً ثم أنزلها.",
+  "equipment": "dumbbell",
+  "images": [
+   "Side_Lateral_Raise/0.webp",
+   "Side_Lateral_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Cable_Seated_Lateral_Raise",
+  "group": "shoulders",
+  "name": "Cable Seated Lateral Raise",
+  "nameAr": "رفع جانبي بالكابل",
+  "howTo": "With a low pulley at your side, raise the handle out to shoulder height.",
+  "howToAr": "مع بكرة منخفضة بجانبك، ارفع المقبض جانباً حتى مستوى الكتف.",
+  "equipment": "cable",
+  "images": [
+   "Cable_Seated_Lateral_Raise/0.webp",
+   "Cable_Seated_Lateral_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Front_Dumbbell_Raise",
+  "group": "shoulders",
+  "name": "Front Dumbbell Raise",
+  "nameAr": "رفع أمامي بالدمبل",
+  "howTo": "Raise the dumbbells in front of you to eye level with straight arms, then lower.",
+  "howToAr": "ارفع الدمبل أمامك حتى مستوى العين بذراعين مستقيمتين ثم أنزلها.",
+  "equipment": "dumbbell",
+  "images": [
+   "Front_Dumbbell_Raise/0.webp",
+   "Front_Dumbbell_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Reverse_Flyes",
+  "group": "shoulders",
+  "name": "Reverse Flyes",
+  "nameAr": "تفتيح خلفي بالدمبل",
+  "howTo": "Bent forward, raise the dumbbells out to the sides to work the rear shoulders.",
+  "howToAr": "منحنياً للأمام، ارفع الدمبل جانباً لتشغيل الكتف الخلفي.",
+  "equipment": "dumbbell",
+  "images": [
+   "Reverse_Flyes/0.webp",
+   "Reverse_Flyes/1.webp"
+  ]
+ },
+ {
+  "id": "Reverse_Machine_Flyes",
+  "group": "shoulders",
+  "name": "Reverse Machine Flyes",
+  "nameAr": "آلة الكتف الخلفي",
+  "howTo": "Facing the pec-deck machine, pull the handles back and apart with straight arms.",
+  "howToAr": "مواجهاً آلة الفراشة، اسحب المقابض للخلف والجانبين بذراعين مستقيمتين.",
+  "equipment": "machine",
+  "images": [
+   "Reverse_Machine_Flyes/0.webp",
+   "Reverse_Machine_Flyes/1.webp"
+  ]
+ },
+ {
+  "id": "Face_Pull",
+  "group": "shoulders",
+  "name": "Face Pull",
+  "nameAr": "فيس بول",
+  "howTo": "Pull a rope from a high pulley toward your face, elbows high, hands ending beside your ears.",
+  "howToAr": "اسحب الحبل من بكرة عالية نحو وجهك والمرفقان مرتفعان، واليدان بجانب الأذنين.",
+  "equipment": "cable",
+  "images": [
+   "Face_Pull/0.webp",
+   "Face_Pull/1.webp"
+  ]
+ },
+ {
+  "id": "Upright_Barbell_Row",
+  "group": "shoulders",
+  "name": "Upright Barbell Row",
+  "nameAr": "سحب عمودي بالبار",
+  "howTo": "Pull the bar up along your body to chest height, elbows leading, then lower.",
+  "howToAr": "اسحب البار للأعلى بمحاذاة جسمك حتى الصدر والمرفقان يقودان الحركة ثم أنزله.",
+  "equipment": "barbell",
+  "images": [
+   "Upright_Barbell_Row/0.webp",
+   "Upright_Barbell_Row/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Curl",
+  "group": "biceps",
+  "name": "Barbell Curl",
+  "nameAr": "كيرل بالبار",
+  "howTo": "Standing, curl the bar up to your shoulders keeping elbows by your sides, then lower slowly.",
+  "howToAr": "واقفاً، اثنِ البار نحو كتفيك والمرفقان ثابتان بجانبك ثم أنزله ببطء.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Curl/0.webp",
+   "Barbell_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "EZ-Bar_Curl",
+  "group": "biceps",
+  "name": "EZ-Bar Curl",
+  "nameAr": "كيرل بالبار المتعرج (EZ)",
+  "howTo": "Same as a barbell curl but with the angled EZ bar, easier on the wrists.",
+  "howToAr": "مثل كيرل البار لكن بالبار المتعرّج، أريح للرسغين.",
+  "equipment": "e-z curl bar",
+  "images": [
+   "EZ-Bar_Curl/0.webp",
+   "EZ-Bar_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Bicep_Curl",
+  "group": "biceps",
+  "name": "Dumbbell Bicep Curl",
+  "nameAr": "كيرل بالدمبل",
+  "howTo": "Curl both dumbbells up, turning palms toward you, then lower with control.",
+  "howToAr": "اثنِ الدمبلين للأعلى وراحتا اليدين نحوك ثم أنزلهما بتحكّم.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Bicep_Curl/0.webp",
+   "Dumbbell_Bicep_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Alternate_Bicep_Curl",
+  "group": "biceps",
+  "name": "Dumbbell Alternate Bicep Curl",
+  "nameAr": "كيرل بالتناوب",
+  "howTo": "Curl one dumbbell at a time, alternating arms.",
+  "howToAr": "اثنِ دمبل واحد في كل مرة بالتناوب بين الذراعين.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Alternate_Bicep_Curl/0.webp",
+   "Dumbbell_Alternate_Bicep_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Hammer_Curls",
+  "group": "biceps",
+  "name": "Hammer Curls",
+  "nameAr": "كيرل المطرقة (Hammer)",
+  "howTo": "Palms facing each other, curl the dumbbells up like holding hammers.",
+  "howToAr": "راحتا اليدين متقابلتان، اثنِ الدمبل للأعلى كأنك تمسك مطرقة.",
+  "equipment": "dumbbell",
+  "images": [
+   "Hammer_Curls/0.webp",
+   "Hammer_Curls/1.webp"
+  ]
+ },
+ {
+  "id": "Incline_Dumbbell_Curl",
+  "group": "biceps",
+  "name": "Incline Dumbbell Curl",
+  "nameAr": "كيرل مائل بالدمبل",
+  "howTo": "Sitting back on an incline bench with arms hanging, curl the dumbbells up.",
+  "howToAr": "جالساً على بنش مائل والذراعان متدليتان، اثنِ الدمبل للأعلى.",
+  "equipment": "dumbbell",
+  "images": [
+   "Incline_Dumbbell_Curl/0.webp",
+   "Incline_Dumbbell_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Concentration_Curls",
+  "group": "biceps",
+  "name": "Concentration Curls",
+  "nameAr": "كيرل التركيز",
+  "howTo": "Seated, elbow braced on your inner thigh, curl one dumbbell up slowly.",
+  "howToAr": "جالساً والمرفق مستند على داخل الفخذ، اثنِ الدمبل ببطء.",
+  "equipment": "dumbbell",
+  "images": [
+   "Concentration_Curls/0.webp",
+   "Concentration_Curls/1.webp"
+  ]
+ },
+ {
+  "id": "Preacher_Curl",
+  "group": "biceps",
+  "name": "Preacher Curl",
+  "nameAr": "كيرل على مسند (Preacher)",
+  "howTo": "Arms resting on the preacher pad, curl the bar up and lower it all the way.",
+  "howToAr": "الذراعان على المسند، اثنِ البار للأعلى ثم أنزله بالكامل.",
+  "equipment": "barbell",
+  "images": [
+   "Preacher_Curl/0.webp",
+   "Preacher_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Machine_Preacher_Curls",
+  "group": "biceps",
+  "name": "Machine Preacher Curls",
+  "nameAr": "آلة كيرل المسند",
+  "howTo": "Seated at the machine with arms on the pad, curl the handles up.",
+  "howToAr": "جالساً على الآلة والذراعان على المسند، اثنِ المقابض للأعلى.",
+  "equipment": "machine",
+  "images": [
+   "Machine_Preacher_Curls/0.webp",
+   "Machine_Preacher_Curls/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Biceps_Cable_Curl",
+  "group": "biceps",
+  "name": "Standing Biceps Cable Curl",
+  "nameAr": "كيرل بالكابل",
+  "howTo": "Facing a low pulley, curl the bar up to your chest, elbows fixed.",
+  "howToAr": "مواجهاً بكرة منخفضة، اثنِ البار نحو صدرك والمرفقان ثابتان.",
+  "equipment": "cable",
+  "images": [
+   "Standing_Biceps_Cable_Curl/0.webp",
+   "Standing_Biceps_Cable_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Cable_Hammer_Curls_-_Rope_Attachment",
+  "group": "biceps",
+  "name": "Cable Hammer Curls - Rope Attachment",
+  "nameAr": "كيرل مطرقة بالحبل",
+  "howTo": "Using a rope on a low pulley, curl with palms facing each other.",
+  "howToAr": "بحبل على بكرة منخفضة، اثنِ وراحتا اليدين متقابلتان.",
+  "equipment": "cable",
+  "images": [
+   "Cable_Hammer_Curls_-_Rope_Attachment/0.webp",
+   "Cable_Hammer_Curls_-_Rope_Attachment/1.webp"
+  ]
+ },
+ {
+  "id": "Spider_Curl",
+  "group": "biceps",
+  "name": "Spider Curl",
+  "nameAr": "سبايدر كيرل",
+  "howTo": "Lie chest-down on an incline bench, arms hanging straight, and curl the bar up.",
+  "howToAr": "استلقِ على بطنك فوق بنش مائل والذراعان متدليتان، واثنِ البار للأعلى.",
+  "equipment": "e-z curl bar",
+  "images": [
+   "Spider_Curl/0.webp",
+   "Spider_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Triceps_Pushdown",
+  "group": "triceps",
+  "name": "Triceps Pushdown",
+  "nameAr": "دفع الترايسبس بالكابل",
+  "howTo": "At a high pulley, push the bar down until your arms are straight, elbows pinned to your sides.",
+  "howToAr": "أمام بكرة عالية، ادفع البار للأسفل حتى تستقيم الذراعان والمرفقان ملتصقان بالجسم.",
+  "equipment": "cable",
+  "images": [
+   "Triceps_Pushdown/0.webp",
+   "Triceps_Pushdown/1.webp"
+  ]
+ },
+ {
+  "id": "Triceps_Pushdown_-_Rope_Attachment",
+  "group": "triceps",
+  "name": "Triceps Pushdown - Rope Attachment",
+  "nameAr": "دفع الترايسبس بالحبل",
+  "howTo": "Push the rope down and spread the ends apart at the bottom.",
+  "howToAr": "ادفع الحبل للأسفل وافتح طرفيه في النهاية.",
+  "equipment": "cable",
+  "images": [
+   "Triceps_Pushdown_-_Rope_Attachment/0.webp",
+   "Triceps_Pushdown_-_Rope_Attachment/1.webp"
+  ]
+ },
+ {
+  "id": "Reverse_Grip_Triceps_Pushdown",
+  "group": "triceps",
+  "name": "Reverse Grip Triceps Pushdown",
+  "nameAr": "دفع ترايسبس بقبضة عكسية",
+  "howTo": "With palms facing up, push the bar down until your arms are straight.",
+  "howToAr": "وراحتا اليدين للأعلى، ادفع البار للأسفل حتى تستقيم الذراعان.",
+  "equipment": "cable",
+  "images": [
+   "Reverse_Grip_Triceps_Pushdown/0.webp",
+   "Reverse_Grip_Triceps_Pushdown/1.webp"
+  ]
+ },
+ {
+  "id": "Triceps_Overhead_Extension_with_Rope",
+  "group": "triceps",
+  "name": "Triceps Overhead Extension with Rope",
+  "nameAr": "تمديد فوق الرأس بالحبل",
+  "howTo": "Facing away from the pulley, extend the rope forward and overhead from behind your head.",
+  "howToAr": "ظهرك للبكرة، مدّ الحبل من خلف رأسك إلى الأمام وفوق الرأس.",
+  "equipment": "cable",
+  "images": [
+   "Triceps_Overhead_Extension_with_Rope/0.webp",
+   "Triceps_Overhead_Extension_with_Rope/1.webp"
+  ]
+ },
+ {
+  "id": "EZ-Bar_Skullcrusher",
+  "group": "triceps",
+  "name": "EZ-Bar Skullcrusher",
+  "nameAr": "سكل كراشر (Barre au front)",
+  "howTo": "Lying on a bench, lower the EZ bar toward your forehead by bending the elbows, then extend.",
+  "howToAr": "مستلقياً على البنش، أنزل البار نحو جبهتك بثني المرفقين ثم مدّهما.",
+  "equipment": "e-z curl bar",
+  "images": [
+   "EZ-Bar_Skullcrusher/0.webp",
+   "EZ-Bar_Skullcrusher/1.webp"
+  ]
+ },
+ {
+  "id": "Close-Grip_Barbell_Bench_Press",
+  "group": "triceps",
+  "name": "Close-Grip Barbell Bench Press",
+  "nameAr": "ضغط بنش بقبضة ضيقة",
+  "howTo": "Bench press with hands shoulder-width apart, elbows close to your body.",
+  "howToAr": "ضغط بنش واليدان بعرض الكتفين والمرفقان قريبان من الجسم.",
+  "equipment": "barbell",
+  "images": [
+   "Close-Grip_Barbell_Bench_Press/0.webp",
+   "Close-Grip_Barbell_Bench_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Dips_-_Triceps_Version",
+  "group": "triceps",
+  "name": "Dips - Triceps Version",
+  "nameAr": "الغطس (Dips)",
+  "howTo": "On parallel bars with your body upright, bend the elbows to lower, then push back up.",
+  "howToAr": "على المتوازي والجسم مستقيم، اثنِ المرفقين لتنزل ثم ادفع للأعلى.",
+  "equipment": "body only",
+  "images": [
+   "Dips_-_Triceps_Version/0.webp",
+   "Dips_-_Triceps_Version/1.webp"
+  ]
+ },
+ {
+  "id": "Bench_Dips",
+  "group": "triceps",
+  "name": "Bench Dips",
+  "nameAr": "غطس على البنش",
+  "howTo": "Hands on a bench behind you, lower your hips by bending the elbows, then push up.",
+  "howToAr": "اليدان على بنش خلفك، أنزل حوضك بثني المرفقين ثم ادفع للأعلى.",
+  "equipment": "body only",
+  "images": [
+   "Bench_Dips/0.webp",
+   "Bench_Dips/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Dumbbell_Triceps_Extension",
+  "group": "triceps",
+  "name": "Standing Dumbbell Triceps Extension",
+  "nameAr": "تمديد الترايسبس بالدمبل فوق الرأس",
+  "howTo": "Hold one dumbbell overhead with both hands, lower it behind your head, then extend.",
+  "howToAr": "امسك دمبل بكلتا اليدين فوق رأسك، أنزله خلف الرأس ثم مدّ ذراعيك.",
+  "equipment": "dumbbell",
+  "images": [
+   "Standing_Dumbbell_Triceps_Extension/0.webp",
+   "Standing_Dumbbell_Triceps_Extension/1.webp"
+  ]
+ },
+ {
+  "id": "Tricep_Dumbbell_Kickback",
+  "group": "triceps",
+  "name": "Tricep Dumbbell Kickback",
+  "nameAr": "كيك باك بالدمبل",
+  "howTo": "Bent forward with the upper arm parallel to the floor, straighten your elbow backward.",
+  "howToAr": "منحنياً والعضد موازٍ للأرض، مدّ المرفق للخلف حتى تستقيم الذراع.",
+  "equipment": "dumbbell",
+  "images": [
+   "Tricep_Dumbbell_Kickback/0.webp",
+   "Tricep_Dumbbell_Kickback/1.webp"
+  ]
+ },
+ {
+  "id": "Machine_Triceps_Extension",
+  "group": "triceps",
+  "name": "Machine Triceps Extension",
+  "nameAr": "آلة الترايسبس",
+  "howTo": "Seated at the machine, extend your arms down or forward against the pads.",
+  "howToAr": "جالساً على الآلة، مدّ ذراعيك ضد المقابض.",
+  "equipment": "machine",
+  "images": [
+   "Machine_Triceps_Extension/0.webp",
+   "Machine_Triceps_Extension/1.webp"
+  ]
+ },
+ {
+  "id": "Dip_Machine",
+  "group": "triceps",
+  "name": "Dip Machine",
+  "nameAr": "آلة الغطس",
+  "howTo": "Seated at the dip machine, push the handles down until your arms are straight.",
+  "howToAr": "جالساً على آلة الغطس، ادفع المقابض للأسفل حتى تستقيم الذراعان.",
+  "equipment": "machine",
+  "images": [
+   "Dip_Machine/0.webp",
+   "Dip_Machine/1.webp"
+  ]
+ },
+ {
+  "id": "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench",
+  "group": "forearms",
+  "name": "Palms-Up Barbell Wrist Curl Over A Bench",
+  "nameAr": "ثني الرسغ بالبار",
+  "howTo": "Forearms on a bench, palms up, curl the bar up using only your wrists.",
+  "howToAr": "الساعدان على البنش وراحتا اليدين للأعلى، ارفع البار بالرسغين فقط.",
+  "equipment": "barbell",
+  "images": [
+   "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench/0.webp",
+   "Palms-Up_Barbell_Wrist_Curl_Over_A_Bench/1.webp"
+  ]
+ },
+ {
+  "id": "Palms-Down_Wrist_Curl_Over_A_Bench",
+  "group": "forearms",
+  "name": "Palms-Down Wrist Curl Over A Bench",
+  "nameAr": "ثني الرسغ العكسي",
+  "howTo": "Forearms on a bench, palms down, lift the bar with your wrists.",
+  "howToAr": "الساعدان على البنش وراحتا اليدين للأسفل، ارفع البار بالرسغين.",
+  "equipment": "barbell",
+  "images": [
+   "Palms-Down_Wrist_Curl_Over_A_Bench/0.webp",
+   "Palms-Down_Wrist_Curl_Over_A_Bench/1.webp"
+  ]
+ },
+ {
+  "id": "Seated_Dumbbell_Palms-Up_Wrist_Curl",
+  "group": "forearms",
+  "name": "Seated Dumbbell Palms-Up Wrist Curl",
+  "nameAr": "ثني الرسغ بالدمبل",
+  "howTo": "Seated, forearms on your thighs, curl the dumbbells up with your wrists.",
+  "howToAr": "جالساً والساعدان على الفخذين، ارفع الدمبل بالرسغين.",
+  "equipment": "dumbbell",
+  "images": [
+   "Seated_Dumbbell_Palms-Up_Wrist_Curl/0.webp",
+   "Seated_Dumbbell_Palms-Up_Wrist_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Reverse_Barbell_Curl",
+  "group": "forearms",
+  "name": "Reverse Barbell Curl",
+  "nameAr": "كيرل عكسي بالبار",
+  "howTo": "Curl the bar with palms facing down to work the forearms.",
+  "howToAr": "اثنِ البار وراحتا اليدين للأسفل لتشغيل الساعد.",
+  "equipment": "barbell",
+  "images": [
+   "Reverse_Barbell_Curl/0.webp",
+   "Reverse_Barbell_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Farmers_Walk",
+  "group": "forearms",
+  "name": "Farmer's Walk",
+  "nameAr": "مشية المزارع",
+  "howTo": "Hold heavy dumbbells at your sides and walk with an upright posture.",
+  "howToAr": "امسك دمبل ثقيلين بجانبك وامشِ والجسم مستقيم.",
+  "equipment": "other",
+  "images": [
+   "Farmers_Walk/0.webp",
+   "Farmers_Walk/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Squat",
+  "group": "quadriceps",
+  "name": "Barbell Squat",
+  "nameAr": "السكوات بالبار",
+  "howTo": "Bar on your upper back, sit your hips back and down until thighs are parallel, then stand up.",
+  "howToAr": "البار على أعلى الظهر، انزل بالحوض للخلف حتى يوازي الفخذان الأرض ثم قف.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Squat/0.webp",
+   "Barbell_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Full_Squat",
+  "group": "quadriceps",
+  "name": "Barbell Full Squat",
+  "nameAr": "سكوات كامل بالبار",
+  "howTo": "A deep squat going below parallel while keeping your chest up.",
+  "howToAr": "سكوات عميق تحت مستوى التوازي مع إبقاء الصدر مرفوعاً.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Full_Squat/0.webp",
+   "Barbell_Full_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Front_Barbell_Squat",
+  "group": "quadriceps",
+  "name": "Front Barbell Squat",
+  "nameAr": "سكوات أمامي",
+  "howTo": "Bar resting on the front of your shoulders, squat down keeping your torso upright.",
+  "howToAr": "البار على مقدّمة الكتفين، انزل والجذع مستقيم.",
+  "equipment": "barbell",
+  "images": [
+   "Front_Barbell_Squat/0.webp",
+   "Front_Barbell_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Leg_Press",
+  "group": "quadriceps",
+  "name": "Leg Press",
+  "nameAr": "آلة دفع الأرجل (Presse)",
+  "howTo": "Feet on the platform, lower it until your knees reach about 90°, then push it away.",
+  "howToAr": "القدمان على المنصة، أنزلها حتى تنثني الركبتان ٩٠° تقريباً ثم ادفعها.",
+  "equipment": "machine",
+  "images": [
+   "Leg_Press/0.webp",
+   "Leg_Press/1.webp"
+  ]
+ },
+ {
+  "id": "Hack_Squat",
+  "group": "quadriceps",
+  "name": "Hack Squat",
+  "nameAr": "هاك سكوات",
+  "howTo": "On the hack squat machine, squat down with your back on the pad, then drive up.",
+  "howToAr": "على آلة الهاك، انزل والظهر ملتصق بالمسند ثم ادفع للأعلى.",
+  "equipment": "machine",
+  "images": [
+   "Hack_Squat/0.webp",
+   "Hack_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Leg_Extensions",
+  "group": "quadriceps",
+  "name": "Leg Extensions",
+  "nameAr": "تمديد الأرجل (Leg Extension)",
+  "howTo": "Seated at the machine, straighten your legs to lift the pad, then lower slowly.",
+  "howToAr": "جالساً على الآلة، مدّ رجليك لرفع المسند ثم أنزله ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Leg_Extensions/0.webp",
+   "Leg_Extensions/1.webp"
+  ]
+ },
+ {
+  "id": "Smith_Machine_Squat",
+  "group": "quadriceps",
+  "name": "Smith Machine Squat",
+  "nameAr": "سكوات على السميث",
+  "howTo": "Squat under the Smith bar with feet slightly in front of you.",
+  "howToAr": "انزل تحت بار السميث والقدمان أمامك قليلاً.",
+  "equipment": "machine",
+  "images": [
+   "Smith_Machine_Squat/0.webp",
+   "Smith_Machine_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Goblet_Squat",
+  "group": "quadriceps",
+  "name": "Goblet Squat",
+  "nameAr": "سكوات الكأس (Goblet)",
+  "howTo": "Hold a dumbbell or kettlebell at your chest and squat down between your knees.",
+  "howToAr": "امسك دمبل أو كيتلبل أمام صدرك وانزل بين ركبتيك.",
+  "equipment": "kettlebells",
+  "images": [
+   "Goblet_Squat/0.webp",
+   "Goblet_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Bodyweight_Squat",
+  "group": "quadriceps",
+  "name": "Bodyweight Squat",
+  "nameAr": "سكوات بوزن الجسم",
+  "howTo": "Arms forward, sit down as if onto a chair, then stand back up.",
+  "howToAr": "الذراعان للأمام، انزل كأنك تجلس على كرسي ثم قف.",
+  "equipment": "body only",
+  "images": [
+   "Bodyweight_Squat/0.webp",
+   "Bodyweight_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Lunges",
+  "group": "quadriceps",
+  "name": "Dumbbell Lunges",
+  "nameAr": "الطعن بالدمبل (Fentes)",
+  "howTo": "Step forward and lower until both knees are at 90°, then push back to standing.",
+  "howToAr": "اخطُ للأمام وانزل حتى تنثني الركبتان ٩٠° ثم ارجع للوقوف.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Lunges/0.webp",
+   "Dumbbell_Lunges/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Walking_Lunge",
+  "group": "quadriceps",
+  "name": "Barbell Walking Lunge",
+  "nameAr": "طعن مشي بالبار",
+  "howTo": "With a bar on your back, lunge forward step after step.",
+  "howToAr": "والبار على ظهرك، تقدّم بخطوات طعن متتالية.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Walking_Lunge/0.webp",
+   "Barbell_Walking_Lunge/1.webp"
+  ]
+ },
+ {
+  "id": "Split_Squat_with_Dumbbells",
+  "group": "quadriceps",
+  "name": "Split Squat with Dumbbells",
+  "nameAr": "سبليت سكوات بالدمبل",
+  "howTo": "One foot forward, one back, lower straight down and stand up. Do both sides.",
+  "howToAr": "قدم للأمام وأخرى للخلف، انزل عمودياً ثم قف. كرّر للجهتين.",
+  "equipment": "dumbbell",
+  "images": [
+   "Split_Squat_with_Dumbbells/0.webp",
+   "Split_Squat_with_Dumbbells/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Step_Ups",
+  "group": "quadriceps",
+  "name": "Dumbbell Step Ups",
+  "nameAr": "الصعود على صندوق بالدمبل",
+  "howTo": "Step up onto a box or bench with one leg, stand tall, then step down.",
+  "howToAr": "اصعد على صندوق أو بنش برجل واحدة، قف مستقيماً ثم انزل.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Step_Ups/0.webp",
+   "Dumbbell_Step_Ups/1.webp"
+  ]
+ },
+ {
+  "id": "Romanian_Deadlift",
+  "group": "hamstrings",
+  "name": "Romanian Deadlift",
+  "nameAr": "الرفعة الرومانية",
+  "howTo": "With soft knees, push your hips back and slide the bar down your thighs until you feel a hamstring stretch, then stand up.",
+  "howToAr": "والركبتان مثنيتان قليلاً، ادفع حوضك للخلف وأنزل البار على فخذيك حتى تشعر بتمدد الخلفية ثم قف.",
+  "equipment": "barbell",
+  "images": [
+   "Romanian_Deadlift/0.webp",
+   "Romanian_Deadlift/1.webp"
+  ]
+ },
+ {
+  "id": "Stiff-Legged_Barbell_Deadlift",
+  "group": "hamstrings",
+  "name": "Stiff-Legged Barbell Deadlift",
+  "nameAr": "رفعة بأرجل مستقيمة بالبار",
+  "howTo": "Legs almost straight, bend at the hips lowering the bar, then return upright.",
+  "howToAr": "الرجلان شبه مستقيمتين، انحنِ من الحوض لإنزال البار ثم ارجع مستقيماً.",
+  "equipment": "barbell",
+  "images": [
+   "Stiff-Legged_Barbell_Deadlift/0.webp",
+   "Stiff-Legged_Barbell_Deadlift/1.webp"
+  ]
+ },
+ {
+  "id": "Stiff-Legged_Dumbbell_Deadlift",
+  "group": "hamstrings",
+  "name": "Stiff-Legged Dumbbell Deadlift",
+  "nameAr": "رفعة بأرجل مستقيمة بالدمبل",
+  "howTo": "Same hip hinge with dumbbells in front of your legs.",
+  "howToAr": "نفس حركة الانحناء من الحوض بالدمبل أمام الرجلين.",
+  "equipment": "dumbbell",
+  "images": [
+   "Stiff-Legged_Dumbbell_Deadlift/0.webp",
+   "Stiff-Legged_Dumbbell_Deadlift/1.webp"
+  ]
+ },
+ {
+  "id": "Lying_Leg_Curls",
+  "group": "hamstrings",
+  "name": "Lying Leg Curls",
+  "nameAr": "ثني الأرجل مستلقياً",
+  "howTo": "Lying face down on the machine, curl your heels toward your glutes.",
+  "howToAr": "مستلقياً على بطنك فوق الآلة، اثنِ كعبيك نحو المؤخرة.",
+  "equipment": "machine",
+  "images": [
+   "Lying_Leg_Curls/0.webp",
+   "Lying_Leg_Curls/1.webp"
+  ]
+ },
+ {
+  "id": "Seated_Leg_Curl",
+  "group": "hamstrings",
+  "name": "Seated Leg Curl",
+  "nameAr": "ثني الأرجل جالساً",
+  "howTo": "Seated at the machine, press the pad down and back with your heels.",
+  "howToAr": "جالساً على الآلة، اضغط المسند للأسفل والخلف بكعبيك.",
+  "equipment": "machine",
+  "images": [
+   "Seated_Leg_Curl/0.webp",
+   "Seated_Leg_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Leg_Curl",
+  "group": "hamstrings",
+  "name": "Standing Leg Curl",
+  "nameAr": "ثني الرجل واقفاً",
+  "howTo": "Standing at the machine, curl one heel up toward your glutes.",
+  "howToAr": "واقفاً أمام الآلة، اثنِ كعب رجل واحدة نحو المؤخرة.",
+  "equipment": "machine",
+  "images": [
+   "Standing_Leg_Curl/0.webp",
+   "Standing_Leg_Curl/1.webp"
+  ]
+ },
+ {
+  "id": "Good_Morning",
+  "group": "hamstrings",
+  "name": "Good Morning",
+  "nameAr": "غود مورنينغ",
+  "howTo": "Bar on your back, bow forward at the hips with a flat back, then rise.",
+  "howToAr": "البار على ظهرك، انحنِ للأمام من الحوض والظهر مستقيم ثم ارتفع.",
+  "equipment": "barbell",
+  "images": [
+   "Good_Morning/0.webp",
+   "Good_Morning/1.webp"
+  ]
+ },
+ {
+  "id": "Glute_Ham_Raise",
+  "group": "hamstrings",
+  "name": "Glute Ham Raise",
+  "nameAr": "رفع الألوية والخلفية (GHR)",
+  "howTo": "Knees on the pad and feet locked, lower your body forward and pull yourself back up with your hamstrings.",
+  "howToAr": "الركبتان على المسند والقدمان مثبتتان، أنزل جسمك للأمام ثم اسحبه للأعلى بعضلات الخلفية.",
+  "equipment": "machine",
+  "images": [
+   "Glute_Ham_Raise/0.webp",
+   "Glute_Ham_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Sumo_Deadlift",
+  "group": "hamstrings",
+  "name": "Sumo Deadlift",
+  "nameAr": "رفعة سومو",
+  "howTo": "Wide stance with hands inside your knees, stand up with the bar keeping your chest up.",
+  "howToAr": "وقفة عريضة واليدان داخل الركبتين، قف بالبار مع إبقاء الصدر مرفوعاً.",
+  "equipment": "barbell",
+  "images": [
+   "Sumo_Deadlift/0.webp",
+   "Sumo_Deadlift/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Hip_Thrust",
+  "group": "glutes",
+  "name": "Barbell Hip Thrust",
+  "nameAr": "دفع الحوض بالبار (Hip Thrust)",
+  "howTo": "Upper back on a bench, bar over your hips; drive your hips up until your body is flat, squeeze, lower.",
+  "howToAr": "أعلى الظهر على البنش والبار فوق الحوض؛ ادفع حوضك للأعلى حتى يستقيم جسمك، اضغط الألوية ثم انزل.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Hip_Thrust/0.webp",
+   "Barbell_Hip_Thrust/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Glute_Bridge",
+  "group": "glutes",
+  "name": "Barbell Glute Bridge",
+  "nameAr": "جسر الألوية بالبار",
+  "howTo": "Lying on the floor with a bar on your hips, lift your hips and squeeze your glutes.",
+  "howToAr": "مستلقياً على الأرض والبار فوق حوضك، ارفع الحوض واضغط الألوية.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Glute_Bridge/0.webp",
+   "Barbell_Glute_Bridge/1.webp"
+  ]
+ },
+ {
+  "id": "Butt_Lift_Bridge",
+  "group": "glutes",
+  "name": "Butt Lift (Bridge)",
+  "nameAr": "جسر الألوية",
+  "howTo": "Lying on your back with knees bent, lift your hips up and squeeze, then lower.",
+  "howToAr": "مستلقياً والركبتان مثنيتان، ارفع حوضك واضغط ثم انزل.",
+  "equipment": "body only",
+  "images": [
+   "Butt_Lift_Bridge/0.webp",
+   "Butt_Lift_Bridge/1.webp"
+  ]
+ },
+ {
+  "id": "Single_Leg_Glute_Bridge",
+  "group": "glutes",
+  "name": "Single Leg Glute Bridge",
+  "nameAr": "جسر الألوية برجل واحدة",
+  "howTo": "Same bridge with one leg raised, pushing through the planted heel.",
+  "howToAr": "نفس الجسر مع رفع رجل واحدة والدفع بكعب الرجل الأخرى.",
+  "equipment": "body only",
+  "images": [
+   "Single_Leg_Glute_Bridge/0.webp",
+   "Single_Leg_Glute_Bridge/1.webp"
+  ]
+ },
+ {
+  "id": "One-Legged_Cable_Kickback",
+  "group": "glutes",
+  "name": "One-Legged Cable Kickback",
+  "nameAr": "ركلة خلفية بالكابل",
+  "howTo": "Ankle strap on a low pulley, kick your leg straight back and squeeze your glute.",
+  "howToAr": "حزام الكاحل على بكرة منخفضة، اركل رجلك للخلف واضغط الألوية.",
+  "equipment": "cable",
+  "images": [
+   "One-Legged_Cable_Kickback/0.webp",
+   "One-Legged_Cable_Kickback/1.webp"
+  ]
+ },
+ {
+  "id": "Glute_Kickback",
+  "group": "glutes",
+  "name": "Glute Kickback",
+  "nameAr": "ركلة خلفية على الأرض",
+  "howTo": "On hands and knees, push one heel up toward the ceiling.",
+  "howToAr": "على اليدين والركبتين، ادفع كعباً واحداً نحو السقف.",
+  "equipment": "body only",
+  "images": [
+   "Glute_Kickback/0.webp",
+   "Glute_Kickback/1.webp"
+  ]
+ },
+ {
+  "id": "Pull_Through",
+  "group": "glutes",
+  "name": "Pull Through",
+  "nameAr": "سحب بين الأرجل بالكابل",
+  "howTo": "Facing away from a low pulley, hinge forward then snap your hips through to stand tall.",
+  "howToAr": "ظهرك لبكرة منخفضة، انحنِ للأمام ثم ادفع حوضك للأمام لتقف مستقيماً.",
+  "equipment": "cable",
+  "images": [
+   "Pull_Through/0.webp",
+   "Pull_Through/1.webp"
+  ]
+ },
+ {
+  "id": "Thigh_Abductor",
+  "group": "glutes",
+  "name": "Thigh Abductor",
+  "nameAr": "آلة إبعاد الفخذ (Abducteur)",
+  "howTo": "Seated at the machine, push your knees outward against the pads, then return slowly.",
+  "howToAr": "جالساً على الآلة، ادفع ركبتيك للخارج ضد المساند ثم ارجع ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Thigh_Abductor/0.webp",
+   "Thigh_Abductor/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Calf_Raises",
+  "group": "calves",
+  "name": "Standing Calf Raises",
+  "nameAr": "رفع السمانة واقفاً",
+  "howTo": "Shoulders under the pads, rise onto your toes as high as possible, then lower your heels.",
+  "howToAr": "الكتفان تحت المساند، ارتفع على أصابع قدميك لأقصى حد ثم أنزل الكعبين.",
+  "equipment": "machine",
+  "images": [
+   "Standing_Calf_Raises/0.webp",
+   "Standing_Calf_Raises/1.webp"
+  ]
+ },
+ {
+  "id": "Seated_Calf_Raise",
+  "group": "calves",
+  "name": "Seated Calf Raise",
+  "nameAr": "رفع السمانة جالساً",
+  "howTo": "Seated with the pad on your knees, raise your heels, then lower them fully.",
+  "howToAr": "جالساً والمسند على ركبتيك، ارفع كعبيك ثم أنزلهما بالكامل.",
+  "equipment": "machine",
+  "images": [
+   "Seated_Calf_Raise/0.webp",
+   "Seated_Calf_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Calf_Press_On_The_Leg_Press_Machine",
+  "group": "calves",
+  "name": "Calf Press On The Leg Press Machine",
+  "nameAr": "رفع السمانة على آلة الدفع",
+  "howTo": "On the leg press, push the platform using only your toes.",
+  "howToAr": "على آلة دفع الأرجل، ادفع المنصة بأصابع القدمين فقط.",
+  "equipment": "machine",
+  "images": [
+   "Calf_Press_On_The_Leg_Press_Machine/0.webp",
+   "Calf_Press_On_The_Leg_Press_Machine/1.webp"
+  ]
+ },
+ {
+  "id": "Smith_Machine_Calf_Raise",
+  "group": "calves",
+  "name": "Smith Machine Calf Raise",
+  "nameAr": "رفع السمانة على السميث",
+  "howTo": "Under the Smith bar, stand on a step and raise your heels.",
+  "howToAr": "تحت بار السميث، قف على درجة وارفع كعبيك.",
+  "equipment": "machine",
+  "images": [
+   "Smith_Machine_Calf_Raise/0.webp",
+   "Smith_Machine_Calf_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Dumbbell_Calf_Raise",
+  "group": "calves",
+  "name": "Standing Dumbbell Calf Raise",
+  "nameAr": "رفع السمانة بالدمبل",
+  "howTo": "Holding dumbbells, rise onto your toes and lower slowly.",
+  "howToAr": "ممسكاً الدمبل، ارتفع على أصابعك ثم انزل ببطء.",
+  "equipment": "dumbbell",
+  "images": [
+   "Standing_Dumbbell_Calf_Raise/0.webp",
+   "Standing_Dumbbell_Calf_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Crunches",
+  "group": "abs",
+  "name": "Crunches",
+  "nameAr": "الكرانش",
+  "howTo": "Lying with knees bent, curl your shoulders off the floor toward your knees, then lower.",
+  "howToAr": "مستلقياً والركبتان مثنيتان، ارفع كتفيك عن الأرض نحو الركبتين ثم انزل.",
+  "equipment": "body only",
+  "images": [
+   "Crunches/0.webp",
+   "Crunches/1.webp"
+  ]
+ },
+ {
+  "id": "Plank",
+  "group": "abs",
+  "name": "Plank",
+  "nameAr": "البلانك (Gainage)",
+  "howTo": "Hold a straight line on your forearms and toes, tightening your stomach.",
+  "howToAr": "اثبت على ساعديك وأصابع قدميك والجسم مستقيم مع شدّ البطن.",
+  "equipment": "body only",
+  "images": [
+   "Plank/0.webp",
+   "Plank/1.webp"
+  ]
+ },
+ {
+  "id": "Side_Bridge",
+  "group": "abs",
+  "name": "Side Bridge",
+  "nameAr": "بلانك جانبي",
+  "howTo": "On one forearm and the side of your foot, hold your body in a straight line.",
+  "howToAr": "على ساعد واحد وجانب القدم، اثبت والجسم مستقيم.",
+  "equipment": "body only",
+  "images": [
+   "Side_Bridge/0.webp",
+   "Side_Bridge/1.webp"
+  ]
+ },
+ {
+  "id": "Hanging_Leg_Raise",
+  "group": "abs",
+  "name": "Hanging Leg Raise",
+  "nameAr": "رفع الأرجل معلّقاً",
+  "howTo": "Hanging from a bar, raise your legs up in front of you, then lower slowly.",
+  "howToAr": "متعلّقاً بالبار، ارفع رجليك أمامك ثم أنزلهما ببطء.",
+  "equipment": "body only",
+  "images": [
+   "Hanging_Leg_Raise/0.webp",
+   "Hanging_Leg_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Flat_Bench_Lying_Leg_Raise",
+  "group": "abs",
+  "name": "Flat Bench Lying Leg Raise",
+  "nameAr": "رفع الأرجل مستلقياً",
+  "howTo": "Lying on a bench, raise your straight legs to vertical, then lower without touching down.",
+  "howToAr": "مستلقياً على البنش، ارفع رجليك المستقيمتين حتى العمودي ثم أنزلهما دون لمس.",
+  "equipment": "body only",
+  "images": [
+   "Flat_Bench_Lying_Leg_Raise/0.webp",
+   "Flat_Bench_Lying_Leg_Raise/1.webp"
+  ]
+ },
+ {
+  "id": "Reverse_Crunch",
+  "group": "abs",
+  "name": "Reverse Crunch",
+  "nameAr": "كرانش عكسي",
+  "howTo": "Lying down, bring your knees toward your chest lifting your hips off the floor.",
+  "howToAr": "مستلقياً، اجلب ركبتيك نحو صدرك مع رفع الحوض عن الأرض.",
+  "equipment": "body only",
+  "images": [
+   "Reverse_Crunch/0.webp",
+   "Reverse_Crunch/1.webp"
+  ]
+ },
+ {
+  "id": "Cable_Crunch",
+  "group": "abs",
+  "name": "Cable Crunch",
+  "nameAr": "كرانش بالكابل راكعاً",
+  "howTo": "Kneeling at a high pulley holding a rope, crunch down bringing your elbows to your thighs.",
+  "howToAr": "راكعاً أمام بكرة عالية ممسكاً الحبل، انحنِ بالبطن حتى يقترب المرفقان من الفخذين.",
+  "equipment": "cable",
+  "images": [
+   "Cable_Crunch/0.webp",
+   "Cable_Crunch/1.webp"
+  ]
+ },
+ {
+  "id": "Ab_Crunch_Machine",
+  "group": "abs",
+  "name": "Ab Crunch Machine",
+  "nameAr": "آلة البطن",
+  "howTo": "Seated at the machine, crunch forward against the resistance, then return slowly.",
+  "howToAr": "جالساً على الآلة، انحنِ للأمام ضد المقاومة ثم ارجع ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Ab_Crunch_Machine/0.webp",
+   "Ab_Crunch_Machine/1.webp"
+  ]
+ },
+ {
+  "id": "Russian_Twist",
+  "group": "abs",
+  "name": "Russian Twist",
+  "nameAr": "الالتواء الروسي",
+  "howTo": "Seated leaning back with feet up, rotate your torso side to side.",
+  "howToAr": "جالساً مائلاً للخلف والقدمان مرفوعتان، أدر جذعك يميناً ويساراً.",
+  "equipment": "body only",
+  "images": [
+   "Russian_Twist/0.webp",
+   "Russian_Twist/1.webp"
+  ]
+ },
+ {
+  "id": "Air_Bike",
+  "group": "abs",
+  "name": "Air Bike",
+  "nameAr": "كرانش الدراجة",
+  "howTo": "Lying down, bring opposite elbow to knee alternately in a pedalling motion.",
+  "howToAr": "مستلقياً، قرّب المرفق من الركبة المعاكسة بالتناوب كأنك تدوّس دراجة.",
+  "equipment": "body only",
+  "images": [
+   "Air_Bike/0.webp",
+   "Air_Bike/1.webp"
+  ]
+ },
+ {
+  "id": "Sit-Up",
+  "group": "abs",
+  "name": "Sit-Up",
+  "nameAr": "الجلوس من الاستلقاء (Sit-up)",
+  "howTo": "Feet anchored and knees bent, sit all the way up, then lower back down.",
+  "howToAr": "القدمان مثبتتان والركبتان مثنيتان، اجلس بالكامل ثم عُد للاستلقاء.",
+  "equipment": "body only",
+  "images": [
+   "Sit-Up/0.webp",
+   "Sit-Up/1.webp"
+  ]
+ },
+ {
+  "id": "Oblique_Crunches",
+  "group": "abs",
+  "name": "Oblique Crunches",
+  "nameAr": "كرانش جانبي",
+  "howTo": "Lying on your side, crunch your upper body toward your hip to work the obliques.",
+  "howToAr": "مستلقياً على جنبك، ارفع جذعك نحو الورك لتشغيل الجوانب.",
+  "equipment": "body only",
+  "images": [
+   "Oblique_Crunches/0.webp",
+   "Oblique_Crunches/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Ab_Rollout_-_On_Knees",
+  "group": "abs",
+  "name": "Barbell Ab Rollout - On Knees",
+  "nameAr": "دحرجة البطن (Ab wheel)",
+  "howTo": "On your knees, roll the bar or wheel forward as far as you can control, then pull back.",
+  "howToAr": "على ركبتيك، دحرج البار أو العجلة للأمام قدر ما تتحكّم ثم اسحب للخلف.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Ab_Rollout_-_On_Knees/0.webp",
+   "Barbell_Ab_Rollout_-_On_Knees/1.webp"
+  ]
+ },
+ {
+  "id": "Dead_Bug",
+  "group": "abs",
+  "name": "Dead Bug",
+  "nameAr": "ديد باغ",
+  "howTo": "Lying on your back, arms and legs up, lower the opposite arm and leg while keeping your back flat.",
+  "howToAr": "مستلقياً والذراعان والرجلان للأعلى، أنزل الذراع والرجل المعاكسة مع إبقاء الظهر ملتصقاً.",
+  "equipment": "body only",
+  "images": [
+   "Dead_Bug/0.webp",
+   "Dead_Bug/1.webp"
+  ]
+ },
+ {
+  "id": "Thigh_Adductor",
+  "group": "adductors",
+  "name": "Thigh Adductor",
+  "nameAr": "آلة ضمّ الفخذ (Adducteur)",
+  "howTo": "Seated at the machine, squeeze your knees together against the pads, then open slowly.",
+  "howToAr": "جالساً على الآلة، اضغط ركبتيك نحو بعض ضد المساند ثم افتح ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Thigh_Adductor/0.webp",
+   "Thigh_Adductor/1.webp"
+  ]
+ },
+ {
+  "id": "Cable_Hip_Adduction",
+  "group": "adductors",
+  "name": "Cable Hip Adduction",
+  "nameAr": "ضمّ الفخذ بالكابل",
+  "howTo": "Ankle strap on a low pulley, pull your leg across in front of the other.",
+  "howToAr": "حزام الكاحل على بكرة منخفضة، اسحب رجلك أمام الأخرى نحو الداخل.",
+  "equipment": "cable",
+  "images": [
+   "Cable_Hip_Adduction/0.webp",
+   "Cable_Hip_Adduction/1.webp"
+  ]
+ },
+ {
+  "id": "Plie_Dumbbell_Squat",
+  "group": "adductors",
+  "name": "Plie Dumbbell Squat",
+  "nameAr": "سكوات بليه بالدمبل",
+  "howTo": "Very wide stance with toes out, hold a dumbbell between your legs and squat down.",
+  "howToAr": "وقفة عريضة جداً والأصابع للخارج، امسك دمبل بين رجليك وانزل.",
+  "equipment": "dumbbell",
+  "images": [
+   "Plie_Dumbbell_Squat/0.webp",
+   "Plie_Dumbbell_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Wide_Stance_Barbell_Squat",
+  "group": "adductors",
+  "name": "Wide Stance Barbell Squat",
+  "nameAr": "سكوات بوقفة عريضة (سومو)",
+  "howTo": "Squat with feet wider than shoulders and knees pushed out.",
+  "howToAr": "سكوات والقدمان أعرض من الكتفين والركبتان مدفوعتان للخارج.",
+  "equipment": "barbell",
+  "images": [
+   "Wide_Stance_Barbell_Squat/0.webp",
+   "Wide_Stance_Barbell_Squat/1.webp"
+  ]
+ },
+ {
+  "id": "Barbell_Shrug",
+  "group": "traps",
+  "name": "Barbell Shrug",
+  "nameAr": "رفع الأكتاف بالبار (Shrug)",
+  "howTo": "Holding the bar at arm’s length, lift your shoulders toward your ears, pause, lower.",
+  "howToAr": "ممسكاً البار والذراعان ممدودتان، ارفع كتفيك نحو أذنيك، توقّف ثم أنزلهما.",
+  "equipment": "barbell",
+  "images": [
+   "Barbell_Shrug/0.webp",
+   "Barbell_Shrug/1.webp"
+  ]
+ },
+ {
+  "id": "Dumbbell_Shrug",
+  "group": "traps",
+  "name": "Dumbbell Shrug",
+  "nameAr": "رفع الأكتاف بالدمبل",
+  "howTo": "Dumbbells at your sides, shrug your shoulders straight up, then lower.",
+  "howToAr": "الدمبل بجانبك، ارفع كتفيك للأعلى مباشرة ثم أنزلهما.",
+  "equipment": "dumbbell",
+  "images": [
+   "Dumbbell_Shrug/0.webp",
+   "Dumbbell_Shrug/1.webp"
+  ]
+ },
+ {
+  "id": "Cable_Shrugs",
+  "group": "traps",
+  "name": "Cable Shrugs",
+  "nameAr": "رفع الأكتاف بالكابل",
+  "howTo": "Holding a bar on a low pulley, shrug your shoulders up and hold briefly.",
+  "howToAr": "ممسكاً البار على بكرة منخفضة، ارفع كتفيك واثبت لحظة.",
+  "equipment": "cable",
+  "images": [
+   "Cable_Shrugs/0.webp",
+   "Cable_Shrugs/1.webp"
+  ]
+ },
+ {
+  "id": "Leverage_Shrug",
+  "group": "traps",
+  "name": "Leverage Shrug",
+  "nameAr": "آلة رفع الأكتاف",
+  "howTo": "Using the shrug machine handles, lift your shoulders up and lower slowly.",
+  "howToAr": "بمقابض آلة رفع الأكتاف، ارفع كتفيك ثم أنزلهما ببطء.",
+  "equipment": "machine",
+  "images": [
+   "Leverage_Shrug/0.webp",
+   "Leverage_Shrug/1.webp"
+  ]
+ },
+ {
+  "id": "Standing_Dumbbell_Upright_Row",
+  "group": "traps",
+  "name": "Standing Dumbbell Upright Row",
+  "nameAr": "سحب عمودي بالدمبل",
+  "howTo": "Pull the dumbbells up along your body to chest height, elbows high.",
+  "howToAr": "اسحب الدمبل للأعلى بمحاذاة جسمك حتى الصدر والمرفقان مرتفعان.",
+  "equipment": "dumbbell",
+  "images": [
+   "Standing_Dumbbell_Upright_Row/0.webp",
+   "Standing_Dumbbell_Upright_Row/1.webp"
+  ]
+ }
+]

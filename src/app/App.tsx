@@ -30,8 +30,26 @@ function SetupScreen() {
   );
 }
 
+/** Shown when the profile can't be loaded — most often Firestore rules not published yet. */
+function ProfileError({ code }: { code: string }) {
+  const { t } = useTranslation();
+  const { retry, signOut } = useAuth();
+  const denied = code === 'permission-denied';
+  return (
+    <div className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-4 px-6 text-center">
+      <Logo size={56} />
+      <h1 className="text-xl font-bold">{denied ? t('setup.deniedTitle') : t('common.error')}</h1>
+      <p className="text-sm text-muted">{denied ? t('setup.deniedBody') : code}</p>
+      <div className="flex gap-2">
+        <button className="btn-primary" onClick={retry}>{t('common.retry')}</button>
+        <button className="btn-ghost" onClick={() => void signOut()}>{t('auth.signOut')}</button>
+      </div>
+    </div>
+  );
+}
+
 function Gate() {
-  const { user, loading } = useAuth();
+  const { user, loading, profile, profileError } = useAuth();
   if (loading) {
     return (
       <div className="grid min-h-dvh place-items-center">
@@ -40,6 +58,7 @@ function Gate() {
     );
   }
   if (!user) return <LoginPage />;
+  if (profileError || !profile) return <ProfileError code={profileError ?? 'profile-missing'} />;
 
   return (
     <Suspense fallback={<Spinner />}>

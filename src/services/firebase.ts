@@ -1,6 +1,7 @@
-import { initializeApp, type FirebaseApp } from 'firebase/app';
+import { getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import {
+  getFirestore,
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
@@ -24,12 +25,18 @@ let authInstance: Auth | undefined;
 let dbInstance: Firestore | undefined;
 
 if (firebaseConfigured) {
-  app = initializeApp(config);
+  // Reuse the existing app on dev hot-reload (initializeFirestore may only run once per app).
+  const existing = getApps()[0];
+  app = existing ?? initializeApp(config);
   authInstance = getAuth(app);
-  // Offline cache: reads come from IndexedDB and writes queue while offline.
-  dbInstance = initializeFirestore(app, {
-    localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
-  });
+  dbInstance = existing
+    ? getFirestore(app)
+    : initializeFirestore(app, {
+        // Optional fields (e.g. exercise notes) may be undefined deep inside arrays.
+        ignoreUndefinedProperties: true,
+        // Offline cache: reads come from IndexedDB and writes queue while offline.
+        localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+      });
 }
 
 export const auth = authInstance as Auth;
