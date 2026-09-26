@@ -11,7 +11,8 @@
     "test": "vitest run",
     "build:exercises": "node scripts/build-exercises.mjs",
     "build:icons": "node scripts/build-icons.mjs",
-    "preview:pwa": "vite build && vite preview --port 4174 --strictPort"
+    "preview:pwa": "vite build && vite preview --port 4174 --strictPort",
+    "deploy:rules": "npx firebase-tools deploy --only firestore:rules"
   },
   "engines": {
     "node": ">=20"
