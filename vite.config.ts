@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import { fileURLToPath, URL } from 'node:url';
 import type { IncomingMessage } from 'node:http';
 
@@ -70,7 +71,85 @@ function readBody(req: IncomingMessage): Promise<Buffer> {
 
 export default defineConfig(({ mode }) => {
   return {
-    plugins: [react(), tailwindcss(), netlifyFunctionsDev(mode)],
+    plugins: [react(), tailwindcss(), netlifyFunctionsDev(mode), pwa()],
     resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+    define: { __APP_VERSION__: JSON.stringify(process.env.npm_package_version ?? 'dev') },
+    build: {
+      // Firebase alone is ~790 kB minified (~200 kB gzip); it is split into its own cached chunk.
+      chunkSizeWarningLimit: 900,
+      rollupOptions: {
+        output: {
+          // Split big vendors so app updates don't re-download Firebase/Recharts.
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router'],
+            firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore'],
+            charts: ['recharts'],
+            i18n: ['i18next', 'react-i18next'],
+          },
+        },
+      },
+    },
   };
 });
+
+/**
+ * PWA: installable app + offline shell.
+ * - Precache: the built app (JS/CSS/HTML/icons) so the UI opens with no network.
+ * - Runtime cache: exercise illustrations (4 MB, cached as they're viewed) and Google Fonts.
+ * - Data works offline through Firestore's own IndexedDB cache; AI + barcode lookups need network.
+ */
+function pwa() {
+  return VitePWA({
+    registerType: 'autoUpdate',
+    includeAssets: ['icon.svg', 'apple-touch-icon.png'],
+    manifest: {
+      id: '/',
+      name: 'Zid — كول بالعقل، كبّر بالجد',
+      short_name: 'Zid',
+      description: 'Eat smart, grow hard. Log meals by photo, track workouts and progress.',
+      lang: 'en',
+      start_url: '/',
+      scope: '/',
+      display: 'standalone',
+      orientation: 'portrait',
+      background_color: '#0f1512',
+      theme_color: '#0f1512',
+      categories: ['health', 'fitness', 'food'],
+      icons: [
+        { src: '/pwa-192.png', sizes: '192x192', type: 'image/png' },
+        { src: '/pwa-512.png', sizes: '512x512', type: 'image/png' },
+        { src: '/pwa-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+      ],
+      shortcuts: [
+        { name: 'Add meal', short_name: 'Meal', url: '/meal/new', icons: [{ src: '/pwa-192.png', sizes: '192x192' }] },
+        { name: 'Start workout', short_name: 'Workout', url: '/train/session', icons: [{ src: '/pwa-192.png', sizes: '192x192' }] },
+      ],
+    },
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,svg,png,ico,webmanifest}'],
+      globIgnores: ['exercises/**'],
+      navigateFallback: '/index.html',
+      navigateFallbackDenylist: [/^\/\.netlify\//],
+      cleanupOutdatedCaches: true,
+      importScripts: ['/sw-notify.js'],
+      runtimeCaching: [
+        {
+          urlPattern: ({ url }) => url.pathname.startsWith('/exercises/'),
+          handler: 'CacheFirst',
+          options: { cacheName: 'exercise-images', expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 365 } },
+        },
+        {
+          urlPattern: ({ url }) => url.origin === 'https://fonts.googleapis.com',
+          handler: 'StaleWhileRevalidate',
+          options: { cacheName: 'google-fonts-css' },
+        },
+        {
+          urlPattern: ({ url }) => url.origin === 'https://fonts.gstatic.com',
+          handler: 'CacheFirst',
+          options: { cacheName: 'google-fonts', expiration: { maxEntries: 20, maxAgeSeconds: 60 * 60 * 24 * 365 } },
+        },
+      ],
+    },
+    devOptions: { enabled: false },
+  });
+}

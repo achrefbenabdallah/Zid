@@ -2,6 +2,8 @@ import { NavLink, Outlet, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Apple, Dumbbell, House, LineChart, Plus } from 'lucide-react';
 import { useOnline } from '@/lib/useOnline';
+import { useSession } from '@/features/auth/AuthProvider';
+import { useReminders } from '@/services/reminders';
 
 const TABS = [
   { to: '/', key: 'today', Icon: House, end: true },
@@ -15,6 +17,8 @@ export function AppShell() {
   const { t } = useTranslation();
   const nav = useNavigate();
   const online = useOnline();
+  const { uid, profile } = useSession();
+  useReminders(uid, profile.reminders);
 
   return (
     <div className="min-h-dvh pb-[calc(env(safe-area-inset-bottom)+5.5rem)]">
