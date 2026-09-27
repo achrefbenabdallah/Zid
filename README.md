@@ -18,7 +18,8 @@ A mobile-first, bilingual (English / Arabic with full RTL) web app for tracking 
 | **⚖️ Body** | Bodyweight + optional arm / chest / thigh / waist / body-fat, change vs previous entry, trend chart. |
 | **📈 Progress** | 7 / 30-day charts: calories vs goal, protein, calories burned; each chart has a table view. |
 | **🌍 EN / AR** | Full translations, RTL layout, Arabic plural rules, language synced to your account. |
-| **📱 PWA** | Install to home screen, offline app shell, offline data cache, meal/workout reminders, CSV/JSON export. |
+| **📱 PWA** | Install to home screen, offline app shell, offline data cache, meal/workout reminders, CSV export. |
+| **💾 Import / export** | Load historical data from a Zid JSON file (`zid_data_export.json`) with a preview and no duplicates; export a backup in the same format. |
 
 ## Tech stack
 
@@ -214,10 +215,34 @@ Defaults: **minutes per set 2.5** (set + typical rest), **MET light 3.5 / modera
 
 ---
 
+## Importing your data (`zid_data_export.json`)
+
+1. Sign in, open **Settings** (⚙️ top-right) → **Your data** → **Import data (JSON)** → **Choose file** → pick `zid_data_export.json`.
+2. The file is checked first. If anything is wrong you get a list naming each problem — e.g. `mealEntries[12].date should be a date like 2026-09-21 (got "21/09/2026")` — and **nothing is written**.
+3. Otherwise you see a preview: how many foods, meal entries, workout rows (and days) and weight logs the file has, and what will happen (new vs. already in your account). Goals and body profile from the file are **only applied if you tick them**; they're pre-ticked only if you never changed the defaults.
+4. Tap **Import**. Writes go in batches of 400 with a progress bar, then "Imported N records".
+
+**Re-importing is safe.** Every record is matched by content — a meal by date + meal type + food + grams (identical rows, such as two 90 g apples, stay two items), a weight log by date, a workout exercise by name + sets, a food by name — and otherwise gets a deterministic id. Importing the same file twice updates instead of duplicating; if a batch fails midway, just import again.
+
+How the file maps to the app:
+
+| File | App |
+|---|---|
+| `foods[]` (per 100 g) | **My Foods**. A food whose name already exists is kept as is. |
+| `mealEntries[]` | Meal log with the file's macros **as given** (not recomputed). French / English / Arabic labels map to the six meal types — `Petit-déj` → Breakfast, `Déjeuner` → Lunch, `Dîner (tacos)` → Dinner, `Collation` → Snack, `Avant séance` → Pre-workout, `Après séance` → Post-workout — and the original label is kept. |
+| `workouts[]` | Rows sharing a `date` become one session (`session` name and `notes` kept). Names are matched to the illustrated library (`Squat`, `Développé couché`, `Tirage vertical`… — see `src/data/exerciseAliases.ts`); numbered or generic ones (`Mollets 1`, `Dos (machine) 2`, `Abdominaux`) keep their own name. Per-set weights come from notes like `30/40/50/60 kg` when the count matches `reps`, otherwise every set uses `chargeKg`; a text weight such as `"léger"` is kept verbatim. Calories burned use the MET formula. |
+| `weightLogs[]` | Weight + body fat / measurements (`null` = not measured). |
+| `goals`, `profile` | Your settings — only when ticked in the preview. |
+
+**Export:** Settings → **Export backup (Zid JSON)** writes this same format (`schemaVersion: 1`), so a backup can be restored with Import — also into another account.
+
+---
+
 ## Troubleshooting
 
 | Symptom | Fix |
 |---|---|
+| Import says "Connect to the internet" | Import reads your current data from the server to avoid duplicates, so it needs a connection. |
 | "Database access denied" after sign-in | Firestore rules not published (or published to a non-default database) — setup step 1.6. |
 | Google sign-in: `auth/unauthorized-domain` | Add the site's domain in Firebase → Authentication → Settings → Authorized domains. |
 | "The AI is busy right now" | Gemini returned 503/timeout on every model. Retry in a moment, or add items manually. |

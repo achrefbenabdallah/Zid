@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, Download, Flame, Info, LogOut, Plus, Smartphone, Target, User, X } from 'lucide-react';
+import { Bell, Download, FileUp, Flame, Info, LogOut, Plus, Smartphone, Target, User, X } from 'lucide-react';
 import { Screen } from '@/components/Screen';
 import { LangSwitch } from '@/components/LangSwitch';
 import { NumberField } from '@/components/NumberField';
@@ -12,6 +12,7 @@ import { notificationState, notify, requestNotifications, type NotifyState } fro
 import { DEFAULT_GOALS, DEFAULT_MET } from '@/lib/defaults';
 import { isIos, isStandalone, useInstallPrompt } from '@/lib/useInstallPrompt';
 import type { Goals, MetSettings, ReminderSettings } from '@/types';
+import { ImportSheet } from './ImportSheet';
 
 function Section({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) {
   return (
@@ -64,6 +65,7 @@ export default function MorePage() {
 
   // ── Export & install ──
   const [exporting, setExporting] = useState<ExportKind | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
   const runExport = async (kind: ExportKind) => {
     setExporting(kind);
     try {
@@ -220,6 +222,9 @@ export default function MorePage() {
 
         {/* Data export */}
         <Section icon={<Download size={18} />} title={t('settings.data')}>
+          <button className="btn-ghost w-full justify-start" onClick={() => setImportOpen(true)}>
+            <FileUp size={16} /> {t('import.button')}
+          </button>
           <button className="btn-ghost w-full justify-start" disabled={!!exporting} onClick={() => void runExport('json')}>
             <Download size={16} /> {exporting === 'json' ? t('settings.exporting') : t('settings.exportJson')}
           </button>
@@ -240,6 +245,8 @@ export default function MorePage() {
             {t('app.name')} — <span lang="ar">كول بالعقل، كبّر بالجد</span> · {t('settings.version', { v: __APP_VERSION__ })}
           </p>
         </Section>
+
+        <ImportSheet open={importOpen} onClose={() => setImportOpen(false)} />
 
         <button className="btn-danger w-full py-3" onClick={() => void signOut()}>
           <LogOut size={16} className="flip-rtl" /> {t('auth.signOut')}

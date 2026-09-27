@@ -54,7 +54,7 @@ export default function TrainPage() {
         <ul className="space-y-2">
           {recent.data.map((w) => {
             const setCount = w.exercises.reduce((n, e) => n + e.sets.length, 0);
-            const names = w.exercises.map((e) => exerciseName(getExercise(e.exerciseId), i18n.language, e.exerciseId)).join(' · ');
+            const names = w.exercises.map((e) => exerciseName(getExercise(e.exerciseId), i18n.language, e.name ?? e.exerciseId)).join(' · ');
             return (
               <li key={w.id} className="card flex items-center gap-3 p-3">
                 <Link to={`/train/session/${w.id}`} className="flex min-w-0 flex-1 items-center gap-3">

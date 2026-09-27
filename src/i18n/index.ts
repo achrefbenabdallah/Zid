@@ -13,11 +13,12 @@ function readStored(): Lang {
   } catch {
     /* storage blocked */
   }
-  return navigator.language?.startsWith('ar') ? 'ar' : 'en';
+  return typeof navigator !== 'undefined' && navigator.language?.startsWith('ar') ? 'ar' : 'en';
 }
 
 /** Reflect the language on <html> so Tailwind logical utilities and fonts mirror for RTL. */
 function applyDocument(lang: Lang) {
+  if (typeof document === 'undefined') return; // tests / non-browser
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 }

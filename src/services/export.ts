@@ -1,9 +1,10 @@
 /**
- * Data export: one JSON with everything, or CSVs per dataset.
+ * Data export: a Zid JSON backup (importable, see lib/zidFormat.ts), or CSVs per dataset.
  * CSVs start with a UTF-8 BOM so Excel shows Arabic food names correctly.
  */
 import { exportAll } from './data';
-import { getExercise } from '@/data/exercises';
+import { exportZidFile } from './dataImport';
+import { exerciseDisplayName } from '@/lib/zidFormat';
 import { toDateKey } from '@/lib/dates';
 
 type Row = Record<string, string | number | undefined | null>;
@@ -34,7 +35,8 @@ export async function exportData(uid: string, kind: ExportKind) {
 
   switch (kind) {
     case 'json':
-      return download(`zid-export-${stamp}.json`, JSON.stringify({ exportedAt: new Date().toISOString(), ...all }, null, 2), 'application/json');
+      // Same format the importer accepts (Settings → Import) — a restorable backup.
+      return download(`zid_data_export-${stamp}.json`, JSON.stringify(await exportZidFile(uid), null, 2), 'application/json');
 
     case 'meals':
       return download(
@@ -65,7 +67,7 @@ export async function exportData(uid: string, kind: ExportKind) {
             w.exercises.flatMap((e) =>
               e.sets.map((s, i) => ({
                 date: w.date,
-                exercise: getExercise(e.exerciseId)?.name ?? e.exerciseId,
+                exercise: exerciseDisplayName(e),
                 set: i + 1,
                 kg: s.kg,
                 reps: s.reps,

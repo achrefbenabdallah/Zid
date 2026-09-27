@@ -10,6 +10,10 @@ export interface DraftSet {
 export interface DraftExercise {
   key: string;
   exerciseId: string;
+  /** Original/custom name (imported exercises). */
+  name?: string;
+  chargeKg?: number;
+  chargeLabel?: string;
   notes: string;
   sets: DraftSet[];
 }
@@ -20,6 +24,7 @@ export interface WorkoutDraft {
   startedAt: number;
   intensity: Intensity;
   notes: string;
+  session?: string;
   exercises: DraftExercise[];
   /** True when editing an already-saved workout (not stored as the resumable draft). */
   existing: boolean;
@@ -52,10 +57,14 @@ export function draftFromWorkout(w: Workout): WorkoutDraft {
     startedAt: w.startedAt,
     intensity: w.intensity,
     notes: w.notes ?? '',
+    session: w.session,
     existing: true,
     exercises: w.exercises.map((e, i) => ({
       key: `${e.exerciseId}-${i}`,
       exerciseId: e.exerciseId,
+      name: e.name,
+      chargeKg: e.chargeKg,
+      chargeLabel: e.chargeLabel,
       notes: e.notes ?? '',
       sets: e.sets.map((s) => ({ ...s, done: true })),
     })),

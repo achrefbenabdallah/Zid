@@ -105,7 +105,18 @@ export default function SessionPage() {
     setSaving(true);
     try {
       const exercises = draft.exercises
-        .map((e) => ({ exerciseId: e.exerciseId, sets: e.sets.filter((s) => s.reps > 0).map(({ kg, reps }) => ({ kg, reps })), notes: e.notes.trim() || undefined }))
+        .map((e) => {
+          const sets = e.sets.filter((s) => s.reps > 0).map(({ kg, reps }) => ({ kg, reps }));
+          return {
+            exerciseId: e.exerciseId,
+            name: e.name,
+            sets,
+            notes: e.notes.trim() || undefined,
+            // Imported weights stay only while they still describe the sets.
+            chargeKg: e.chargeKg !== undefined && sets.some((s) => s.kg === e.chargeKg) ? e.chargeKg : undefined,
+            chargeLabel: e.chargeLabel && sets.every((s) => s.kg === 0) ? e.chargeLabel : undefined,
+          };
+        })
         .filter((e) => e.sets.length);
       if (!exercises.length) {
         toast(t('workouts.emptySession'), 'error');
@@ -118,6 +129,7 @@ export default function SessionPage() {
         startedAt: draft.startedAt,
         intensity: draft.intensity,
         notes: draft.notes.trim() || undefined,
+        session: draft.session,
         exercises,
         caloriesBurned: kcal,
       };
@@ -187,7 +199,7 @@ export default function SessionPage() {
                   </button>
                 )}
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate font-semibold">{exerciseName(e, i18n.language, ex.exerciseId)}</h3>
+                  <h3 className="truncate font-semibold">{exerciseName(e, i18n.language, ex.name ?? ex.exerciseId)}</h3>
                   <p className="truncate text-xs text-muted">
                     {showLast ? (
                       <>

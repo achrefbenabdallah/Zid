@@ -43,6 +43,12 @@ export interface UserProfile {
   /** Latest logged bodyweight, cached here for calorie estimates. */
   bodyweightKg: number | null;
   createdAt: number;
+  /** Optional body profile (set by the user or a data import). */
+  sex?: 'male' | 'female';
+  age?: number;
+  heightCm?: number;
+  startWeightKg?: number;
+  startBodyFatPct?: number;
 }
 
 export type FoodSource = 'seed' | 'user' | 'ai' | 'off';
@@ -64,6 +70,8 @@ export interface MealEntry extends Macros {
   date: string;
   loggedAt: number;
   mealType: MealType;
+  /** Original meal label from an import (e.g. "Déjeuner"), kept for round-trip export. */
+  mealTypeLabel?: string;
   foodName: string;
   foodId?: string;
   grams: number;
@@ -86,7 +94,14 @@ export interface WorkoutSet {
 }
 
 export interface WorkoutExercise {
+  /** Library id, or "custom:<slug>" for an imported exercise that isn't in the library. */
   exerciseId: string;
+  /** Display name for custom exercises / the original imported name. */
+  name?: string;
+  /** Top/last set weight as given by an import. */
+  chargeKg?: number;
+  /** Non-numeric weight from an import (e.g. "léger"), kept verbatim for export. */
+  chargeLabel?: string;
   sets: WorkoutSet[];
   notes?: string;
 }
@@ -101,6 +116,8 @@ export interface Workout {
   intensity: Intensity;
   caloriesBurned: number;
   notes?: string;
+  /** Session label, e.g. "Jambes" / "Push". */
+  session?: string;
 }
 
 /** Denormalised per-exercise history for "last time" + PR detection. Doc id = exerciseId. */
