@@ -252,8 +252,9 @@ export function computeImportPlan(data: ZidData, profile: UserProfile, existing:
         ...(row.notes ? { notes: row.notes } : {}),
       };
       exercises.push(ex);
-      // Only real weights feed "last time"/PRs (a "léger" set has no usable kg).
-      if (libraryId && sets.some((st) => st.kg > 0)) recordRows.push({ date, ex });
+      // Only real weights feed "last time"/PRs (a "léger" set has no usable kg). Custom
+      // exercises get records too, keyed "custom:<slug>" like the ones you create in the app.
+      if (sets.some((st) => st.kg > 0)) recordRows.push({ date, ex });
     }
     if (!exercises.length) continue;
     const sessions = [...new Set(dayRows.map((r) => r.session).filter(Boolean))];

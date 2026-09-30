@@ -115,6 +115,9 @@ describe('import into an empty account', () => {
     expect(store.docs.get('days/2026-09-24')).toMatchObject({ trainingDay: true });
     // "léger" sets have no usable weight → only the pyramid session feeds the squat record.
     expect(store.docs.get('exerciseRecords/Barbell_Squat')).toMatchObject({ bestKg: 60, lastDate: '2026-09-24' });
+    // Custom (numbered) machines get "last time" too, under the same id as an app-created exercise.
+    expect(store.docs.get('exerciseRecords/custom:mollets-2')).toMatchObject({ lastSets: [{ kg: 50, reps: 10 }, { kg: 40, reps: 10 }] });
+    expect(store.docs.has('exerciseRecords/custom:dos-machine-1')).toBe(false); // "léger": no weights
     expect(store.docs.get('user')).toMatchObject({ bodyweightKg: 65.6 });
   });
 

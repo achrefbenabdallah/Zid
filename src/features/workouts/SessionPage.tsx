@@ -169,7 +169,13 @@ export default function SessionPage() {
             <span className="label">{t('workouts.rest')}</span>
             <div className="flex gap-1">
               {REST_PRESETS.map((s) => (
-                <button key={s} className={`flex-1 rounded-lg py-2.5 text-xs font-semibold ${restSeconds === s ? 'bg-ink text-bg' : 'bg-surface-2'}`} onClick={() => pickRest(s)}>
+                <button
+                  key={s}
+                  className={`flex-1 rounded-lg py-2.5 text-xs font-semibold ${restSeconds === s ? 'bg-ink text-bg' : 'bg-surface-2'}`}
+                  onClick={() => pickRest(s)}
+                  aria-pressed={restSeconds === s}
+                  aria-label={`${t('workouts.rest')} ${s < 120 ? s : s / 60} ${s < 120 ? t('common.sec') : t('common.min')}`}
+                >
                   <span className="num">{s < 120 ? s : s / 60}</span> {s < 120 ? t('common.sec') : t('common.min')}
                 </button>
               ))}
@@ -216,7 +222,12 @@ export default function SessionPage() {
                           </>
                         )}
                       </>
-                    ) : (
+                    ) : rec && rec.bestKg > 0 ? (
+                      // Editing the session that *is* the latest record: show the best, not "first time".
+                      <>
+                        {t('workouts.best')}: <span className="num">{rec.bestKg}×{rec.bestKgReps}</span>
+                      </>
+                    ) : rec ? null : (
                       t('workouts.firstTime')
                     )}
                   </p>
