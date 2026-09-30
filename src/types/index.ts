@@ -179,4 +179,19 @@ export interface Exercise {
   equipment: string;
   /** Image paths relative to the free-exercise-db images root. */
   images: string[];
+  /** User-created exercise: optional photo (data URL) instead of library images. */
+  custom?: boolean;
+  photo?: string;
+}
+
+/** users/{uid}/customExercises/{slug} — exercises the user added. Exercise id = "custom:<slug>". */
+export interface CustomExercise {
+  id: string;
+  name: string;
+  group: MuscleGroup;
+  equipment: string;
+  howTo?: string;
+  /** ~480 px JPEG/WebP data URL (kept small for Firestore). */
+  photo?: string;
+  createdAt: number;
 }

@@ -15,6 +15,7 @@ A mobile-first, bilingual (English / Arabic with full RTL) web app for tracking 
 | **🥙 My Foods** | Personal per-100 g food library, seeded with 56 foods incl. Tunisian staples (couscous, tabouna, mlawi, brik, lablabi, ojja, merguez, chamia, harissa, lben, makroudh…). Favorites for one-tap adding; AI-detected foods can be saved. |
 | **🎯 Daily goals** | Calories (different target on training days), protein, carbs, fat, water. Today screen shows rings/bars, remaining kcal, water tracker, streak, "copy yesterday". |
 | **🏋️ Workouts** | 130 illustrated exercises in 13 muscle groups (EN + AR names and how-to). Pyramid sets (weight × reps per set), notes, rest timer, "last time" + best, 🏆 PR detection, MET-based calories burned. |
+| **➕ Your own exercises** | Add exercises that aren't in the library (name, muscle group, equipment, optional how-to and photo from camera/gallery); they appear in the library and the workout picker, marked "Mine". |
 | **⚖️ Body** | Bodyweight + optional arm / chest / thigh / waist / body-fat, change vs previous entry, trend chart. |
 | **📈 Progress** | 7 / 30-day charts: calories vs goal, protein, calories burned; each chart has a table view. |
 | **🌍 EN / AR** | Full translations, RTL layout, Arabic plural rules, language synced to your account. |
@@ -124,7 +125,17 @@ git push -u origin main
 
 Firebase console → **Authentication → Settings → Authorized domains → Add domain** → `zid-xxxx.netlify.app` (and any custom domain). Without this, Google sign-in fails with `auth/unauthorized-domain`.
 
-### 4. Check it
+### 4. Google sign-in on iPhone / installed app (recommended)
+
+Safari (and Chrome in some modes) blocks the cross-site storage that Firebase's default sign-in handler on `<project>.firebaseapp.com` uses, which can break Google sign-in on iPhone and in the installed app. The fix is to serve the handler from your own domain — `netlify.toml` already proxies `/__/auth/*` to Firebase; you only switch it on:
+
+1. **Google Cloud Console** (https://console.cloud.google.com, select your Firebase project) → **APIs & Services → Credentials** → under *OAuth 2.0 Client IDs* open **Web client (auto created by Google Service)** → **Authorized redirect URIs → Add URI** → `https://zid-xxxx.netlify.app/__/auth/handler` → **Save**. (Add one per custom domain.)
+2. **Netlify** → Site configuration → Environment variables → set `VITE_FIREBASE_AUTH_DOMAIN` = `zid-xxxx.netlify.app` (your site's domain, no `https://`) → **Deploys → Trigger deploy**.
+3. While you're in the Cloud Console: **APIs & Services → OAuth consent screen** — the publishing status must be **In production**. In *Testing*, only listed test users can sign in with Google.
+
+Do step 1 before step 2 — otherwise Google shows `redirect_uri_mismatch`. Local development keeps using `…firebaseapp.com` from `.env.local`.
+
+### 5. Check it
 
 Open the site on your phone → create an account → add a meal by photo → log a workout. To install: Android/Chrome → menu → **Install app** (or Settings → *Install Zid*); iPhone/Safari → **Share → Add to Home Screen**.
 
@@ -242,6 +253,8 @@ How the file maps to the app:
 
 | Symptom | Fix |
 |---|---|
+| A friend can't sign in with Google | Most often the link was opened inside WhatsApp / Instagram / Messenger, where Google blocks sign-in — the login screen now detects this and offers *Open in Chrome* / *Copy link* (email + password works there). On iPhone or the installed app, set up "Google sign-in on iPhone / installed app". The error message now ends with the Firebase code, e.g. `(auth/unauthorized-domain)`, which tells you which fix applies. |
+| Saving a meal or a new exercise shows `(permission-denied)` | The Firestore rules in the console are older than `firestore.rules` — publish them again (setup step 1.6). |
 | Import says "Connect to the internet" | Import reads your current data from the server to avoid duplicates, so it needs a connection. |
 | "Database access denied" after sign-in | Firestore rules not published (or published to a non-default database) — setup step 1.6. |
 | Google sign-in: `auth/unauthorized-domain` | Add the site's domain in Firebase → Authentication → Settings → Authorized domains. |

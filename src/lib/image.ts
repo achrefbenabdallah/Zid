@@ -34,12 +34,12 @@ export const MAX_THUMB_CHARS = 200_000;
  * Safari can't *encode* WebP (canvas.toBlob silently returns a PNG that can be 10× bigger),
  * so fall back to JPEG, and shrink until it fits the Firestore limit with a safety margin.
  */
-export async function makeThumbnail(file: Blob): Promise<string | null> {
+export async function makeThumbnail(file: Blob, maxSide = 320): Promise<string | null> {
   const attempts: [number, number, string][] = [
-    [320, 0.7, 'image/webp'],
-    [320, 0.7, 'image/jpeg'],
-    [240, 0.6, 'image/jpeg'],
-    [160, 0.5, 'image/jpeg'],
+    [maxSide, 0.7, 'image/webp'],
+    [maxSide, 0.7, 'image/jpeg'],
+    [Math.round(maxSide * 0.75), 0.6, 'image/jpeg'],
+    [Math.round(maxSide * 0.5), 0.5, 'image/jpeg'],
   ];
   for (const [side, quality, type] of attempts) {
     const blob = await resizeImage(file, side, quality, type);

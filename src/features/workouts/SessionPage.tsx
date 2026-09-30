@@ -10,12 +10,13 @@ import { useToast } from '@/components/Toast';
 import { useSession } from '@/features/auth/AuthProvider';
 import { ref, saveWorkout, useExerciseRecords } from '@/services/data';
 import { estimateWorkoutCalories } from '@/services/calories';
-import { getExercise, exerciseName } from '@/data/exercises';
+import { exerciseName } from '@/data/exercises';
 import { formatSets, isPr, mergeRecord } from '@/lib/records';
 import { toDateKey } from '@/lib/dates';
 import { uid as newId } from '@/lib/macros';
-import type { ExerciseRecord, Intensity, Workout } from '@/types';
+import type { Exercise, ExerciseRecord, Intensity, Workout } from '@/types';
 import { ExerciseBrowser, ExerciseDetail, ExerciseThumb } from './ExerciseViews';
+import { useExerciseCatalog } from './useExerciseCatalog';
 import { RestTimer, REST_PRESETS } from './RestTimer';
 import { completedSetCount, draftFromWorkout, loadDraft, storeDraft, type DraftExercise, type WorkoutDraft } from './draft';
 
@@ -40,6 +41,7 @@ export default function SessionPage() {
   const toast = useToast();
   const records = useExerciseRecords();
   const recordMap = useMemo(() => new Map(records.data.map((r) => [r.exerciseId, r as ExerciseRecord])), [records.data]);
+  const catalog = useExerciseCatalog();
 
   const [draft, setDraft] = useState<WorkoutDraft | null>(() => (id ? null : (loadDraft(uid) ?? newDraft())));
   const [picker, setPicker] = useState(false);
@@ -72,11 +74,14 @@ export default function SessionPage() {
   const kcal = estimateWorkoutCalories(sets, profile.bodyweightKg, draft.intensity, profile.met);
   const selectedIds = new Set(draft.exercises.map((e) => e.exerciseId));
 
-  const addExercise = (exerciseId: string) => {
+  const addExercise = (ex: Exercise) => {
+    const exerciseId = ex.id;
     const last = recordMap.get(exerciseId)?.lastSets;
     // Pre-fill with last session's sets so beating them is one tap away.
     const sets = last?.length ? last.map((s) => ({ ...s, done: false })) : [{ kg: 0, reps: 0, done: false }];
-    patch((d) => ({ ...d, exercises: [...d.exercises, { key: newId(), exerciseId, notes: '', sets }] }));
+    // Your own exercises keep their name on the workout, so history reads well even if deleted later.
+    const name = ex.custom ? ex.name : undefined;
+    patch((d) => ({ ...d, exercises: [...d.exercises, { key: newId(), exerciseId, name, notes: '', sets }] }));
     setPicker(false);
   };
 
@@ -187,7 +192,7 @@ export default function SessionPage() {
       <div className="mt-4 space-y-3">
         {draft.exercises.length === 0 && <Empty>{t('workouts.emptySession')}</Empty>}
         {draft.exercises.map((ex) => {
-          const e = getExercise(ex.exerciseId);
+          const e = catalog.get(ex.exerciseId);
           const rec = recordMap.get(ex.exerciseId);
           const showLast = rec && !(draft.existing && rec.lastDate === draft.date);
           return (
@@ -311,9 +316,9 @@ export default function SessionPage() {
       <RestTimer endAt={restEnd} onChange={setRestEnd} />
 
       <Sheet open={picker} onClose={() => setPicker(false)} title={t('workouts.addExercise')}>
-        <ExerciseBrowser onPick={(e) => addExercise(e.id)} selectedIds={selectedIds} />
+        <ExerciseBrowser onPick={addExercise} selectedIds={selectedIds} />
       </Sheet>
-      <ExerciseDetail exercise={info ? (getExercise(info) ?? null) : null} onClose={() => setInfo(null)} />
+      <ExerciseDetail exercise={info ? (catalog.get(info) ?? null) : null} onClose={() => setInfo(null)} />
     </Screen>
   );
 }

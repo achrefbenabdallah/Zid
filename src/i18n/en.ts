@@ -268,6 +268,23 @@ export const en = {
     volume: 'Volume',
     moveUp: 'Move up',
     removeExercise: 'Remove exercise',
+    custom: {
+      new: 'New exercise',
+      edit: 'Edit exercise',
+      createNamed: 'Create “{{name}}”',
+      mine: 'Mine',
+      name: 'Name',
+      namePlaceholder: 'e.g. Chest press machine (gym 2)',
+      group: 'Muscle group',
+      equipment: 'Equipment',
+      photo: 'Photo (optional)',
+      removePhoto: 'Remove photo',
+      howTo: 'How to do it (optional)',
+      howToPlaceholder: 'Seat position, grip, what to feel…',
+      noHowTo: 'No instructions yet.',
+      exists: 'You already have an exercise with this name.',
+      deleteConfirm: 'Delete this exercise? Past workouts keep it.',
+    },
   },
 
   progress: {

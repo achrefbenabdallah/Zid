@@ -290,6 +290,23 @@ export const ar: Translation = {
     volume: 'الحجم',
     moveUp: 'طلّع للفوق',
     removeExercise: 'نحّي التمرين',
+    custom: {
+      new: 'تمرين جديد',
+      edit: 'عدّل التمرين',
+      createNamed: 'أنشئ «{{name}}»',
+      mine: 'متاعي',
+      name: 'الاسم',
+      namePlaceholder: 'مثلاً آلة الصدر (القاعة 2)',
+      group: 'العضلة',
+      equipment: 'المعدّات',
+      photo: 'صورة (اختياري)',
+      removePhoto: 'نحّي الصورة',
+      howTo: 'كيفاش تعملو (اختياري)',
+      howToPlaceholder: 'بلاصة الكرسي، القبضة، شنوّة لازمك تحسّ…',
+      noHowTo: 'ما فمّا حتى شرح.',
+      exists: 'عندك تمرين بنفس الاسم هذا.',
+      deleteConfirm: 'تحب تحذف التمرين هذا؟ الحصص القديمة تبقى بيه.',
+    },
   },
 
   progress: {

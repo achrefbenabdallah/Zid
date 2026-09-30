@@ -24,6 +24,7 @@ import { SEED_FOODS } from '@/data/seedFoods';
 import { DEFAULT_GOALS, DEFAULT_MET, DEFAULT_REMINDERS } from '@/lib/defaults';
 import { uid as newId } from '@/lib/macros';
 import type {
+  CustomExercise,
   DayLog,
   ExerciseRecord,
   Food,
@@ -50,6 +51,8 @@ export const ref = {
   weights: (u: string) => collection(db, 'users', u, 'weightLogs'),
   weight: (u: string, id: string) => doc(db, 'users', u, 'weightLogs', id),
   days: (u: string) => collection(db, 'users', u, 'days'),
+  customExercises: (u: string) => collection(db, 'users', u, 'customExercises'),
+  customExercise: (u: string, id: string) => doc(db, 'users', u, 'customExercises', id),
   day: (u: string, date: string) => doc(db, 'users', u, 'days', date),
 };
 
@@ -252,6 +255,21 @@ export async function saveWorkout(u: string, w: Workout, records: ExerciseRecord
 
 export function deleteWorkout(u: string, id: string) {
   return deleteDoc(ref.workout(u, id));
+}
+
+// ── Custom exercises ───────────────────────────────────────────────────────
+
+export function useCustomExercises() {
+  const { uid } = useAuth();
+  return useLiveQuery<CustomExercise>(() => (uid ? query(ref.customExercises(uid), orderBy('name')) : null), `custom-ex:${uid}`);
+}
+
+export function saveCustomExercise(u: string, ex: CustomExercise) {
+  return setDoc(ref.customExercise(u, ex.id), withoutId(ex));
+}
+
+export function deleteCustomExercise(u: string, id: string) {
+  return deleteDoc(ref.customExercise(u, id));
 }
 
 // ── Bodyweight ───────────────────────────────────────────────────────────────

@@ -1,27 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check, Info, Plus, Search } from 'lucide-react';
+import { Check, Dumbbell, Info, Pencil, Plus, Search } from 'lucide-react';
 import { Sheet } from '@/components/Sheet';
-import { EXERCISES, MUSCLE_GROUPS, exerciseImage, exerciseName } from '@/data/exercises';
+import { MUSCLE_GROUPS, exerciseImage, exerciseName } from '@/data/exercises';
 import { matchesQuery } from '@/lib/foods';
-import type { Exercise, MuscleGroup } from '@/types';
+import type { CustomExercise, Exercise, MuscleGroup } from '@/types';
+import { CUSTOM_PREFIX, customToExercise, useExerciseCatalog } from './useExerciseCatalog';
+import { CustomExerciseForm, type CustomDraft } from './CustomExerciseForm';
+import { useEquipmentLabel } from './equipment';
 
-const EQUIPMENT_KEY: Record<string, string> = {
-  barbell: 'barbell',
-  dumbbell: 'dumbbell',
-  cable: 'cable',
-  machine: 'machine',
-  'body only': 'bodyOnly',
-  'e-z curl bar': 'ezBar',
-  kettlebells: 'kettlebells',
-};
+export { useEquipmentLabel };
 
-export function useEquipmentLabel() {
-  const { t } = useTranslation();
-  return (eq: string) => t(`equipment.${EQUIPMENT_KEY[eq] ?? 'other'}`);
+function Placeholder({ className = '', size = 28 }: { className?: string; size?: number }) {
+  return (
+    <div className={`grid place-items-center bg-surface-2 text-muted ${className}`}>
+      <Dumbbell size={size} />
+    </div>
+  );
 }
 
-/** The dataset ships a start and end frame; flipping between them shows the movement. */
+/** Library exercises flip between a start and end frame; user exercises show their photo. */
 export function ExerciseAnimation({ exercise, className = '' }: { exercise: Exercise; className?: string }) {
   const [frame, setFrame] = useState(0);
   useEffect(() => {
@@ -29,6 +27,8 @@ export function ExerciseAnimation({ exercise, className = '' }: { exercise: Exer
     const id = setInterval(() => setFrame((f) => (f + 1) % exercise.images.length), 1000);
     return () => clearInterval(id);
   }, [exercise]);
+  if (exercise.photo) return <img src={exercise.photo} alt="" className={`bg-white object-cover ${className}`} />;
+  if (!exercise.images.length) return <Placeholder className={className} size={48} />;
   return (
     <div className={`relative overflow-hidden bg-white ${className}`}>
       {exercise.images.map((src, i) => (
@@ -45,9 +45,11 @@ export function ExerciseAnimation({ exercise, className = '' }: { exercise: Exer
 }
 
 export function ExerciseThumb({ exercise, size = 56 }: { exercise: Exercise; size?: number }) {
+  const src = exercise.photo ?? (exercise.images[0] ? exerciseImage(exercise.images[0]) : null);
+  if (!src) return <Placeholder className="shrink-0 rounded-xl" size={size * 0.45} />;
   return (
     <img
-      src={exerciseImage(exercise.images[0])}
+      src={src}
       alt=""
       loading="lazy"
       width={size}
@@ -58,39 +60,57 @@ export function ExerciseThumb({ exercise, size = 56 }: { exercise: Exercise; siz
   );
 }
 
-export function ExerciseDetail({ exercise, onClose, onAdd }: { exercise: Exercise | null; onClose: () => void; onAdd?: (e: Exercise) => void }) {
+export function ExerciseDetail({ exercise, onClose, onAdd, onEdit }: {
+  exercise: Exercise | null;
+  onClose: () => void;
+  onAdd?: (e: Exercise) => void;
+  onEdit?: (e: Exercise) => void;
+}) {
   const { t, i18n } = useTranslation();
   const eq = useEquipmentLabel();
   if (!exercise) return null;
   const ar = i18n.language === 'ar';
+  const howTo = ar ? exercise.howToAr : exercise.howTo;
   return (
     <Sheet
       open
       onClose={onClose}
       title={exerciseName(exercise, i18n.language)}
       footer={
-        onAdd && (
-          <button className="btn-primary w-full" onClick={() => onAdd(exercise)}>
-            <Plus size={18} /> {t('workouts.addExercise')}
-          </button>
+        (onAdd || (exercise.custom && onEdit)) && (
+          <div className="flex gap-2">
+            {exercise.custom && onEdit && (
+              <button className="btn-ghost" onClick={() => onEdit(exercise)}>
+                <Pencil size={16} /> {t('common.edit')}
+              </button>
+            )}
+            {onAdd && (
+              <button className="btn-primary flex-1" onClick={() => onAdd(exercise)}>
+                <Plus size={18} /> {t('workouts.addExercise')}
+              </button>
+            )}
+          </div>
         )
       }
     >
       <ExerciseAnimation exercise={exercise} className="aspect-[4/3] w-full rounded-2xl" />
       <div className="mt-3 flex flex-wrap gap-2">
+        {exercise.custom && <span className="chip-active">{t('workouts.custom.mine')}</span>}
         <span className="chip">{t(`muscles.${exercise.group}`)}</span>
         <span className="chip">{eq(exercise.equipment)}</span>
       </div>
       {/* English name kept for gym talk; LTR text, aligned with the RTL column. */}
-      {ar && <p className="mt-2 text-end text-sm text-muted" dir="ltr">{exercise.name}</p>}
+      {ar && !exercise.custom && <p className="mt-2 text-end text-sm text-muted" dir="ltr">{exercise.name}</p>}
       <h3 className="mt-4 mb-1 font-semibold">{t('workouts.howTo')}</h3>
-      <p className="leading-relaxed">{ar ? exercise.howToAr : exercise.howTo}</p>
-      <p className="mt-6 text-[11px] text-muted">{t('workouts.attribution')}</p>
+      <p className="leading-relaxed whitespace-pre-line" dir="auto">
+        {howTo || <span className="text-muted">{t('workouts.custom.noHowTo')}</span>}
+      </p>
+      {!exercise.custom && <p className="mt-6 text-[11px] text-muted">{t('workouts.attribution')}</p>}
     </Sheet>
   );
 }
 
-/** Group chips + search + list. Used by the library page and the "add exercise" picker. */
+/** Group chips + search + list (yours first). Used by the library page and the "add exercise" picker. */
 export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
   onPick: (e: Exercise) => void;
   selectedIds?: Set<string>;
@@ -98,20 +118,40 @@ export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
 }) {
   const { t, i18n } = useTranslation();
   const eq = useEquipmentLabel();
+  const catalog = useExerciseCatalog();
   const [group, setGroup] = useState<MuscleGroup | 'all'>(initialGroup ?? 'all');
   const [q, setQ] = useState('');
   const [info, setInfo] = useState<Exercise | null>(null);
+  const [form, setForm] = useState<CustomDraft | null>(null);
+  const picking = !!selectedIds;
 
   const list = useMemo(
-    () => EXERCISES.filter((e) => (group === 'all' || e.group === group) && matchesQuery({ name: e.name, nameAr: e.nameAr }, q)),
-    [group, q],
+    () => catalog.all.filter((e) => (group === 'all' || e.group === group) && matchesQuery({ name: e.name, nameAr: e.nameAr }, q)),
+    [catalog.all, group, q],
   );
+
+  const openNew = () => setForm({ name: q.trim(), group: group === 'all' ? undefined : group });
+  const openEdit = (e: Exercise) => {
+    const raw = catalog.rawCustom.find((c) => CUSTOM_PREFIX + c.id === e.id);
+    if (!raw) return;
+    setInfo(null);
+    setForm(raw);
+  };
+  const onSaved = (c: CustomExercise) => {
+    // Creating from the workout picker adds the new exercise to the session right away.
+    if (picking && !form?.id) onPick(customToExercise(c));
+  };
 
   return (
     <div>
-      <div className="relative">
-        <Search size={18} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-muted" />
-        <input type="search" className="input ps-10" placeholder={t('workouts.searchExercises')} value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <Search size={18} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-muted" />
+          <input type="search" className="input ps-10" placeholder={t('workouts.searchExercises')} value={q} onChange={(e) => setQ(e.target.value)} />
+        </div>
+        <button className="btn-primary shrink-0 px-3" onClick={openNew} aria-label={t('workouts.custom.new')}>
+          <Plus size={18} /> <span className="hidden sm:inline">{t('workouts.custom.new')}</span>
+        </button>
       </div>
       <div className="no-scrollbar -mx-1 mt-3 flex gap-2 overflow-x-auto px-1 pb-1">
         {(['all', ...MUSCLE_GROUPS] as const).map((g) => (
@@ -120,6 +160,14 @@ export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
           </button>
         ))}
       </div>
+
+      {list.length === 0 && (
+        <button className="card mt-3 flex w-full items-center gap-3 border-dashed text-start" onClick={openNew}>
+          <Plus size={20} className="text-brand" />
+          <span className="text-sm font-semibold">{q.trim() ? t('workouts.custom.createNamed', { name: q.trim() }) : t('workouts.custom.new')}</span>
+        </button>
+      )}
+
       <ul className="mt-3 space-y-2">
         {list.map((e) => {
           const selected = selectedIds?.has(e.id);
@@ -128,7 +176,10 @@ export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
               <button className="flex min-w-0 flex-1 items-center gap-3 text-start" onClick={() => onPick(e)}>
                 <ExerciseThumb exercise={e} />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-sm font-semibold">{exerciseName(e, i18n.language)}</span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="truncate text-sm font-semibold">{exerciseName(e, i18n.language)}</span>
+                    {e.custom && <span className="shrink-0 rounded-full bg-brand/15 px-1.5 py-0.5 text-[10px] font-bold text-brand">{t('workouts.custom.mine')}</span>}
+                  </span>
                   <span className="block text-xs text-muted">
                     {t(`muscles.${e.group}`)} · {eq(e.equipment)}
                   </span>
@@ -146,8 +197,9 @@ export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
       <ExerciseDetail
         exercise={info}
         onClose={() => setInfo(null)}
+        onEdit={openEdit}
         onAdd={
-          selectedIds
+          picking
             ? (e) => {
                 setInfo(null);
                 onPick(e);
@@ -155,6 +207,7 @@ export function ExerciseBrowser({ onPick, selectedIds, initialGroup }: {
             : undefined
         }
       />
+      <CustomExerciseForm initial={form} existing={catalog.rawCustom} onClose={() => setForm(null)} onSaved={onSaved} />
     </div>
   );
 }
