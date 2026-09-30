@@ -16,6 +16,23 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Firebase sign-in handler served from this site's own domain. Needed for Google sign-in in
+# Safari/iOS and installed PWAs, which block the cross-site storage the default
+# <project>.firebaseapp.com handler relies on. Inactive until VITE_FIREBASE_AUTH_DOMAIN is set
+# to this site's domain — see README "Google sign-in on iPhone / installed app".
+# Replace zidd-2d197 with your Firebase project id if you fork this.
+[[redirects]]
+  from = "/__/auth/*"
+  to = "https://zidd-2d197.firebaseapp.com/__/auth/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/__/firebase/*"
+  to = "https://zidd-2d197.firebaseapp.com/__/firebase/:splat"
+  status = 200
+  force = true
+
 # Single-page app: every route serves index.html (functions keep their own paths).
 [[redirects]]
   from = "/*"

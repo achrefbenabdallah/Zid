@@ -26,8 +26,26 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
   });
 }
 
-/** ~320 px WebP thumbnail as a data URL, typically 10–25 KB. */
-export async function makeThumbnail(file: Blob): Promise<string> {
-  const small = await resizeImage(file, 320, 0.7, 'image/webp');
-  return blobToDataUrl(small);
+/** Firestore rule limit for a stored thumbnail (see firestore.rules → mealPhotos). */
+export const MAX_THUMB_CHARS = 200_000;
+
+/**
+ * ~320 px thumbnail as a data URL, typically 10–25 KB.
+ * Safari can't *encode* WebP (canvas.toBlob silently returns a PNG that can be 10× bigger),
+ * so fall back to JPEG, and shrink until it fits the Firestore limit with a safety margin.
+ */
+export async function makeThumbnail(file: Blob): Promise<string | null> {
+  const attempts: [number, number, string][] = [
+    [320, 0.7, 'image/webp'],
+    [320, 0.7, 'image/jpeg'],
+    [240, 0.6, 'image/jpeg'],
+    [160, 0.5, 'image/jpeg'],
+  ];
+  for (const [side, quality, type] of attempts) {
+    const blob = await resizeImage(file, side, quality, type);
+    if (blob.type !== type) continue; // encoder not supported here
+    const url = await blobToDataUrl(blob);
+    if (url.length < MAX_THUMB_CHARS * 0.75) return url;
+  }
+  return null; // no photo rather than a rejected save
 }

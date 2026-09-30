@@ -41,6 +41,7 @@ export default function AddMealPage() {
   const [foodForm, setFoodForm] = useState<FoodDraft | null>(null);
   const [scanStatus, setScanStatus] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
   const galleryInput = useRef<HTMLInputElement>(null);
 
@@ -143,12 +144,11 @@ export default function AddMealPage() {
     const valid = items.filter((i) => i.name.trim() && i.grams > 0);
     if (!valid.length) return toast(t('meals.noItems'), 'error');
     setSaving(true);
-    try {
-      const groupId = newId();
-      const photoId = photo ? newId() : undefined;
-      const thumb = photo ? { id: photoId!, date, dataUrl: await makeThumbnail(photo.file) } : undefined;
-      const now = Date.now();
-      const entries: Omit<MealEntry, 'id'>[] = valid.map((i, idx) => ({
+    setSaveError(null);
+    const groupId = newId();
+    const now = Date.now();
+    const build = (photoId?: string): Omit<MealEntry, 'id'>[] =>
+      valid.map((i, idx) => ({
         date,
         loggedAt: now + idx,
         mealType,
@@ -159,10 +159,43 @@ export default function AddMealPage() {
         groupId,
         photoId,
       }));
-      // Don't await server ack: with the offline cache the write is queued and syncs later.
-      void addMealEntries(uid, entries, thumb).catch(() => toast(t('common.error'), 'error'));
-      toast(t('meals.saved'), 'success');
+    const leave = (message = t('meals.saved')) => {
+      toast(message, 'success');
       nav(date === toDateKey() ? '/' : `/?d=${date}`, { replace: true });
+    };
+    const report = (e: unknown) => toast(`${t('meals.saveFailed')} (${(e as { code?: string }).code ?? (e as Error).message})`, 'error');
+
+    try {
+      let dataUrl: string | null = null;
+      if (photo) dataUrl = await makeThumbnail(photo.file).catch(() => null); // a photo problem never blocks the meal
+      const photoId = dataUrl ? newId() : undefined;
+      const thumb = dataUrl ? { id: photoId!, date, dataUrl } : undefined;
+
+      // Offline: Firestore queues the write and syncs later — don't wait for the server.
+      if (!navigator.onLine) {
+        void addMealEntries(uid, build(photoId), thumb).catch(report);
+        return leave();
+      }
+      // Online: wait for the server so a rejected write is reported here, with the edits
+      // still on screen, instead of after we've navigated away.
+      const write = addMealEntries(uid, build(photoId), thumb);
+      const outcome = await Promise.race([write.then(() => 'ok' as const), new Promise<'slow'>((r) => setTimeout(() => r('slow'), 10_000))]).catch(
+        (e: unknown) => e,
+      );
+      if (outcome === 'ok') return leave();
+      if (outcome === 'slow') {
+        void write.catch(report); // slow network: it's queued; report only if it's later rejected
+        return leave();
+      }
+      if (thumb) {
+        // The batch is atomic, so nothing was written — retry once without the photo.
+        await addMealEntries(uid, build(undefined));
+        return leave(t('meals.savedNoPhoto'));
+      }
+      throw outcome;
+    } catch (e) {
+      console.error('Saving meal failed', e);
+      setSaveError(`${t('meals.saveFailed')} (${(e as { code?: string }).code ?? (e as Error).message})`);
     } finally {
       setSaving(false);
     }
@@ -260,7 +293,7 @@ export default function AddMealPage() {
               item={item}
               onChange={(next) => update(item.key, next)}
               onRemove={() => remove(item.key)}
-              onSaveToFoods={item.origin === 'ai' || item.origin === 'custom' ? () => void saveItemToFoods(item) : undefined}
+              onSaveToFoods={item.origin === 'ai' || item.origin === 'custom' ? () => void saveItemToFoods(item).catch((e: { code?: string; message?: string }) => toast(`${t('common.error')} (${e.code ?? e.message})`, 'error')) : undefined}
             />
           ))}
 
@@ -283,6 +316,11 @@ export default function AddMealPage() {
               <span className="text-sm font-semibold">{t('common.total')}</span>
               <MacroLine m={totals} />
             </div>
+            {saveError && (
+              <p className="mb-2 rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger" role="alert">
+                {saveError}
+              </p>
+            )}
             <button className="btn-primary w-full py-3 text-base" disabled={saving || items.length === 0} onClick={() => void save()}>
               {t('meals.saveMeal')}
             </button>

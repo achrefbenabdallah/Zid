@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   GoogleAuthProvider,
+  getRedirectResult,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -13,6 +14,7 @@ import { FirebaseError } from 'firebase/app';
 import { auth } from '@/services/firebase';
 import { Logo } from '@/components/Logo';
 import { LangSwitch } from '@/components/LangSwitch';
+import { InAppBrowserNotice } from './InAppBrowserNotice';
 
 function errorKey(e: unknown): string {
   const code = e instanceof FirebaseError ? e.code : '';
@@ -34,9 +36,30 @@ function errorKey(e: unknown): string {
       return 'auth.errors.network';
     case 'auth/too-many-requests':
       return 'auth.errors.tooMany';
+    case 'auth/unauthorized-domain':
+      return 'auth.errors.unauthorizedDomain';
+    case 'auth/operation-not-allowed':
+      return 'auth.errors.notEnabled';
+    case 'auth/web-storage-unsupported':
+      return 'auth.errors.storage';
+    case 'auth/account-exists-with-different-credential':
+      return 'auth.errors.otherMethod';
+    case 'auth/user-disabled':
+      return 'auth.errors.disabled';
+    case 'auth/popup-blocked':
+    case 'auth/operation-not-supported-in-this-environment':
+    case 'auth/internal-error':
+      return 'auth.errors.browser';
     default:
       return 'auth.errors.generic';
   }
+}
+
+/** Friendly message + the raw Firebase code, so a failing sign-in can be diagnosed. */
+function describe(e: unknown, t: (k: string) => string): string {
+  const code = e instanceof FirebaseError ? e.code : '';
+  const key = errorKey(e);
+  return code && !['auth.errors.invalid', 'auth.errors.popup'].includes(key) ? `${t(key)} (${code})` : t(key);
 }
 
 export function LoginPage() {
@@ -61,23 +84,36 @@ export function LoginPage() {
         if (name.trim()) await fbUpdateProfile(cred.user, { displayName: name.trim() });
       }
     } catch (err) {
-      setError(t(errorKey(err)));
+      setError(describe(err, t));
     } finally {
       setBusy(false);
     }
   };
 
+  // Errors from a redirect sign-in only surface here, after the page reloads.
+  useEffect(() => {
+    getRedirectResult(auth).catch((err) => setError(describe(err, t)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const google = async () => {
     setError(null);
     const provider = new GoogleAuthProvider();
+    // Always show the account chooser (shared phones, several Google accounts).
+    provider.setCustomParameters({ prompt: 'select_account' });
     try {
       await signInWithPopup(auth, provider);
     } catch (err) {
       // Installed PWAs / some mobile browsers block popups — fall back to a full redirect.
       if (err instanceof FirebaseError && (err.code === 'auth/popup-blocked' || err.code === 'auth/operation-not-supported-in-this-environment')) {
-        await signInWithRedirect(auth, provider);
+        try {
+          await signInWithRedirect(auth, provider);
+        } catch (err2) {
+          setError(describe(err2, t));
+        }
       } else {
-        setError(t(errorKey(err)));
+        console.error('Google sign-in failed', err);
+        setError(describe(err, t));
       }
     }
   };
@@ -105,6 +141,8 @@ export function LoginPage() {
         <p className="mt-1 text-lg font-semibold" dir="rtl" lang="ar">كول بالعقل، كبّر بالجد</p>
         <p className="text-sm text-muted" dir="ltr" lang="en">Eat smart, grow hard</p>
       </div>
+
+      <InAppBrowserNotice />
 
       <form onSubmit={submit} className="space-y-3">
         {mode === 'up' && (
