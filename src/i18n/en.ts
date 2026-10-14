@@ -463,7 +463,12 @@ export const en = {
     trend: 'Weight trend',
     perWeek: 'kg/week',
     maintenance: 'Maintenance',
-    unreliable: 'Maintenance comes out at {{tdee}} kcal, which is unusual — often some food isn’t logged, or weigh-ins are irregular. Keep logging full days.',
+    gainTooFast:
+      'Your weight rose faster ({{trend}} kg/week) than your eating can explain — the maths gives {{tdee}} kcal maintenance, below your resting metabolism (~{{bmr}} kcal). Early in a bulk most of that jump is water and glycogen (also creatine). Weigh in 2–3× a week for 2 more weeks before changing calories.',
+    lossTooFast:
+      'Your weight fell faster ({{trend}} kg/week) than your eating can explain (maths: {{tdee}} kcal maintenance, over 3× your resting metabolism ~{{bmr}} kcal) — usually water loss, illness, or meals logged twice. Keep logging before changing calories.',
+    lowConfidence: 'Low confidence: {{weighIns}} weigh-ins, {{days}} logged days',
+    staleWeighIn: 'Last weigh-in {{days}} days ago — weigh in again',
     onTarget: 'You’re on target — keep your current calories.',
     recommend: 'Eat {{rest}} kcal on rest days and {{training}} kcal on training days.',
     now: 'Now {{rest}} / {{training}}',

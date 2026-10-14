@@ -73,6 +73,36 @@ describe('adaptive calorie target', () => {
     expect(partial.status).toBe('unreliable');
   });
 
+  it('flags a start-of-bulk water jump instead of reporting an impossible maintenance', () => {
+    // Real case: +1.6 kg in the first week of a bulk, 3 weigh-ins, last one 9 days ago.
+    const intake =
+      '09-21:2983 09-22:2891 09-23:1832 09-24:2816 09-25:2979 09-26:2620 09-27:2275 09-28:2708 09-29:2652 09-30:1857 10-01:2824 10-02:2359 10-03:2671 10-04:2471 10-05:2966 10-06:2131 10-07:3310 10-08:1855 10-12:2906 10-13:3275'
+        .split(' ')
+        .map((s) => ({ date: `2026-${s.slice(0, 5)}`, kcal: Number(s.slice(6)) }));
+    const r = computeAdaptive({
+      ...base,
+      today: '2026-10-14',
+      intake,
+      weights: [
+        { date: '2026-09-21', kg: 65.6 },
+        { date: '2026-09-28', kg: 67.2 },
+        { date: '2026-10-05', kg: 67.7 },
+      ],
+      body: { sex: 'male', age: 31, heightCm: 182 },
+    });
+    if (r.status === 'needData') throw new Error('x');
+    expect(r.tdee).toBeLessThan(1700); // what the raw maths says…
+    expect(r.bmr).toBeGreaterThan(1650); // …is below even resting metabolism
+    expect(r).toMatchObject({ status: 'unreliable', reason: 'gainTooFast', lowConfidence: true, lastWeighInDaysAgo: 9 });
+  });
+
+  it('uses the body profile for the plausibility range when available', () => {
+    const r = computeAdaptive({ ...base, body: { sex: 'male', age: 31, heightCm: 182 } });
+    if (r.status === 'needData') throw new Error('x');
+    expect(r.status).toBe('ok');
+    expect(r.lowConfidence).toBe(false); // 28 logged days, 10 weigh-ins
+  });
+
   it('fits a straight line', () => {
     expect(linearTrend([{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 5 }], 3)).toEqual({ slope: 2, value: 7 });
   });

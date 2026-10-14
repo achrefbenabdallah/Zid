@@ -41,8 +41,9 @@ export function AdaptiveCard() {
       trainingDays: days.data.filter((d) => d.trainingDay).length,
       goalRateKgPerWeek: rate ?? 0,
       current: { kcal: g.kcal, kcalTraining: g.kcalTraining, protein: g.protein, fat: g.fat },
+      body: { sex: profile.sex, age: profile.age, heightCm: profile.heightCm },
     });
-  }, [meals.data, weights.data, days.data, rate, g, today]);
+  }, [meals.data, weights.data, days.data, rate, g, today, profile.sex, profile.age, profile.heightCm]);
 
   const setRate = (r: number) => void updateProfile(uid, { goalRateKgPerWeek: r });
 
@@ -132,15 +133,35 @@ export function AdaptiveCard() {
             </div>
             <div className="rounded-xl bg-surface-2 p-2">
               <dt className="text-[11px] text-muted">{t('adaptive.maintenance')}</dt>
-              <dd className="num text-lg font-bold">{fmt(result.tdee)}</dd>
+              {/* Never show an implausible number as if it were real. */}
+              <dd className="num text-lg font-bold">{result.status === 'ok' ? fmt(result.tdee) : '—'}</dd>
               <dd className="text-[11px] text-muted">{t('common.kcal')}</dd>
             </div>
           </dl>
 
+          {(result.lowConfidence || result.lastWeighInDaysAgo > 7) && (
+            <div className="flex flex-wrap gap-1.5">
+              {result.lowConfidence && (
+                <span className="rounded-full bg-carbs/15 px-2 py-0.5 text-[11px] font-semibold">
+                  {t('adaptive.lowConfidence', { weighIns: result.weighIns, days: result.loggedDays })}
+                </span>
+              )}
+              {result.lastWeighInDaysAgo > 7 && (
+                <span className="rounded-full bg-carbs/15 px-2 py-0.5 text-[11px] font-semibold">
+                  {t('adaptive.staleWeighIn', { days: result.lastWeighInDaysAgo })}
+                </span>
+              )}
+            </div>
+          )}
+
           {result.status === 'unreliable' ? (
             <p className="flex gap-2 rounded-xl bg-carbs/15 px-3 py-2 text-sm">
               <TriangleAlert size={16} className="mt-0.5 shrink-0 text-carbs" />
-              {t('adaptive.unreliable', { tdee: fmt(result.tdee) })}
+              {t(result.reason === 'lossTooFast' ? 'adaptive.lossTooFast' : 'adaptive.gainTooFast', {
+                trend: signed(result.trendKgPerWeek),
+                tdee: fmt(result.tdee),
+                bmr: fmt(result.bmr),
+              })}
             </p>
           ) : rate === undefined ? null : Math.abs(result.delta) < 50 ? (
             <p className="flex gap-2 rounded-xl bg-brand/10 px-3 py-2 text-sm">

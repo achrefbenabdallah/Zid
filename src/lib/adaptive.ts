@@ -26,7 +26,16 @@ export interface AdaptiveInput {
   /** Desired change in kg per week (+ gain, − loss, 0 maintain). */
   goalRateKgPerWeek: number;
   current: { kcal: number; kcalTraining: number; protein: number; fat: number };
+  /** Optional body profile: enables a personal plausibility check (resting metabolism). */
+  body?: { sex?: 'male' | 'female'; age?: number; heightCm?: number };
 }
+
+/** Why an estimate isn't trusted. */
+export type Unreliable =
+  /** Weight rose faster than intake explains (water/glycogen, creatine, unlogged food). */
+  | 'gainTooFast'
+  /** Weight fell faster than intake explains (water loss, illness, over-logging). */
+  | 'lossTooFast';
 
 export type AdaptiveResult =
   | {
@@ -37,6 +46,13 @@ export type AdaptiveResult =
     }
   | {
       status: 'ok' | 'unreliable';
+      reason?: Unreliable;
+      /** Few weigh-ins or logged days: trust the direction more than the number. */
+      lowConfidence: boolean;
+      /** Days since the most recent weigh-in in the window. */
+      lastWeighInDaysAgo: number;
+      /** Resting metabolism used for the plausibility range (Mifflin–St Jeor or per-kg fallback). */
+      bmr: number;
       loggedDays: number;
       weighIns: number;
       weightSpanDays: number;
@@ -57,6 +73,17 @@ const dayNum = (key: string) => {
   return Math.round(Date.UTC(y, m - 1, d) / 86_400_000);
 };
 const round = (n: number, step: number) => Math.round(n / step) * step;
+
+/** Mifflin–St Jeor resting metabolism; falls back to ~24 kcal/kg without a body profile. */
+export function restingMetabolism(kg: number, body?: AdaptiveInput['body']): number {
+  if (body?.heightCm && body.age && body.sex) {
+    return 10 * kg + 6.25 * body.heightCm - 5 * body.age + (body.sex === 'male' ? 5 : -161);
+  }
+  return 24 * kg;
+}
+
+export const MIN_CONFIDENT_WEIGH_INS = 6;
+export const MIN_CONFIDENT_LOGGED_DAYS = 14;
 
 /** Least-squares fit kg = a + b·day. Returns slope b (kg/day) and the fitted value at `atDay`. */
 export function linearTrend(points: { x: number; y: number }[], atX: number): { slope: number; value: number } {
@@ -106,11 +133,19 @@ export function computeAdaptive(input: AdaptiveInput): AdaptiveResult {
   const carbs = Math.max(0, Math.round((kcal - input.current.protein * 4 - input.current.fat * 9) / 4));
 
   const trendKgPerWeek = slope * 7;
-  // Implausible maintenance usually means partial logging (snacks not logged) or water swings.
-  const status = tdee < 1200 || tdee > 5500 ? 'unreliable' : 'ok';
+  // Real maintenance sits between ~1.2× (sedentary) and ~3× resting metabolism. Outside that,
+  // the scale moved for other reasons (water/glycogen at the start of a bulk, creatine, a missed
+  // log) and the number must not be shown as a recommendation.
+  const bmr = restingMetabolism(trendWeight, input.body);
+  const reason: Unreliable | undefined = tdee < bmr * 1.2 ? 'gainTooFast' : tdee > bmr * 3 ? 'lossTooFast' : undefined;
+  const lastWeighInDaysAgo = end - Math.max(...wDays);
 
   return {
-    status,
+    status: reason ? 'unreliable' : 'ok',
+    ...(reason ? { reason } : {}),
+    lowConfidence: weighIns < MIN_CONFIDENT_WEIGH_INS || loggedDays < MIN_CONFIDENT_LOGGED_DAYS,
+    lastWeighInDaysAgo,
+    bmr: Math.round(bmr),
     loggedDays,
     weighIns,
     weightSpanDays,
