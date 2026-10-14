@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { ChevronLeft, ChevronRight, Copy, Dumbbell, Flame, GlassWater, Minus, Plus } from 'lucide-react';
+import { BookmarkPlus, ChevronLeft, ChevronRight, Copy, Dumbbell, Flame, GlassWater, Minus, Plus } from 'lucide-react';
 import { Screen, Empty } from '@/components/Screen';
 import { MacroBar, ProgressRing } from '@/components/ProgressRing';
 import { useToast } from '@/components/Toast';
@@ -25,6 +25,7 @@ import { intlLocale } from '@/i18n';
 import { MEAL_TYPES, type MealEntry } from '@/types';
 import { MacroLine } from '@/features/meals/MacroLine';
 import { EntrySheet } from '@/features/meals/EntrySheet';
+import { SavedMealSheet, type SavedMealDraft } from '@/features/meals/SavedMealSheet';
 
 export function TodayPage() {
   const { t, i18n } = useTranslation();
@@ -35,6 +36,7 @@ export function TodayPage() {
   const date = params.get('d') ?? today;
   const isToday = date === today;
   const [editing, setEditing] = useState<MealEntry | null>(null);
+  const [saveAs, setSaveAs] = useState<SavedMealDraft | null>(null);
 
   const meals = useMealsOn(date);
   const day = useDayLog(date);
@@ -181,8 +183,22 @@ export function TodayPage() {
               <section key={type} className="card p-0">
                 <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
                   <h3 className="font-semibold">{t(`mealTypes.${type}`)}</h3>
-                  <span className="text-sm font-semibold text-muted">
+                  <span className="flex items-center gap-1 text-sm font-semibold text-muted">
                     <span className="num">{sub.kcal}</span> {t('common.kcal')}
+                    <button
+                      className="-me-2 rounded-full p-1.5 hover:bg-surface-2"
+                      aria-label={t('savedMeals.saveAs')}
+                      title={t('savedMeals.saveAs')}
+                      onClick={() =>
+                        setSaveAs({
+                          name: '',
+                          mealType: type,
+                          items: items.map((e) => ({ foodName: e.foodName, foodId: e.foodId, grams: e.grams, kcal: e.kcal, protein: e.protein, carbs: e.carbs, fat: e.fat })),
+                        })
+                      }
+                    >
+                      <BookmarkPlus size={16} />
+                    </button>
                   </span>
                 </div>
                 <ul>
@@ -211,6 +227,7 @@ export function TodayPage() {
       </Link>
 
       <EntrySheet entry={editing} onClose={() => setEditing(null)} />
+      <SavedMealSheet initial={saveAs} onClose={() => setSaveAs(null)} />
     </Screen>
   );
 }

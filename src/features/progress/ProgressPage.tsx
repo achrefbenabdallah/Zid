@@ -8,6 +8,7 @@ import { addDays, dayRange, formatDay, toDateKey } from '@/lib/dates';
 import { intlLocale } from '@/i18n';
 import { BodyPanel } from '@/features/body/BodyPanel';
 import { ChartCard, DailyBars, Stat, type DailyPoint } from './charts';
+import { AdaptiveCard } from './AdaptiveCard';
 
 type Tab = 'nutrition' | 'body';
 type Range = 7 | 30;
@@ -118,6 +119,7 @@ function NutritionPanel({ start, end, range }: { start: string; end: string; ran
 
   return (
     <div className="space-y-3">
+      <AdaptiveCard />
       <div className="grid grid-cols-2 gap-3">
         <Stat label={t('progress.avgKcal')} value={series.avgKcal.toLocaleString('en-US')} sub={`${t('progress.goal')} ${goals.kcal.toLocaleString('en-US')}`} />
         <Stat label={t('progress.avgProtein')} value={`${series.avgProtein} ${g}`} sub={`${t('progress.goal')} ${goals.protein} ${g}`} />

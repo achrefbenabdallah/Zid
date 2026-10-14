@@ -25,6 +25,7 @@ import { DEFAULT_GOALS, DEFAULT_MET, DEFAULT_REMINDERS } from '@/lib/defaults';
 import { uid as newId } from '@/lib/macros';
 import type {
   CustomExercise,
+  SavedMeal,
   WorkoutTemplate,
   DayLog,
   ExerciseRecord,
@@ -54,6 +55,8 @@ export const ref = {
   days: (u: string) => collection(db, 'users', u, 'days'),
   customExercises: (u: string) => collection(db, 'users', u, 'customExercises'),
   templates: (u: string) => collection(db, 'users', u, 'templates'),
+  savedMeals: (u: string) => collection(db, 'users', u, 'savedMeals'),
+  savedMeal: (u: string, id: string) => doc(db, 'users', u, 'savedMeals', id),
   template: (u: string, id: string) => doc(db, 'users', u, 'templates', id),
   customExercise: (u: string, id: string) => doc(db, 'users', u, 'customExercises', id),
   day: (u: string, date: string) => doc(db, 'users', u, 'days', date),
@@ -273,6 +276,25 @@ export function saveCustomExercise(u: string, ex: CustomExercise) {
 
 export function deleteCustomExercise(u: string, id: string) {
   return deleteDoc(ref.customExercise(u, id));
+}
+
+// ── Saved meals ────────────────────────────────────────────────────────────
+
+export function useSavedMeals() {
+  const { uid } = useAuth();
+  return useLiveQuery<SavedMeal>(() => (uid ? query(ref.savedMeals(uid), orderBy('name')) : null), `saved-meals:${uid}`);
+}
+
+export function saveSavedMeal(u: string, meal: SavedMeal) {
+  return setDoc(ref.savedMeal(u, meal.id), withoutId(meal));
+}
+
+export function deleteSavedMeal(u: string, id: string) {
+  return deleteDoc(ref.savedMeal(u, id));
+}
+
+export function markSavedMealUsed(u: string, id: string) {
+  return updateDoc(ref.savedMeal(u, id), { lastUsedAt: Date.now(), useCount: increment(1) });
 }
 
 // ── Workout templates ──────────────────────────────────────────────────────

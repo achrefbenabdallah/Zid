@@ -445,6 +445,46 @@ export const en = {
     apply: 'Apply',
   },
 
+  adaptive: {
+    title: 'Adaptive calorie target',
+    subtitle: 'Your real maintenance, from what you ate and how your weight moved over the last {{days}} days.',
+    goal: 'Your goal (per week)',
+    pickGoal: 'Pick your goal to get a recommendation.',
+    maintain: '±0',
+    rates: { m0_5: 'Cut', m0_25: 'Slow cut', '0': 'Maintain', '0_25': 'Lean bulk', '0_5': 'Bulk' },
+    needData: 'Not enough data yet',
+    loggedDays: 'Days with food logged',
+    weighIns: 'Weigh-ins',
+    weighSpan: 'Days between first and last weigh-in',
+    needDataTip: 'Log complete days and weigh yourself 2–3× a week (morning, after the toilet, before eating).',
+    avgIntake: 'Avg intake',
+    overDays_one: '{{count}} day',
+    overDays_other: '{{count}} days',
+    trend: 'Weight trend',
+    perWeek: 'kg/week',
+    maintenance: 'Maintenance',
+    unreliable: 'Maintenance comes out at {{tdee}} kcal, which is unusual — often some food isn’t logged, or weigh-ins are irregular. Keep logging full days.',
+    onTarget: 'You’re on target — keep your current calories.',
+    recommend: 'Eat {{rest}} kcal on rest days and {{training}} kcal on training days.',
+    now: 'Now {{rest}} / {{training}}',
+    carbsNote: 'carbs → {{carbs}} g (protein {{protein}} g and fat {{fat}} g unchanged)',
+    apply: 'Apply ({{delta}} kcal)',
+    applied: 'Goals updated.',
+    howItWorks: 'Maintenance = average intake − weight trend × 7,700 kcal/kg. Re-check weekly; it adapts as you log.',
+  },
+
+  savedMeals: {
+    title: 'Saved meals',
+    saveAs: 'Save as meal',
+    edit: 'Edit saved meal',
+    saved: 'Meal saved to your list.',
+    name: 'Name',
+    namePlaceholder: 'e.g. Mon ftour, Shake post-séance',
+    anyMeal: 'Any meal',
+    deleteConfirm: 'Delete this saved meal? Meals you already logged are kept.',
+    empty: 'No saved meals yet. When you log a meal you eat often, tap “Save as meal” — next time it’s one tap.',
+  },
+
 };
 
 /**

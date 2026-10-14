@@ -75,6 +75,17 @@ service cloud.firestore {
           && (!('photo' in request.resource.data) || (request.resource.data.photo is string && request.resource.data.photo.size() < 200000));
       }
 
+      // Meals you log often ("Mon ftour"): a name + portion items.
+      match /savedMeals/{mealId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 60
+          && request.resource.data.items is list
+          && request.resource.data.items.size() <= 30;
+      }
+
       // Reusable sessions ("Jambes", "Push"…) with per-exercise progression settings.
       match /templates/{templateId} {
         allow read, delete: if isOwner(uid);

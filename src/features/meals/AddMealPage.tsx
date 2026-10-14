@@ -1,24 +1,25 @@
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Camera, ImagePlus, Info, Plus, ScanBarcode, Search, Star } from 'lucide-react';
+import { Bookmark, BookmarkPlus, Camera, ImagePlus, Info, Plus, ScanBarcode, Search, Star } from 'lucide-react';
 import { Screen, Spinner } from '@/components/Screen';
 import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
 import { useSession } from '@/features/auth/AuthProvider';
-import { addMealEntries, findFoodByBarcode, saveFood, useFoods } from '@/services/data';
+import { addMealEntries, findFoodByBarcode, markSavedMealUsed, saveFood, useFoods, useSavedMeals } from '@/services/data';
 import { analyzeMealPhoto, VisionError } from '@/services/foodVision';
 import { lookupBarcode } from '@/services/openFoodFacts';
 import { makeThumbnail, resizeImage } from '@/lib/image';
 import { sumMacros, toPer100g, uid as newId } from '@/lib/macros';
 import { foodLabel, findByName, sortFoods } from '@/lib/foods';
 import { toDateKey } from '@/lib/dates';
-import { MEAL_TYPES, type Food, type MealEntry, type MealType } from '@/types';
+import { MEAL_TYPES, type Food, type MealEntry, type MealType, type SavedMeal } from '@/types';
 import { FoodList } from '@/features/foods/FoodList';
 import { FoodForm, type FoodDraft } from '@/features/foods/FoodForm';
 import { BarcodeScanner } from './BarcodeScanner';
 import { ReviewItem } from './ReviewItem';
 import { MacroLine } from './MacroLine';
+import { SavedMealSheet, type SavedMealDraft } from './SavedMealSheet';
 import { defaultMealType, itemMacros, type DraftItem } from './draft';
 
 type Step = 'choose' | 'analyzing' | 'scan' | 'review';
@@ -44,6 +45,40 @@ export default function AddMealPage() {
   const [saveError, setSaveError] = useState<string | null>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
   const galleryInput = useRef<HTMLInputElement>(null);
+
+  const savedMeals = useSavedMeals();
+  const [usedSavedMealId, setUsedSavedMealId] = useState<string | null>(null);
+  const [saveAs, setSaveAs] = useState<SavedMealDraft | null>(null);
+  // Most used first, then most recent, then alphabetical.
+  const sortedSaved = useMemo(
+    () =>
+      [...savedMeals.data].sort(
+        (a, b) => (b.useCount ?? 0) - (a.useCount ?? 0) || (b.lastUsedAt ?? 0) - (a.lastUsedAt ?? 0) || a.name.localeCompare(b.name),
+      ),
+    [savedMeals.data],
+  );
+
+  /** Load a saved meal into the review (grams still editable before saving). */
+  const addSavedMeal = (sm: SavedMeal) => {
+    setItems((xs) => [
+      ...xs,
+      ...sm.items.map(
+        (it): DraftItem => ({ key: newId(), name: it.foodName, grams: it.grams, per100g: toPer100g(it, it.grams), foodId: it.foodId, origin: 'food' }),
+      ),
+    ]);
+    if (sm.mealType) setMealType(sm.mealType);
+    setUsedSavedMealId(sm.id);
+    setStep('review');
+  };
+
+  const openSaveAs = () =>
+    setSaveAs({
+      name: '',
+      mealType,
+      items: items
+        .filter((i) => i.name.trim() && i.grams > 0)
+        .map((i) => ({ foodName: i.name.trim(), foodId: i.foodId, grams: Math.round(i.grams), ...itemMacros(i) })),
+    });
 
   const favorites = useMemo(() => sortFoods(foods.data.filter((f) => f.favorite), i18n.language).slice(0, 8), [foods.data, i18n.language]);
   const totals = useMemo(() => sumMacros(items.map(itemMacros)), [items]);
@@ -160,6 +195,7 @@ export default function AddMealPage() {
         photoId,
       }));
     const leave = (message = t('meals.saved')) => {
+      if (usedSavedMealId) void markSavedMealUsed(uid, usedSavedMealId).catch(() => undefined);
       toast(message, 'success');
       nav(date === toDateKey() ? '/' : `/?d=${date}`, { replace: true });
     };
@@ -232,6 +268,27 @@ export default function AddMealPage() {
             <ChooseTile Icon={ScanBarcode} label={t('meals.barcode')} onClick={() => setStep('scan')} />
           </div>
 
+          {sortedSaved.length > 0 && (
+            <section className="pt-3">
+              <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-muted">
+                <Bookmark size={14} /> {t('savedMeals.title')}
+              </h2>
+              <div className="space-y-2">
+                {sortedSaved.slice(0, 6).map((sm) => (
+                  <button key={sm.id} className="card flex w-full items-center gap-3 p-3 text-start" onClick={() => addSavedMeal(sm)}>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-semibold">{sm.name}</span>
+                      <span className="block truncate text-xs text-muted">{sm.items.map((it) => it.foodName).join(' · ')}</span>
+                    </span>
+                    <span className="num shrink-0 text-sm font-semibold">
+                      {sumMacros(sm.items).kcal} <span className="text-xs font-normal text-muted">{t('common.kcal')}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+
           {favorites.length > 0 && (
             <section className="pt-3">
               <h2 className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-muted">
@@ -297,6 +354,11 @@ export default function AddMealPage() {
             />
           ))}
 
+          {items.length > 0 && (
+            <button className="btn-ghost w-full" onClick={openSaveAs}>
+              <BookmarkPlus size={16} /> {t('savedMeals.saveAs')}
+            </button>
+          )}
           <div className="grid grid-cols-2 gap-2">
             <button className="btn-ghost" onClick={() => setPickerOpen(true)}>
               <Search size={16} /> {t('meals.pickFood')}
@@ -341,6 +403,7 @@ export default function AddMealPage() {
         </button>
       </Sheet>
 
+      <SavedMealSheet initial={saveAs} onClose={() => setSaveAs(null)} />
       <FoodForm initial={foodForm} onClose={() => setFoodForm(null)} onSaved={(f) => addFood(f, 100, f.barcode ? 'barcode' : 'food')} />
     </Screen>
   );

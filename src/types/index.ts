@@ -49,6 +49,8 @@ export interface UserProfile {
   heightCm?: number;
   startWeightKg?: number;
   startBodyFatPct?: number;
+  /** Adaptive calorie target: desired change in kg/week (+ gain, − loss). */
+  goalRateKgPerWeek?: number;
 }
 
 export type FoodSource = 'seed' | 'user' | 'ai' | 'off';
@@ -79,6 +81,24 @@ export interface MealEntry extends Macros {
   groupId: string;
   /** Id of the users/{uid}/mealPhotos doc holding the thumbnail, if any. */
   photoId?: string;
+}
+
+/** One item of a saved meal — portion macros as logged. */
+export interface SavedMealItem extends Macros {
+  foodName: string;
+  foodId?: string;
+  grams: number;
+}
+
+/** users/{uid}/savedMeals/{id} — a meal you log often ("Mon ftour"). */
+export interface SavedMeal {
+  id: string;
+  name: string;
+  mealType?: MealType;
+  items: SavedMealItem[];
+  createdAt: number;
+  lastUsedAt?: number;
+  useCount?: number;
 }
 
 export interface MealPhoto {
