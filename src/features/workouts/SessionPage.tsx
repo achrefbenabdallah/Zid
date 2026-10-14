@@ -70,7 +70,9 @@ export default function SessionPage() {
 
   // Starting from a template: wait for templates + "last time" records, then build the session.
   useEffect(() => {
-    if (!templateParam || templateStarted.current || templates.loading || records.loading) return;
+    // Wait for server-confirmed data (the offline cache may lack recent records), unless offline.
+    const ready = (q: { loading: boolean; synced: boolean }) => !q.loading && (q.synced || !navigator.onLine);
+    if (!templateParam || templateStarted.current || !ready(templates) || !ready(records)) return;
     templateStarted.current = true;
     const tpl = templates.data.find((x) => x.id === templateParam);
     const inProgress = loadDraft(uid);
@@ -79,7 +81,7 @@ export default function SessionPage() {
     // Don't silently throw away a workout in progress.
     if (inProgress?.exercises.length && !confirm(t('templates.replaceInProgress'))) return setDraft(inProgress);
     setDraft(draftFromTemplate(tpl, recordMap));
-  }, [templateParam, templates.loading, templates.data, records.loading, recordMap, uid, setParams, t]);
+  }, [templateParam, templates, records, recordMap, uid, setParams, t]);
 
   // Persist the resumable draft on every change (new sessions only).
   useEffect(() => {

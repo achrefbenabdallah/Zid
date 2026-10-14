@@ -6,21 +6,28 @@ import { onSnapshot, type DocumentReference, type Query } from 'firebase/firesto
  * `key` must change whenever the query changes (queries aren't referentially stable).
  */
 export function useLiveQuery<T extends { id: string }>(build: () => Query | null, key: string) {
-  const [state, setState] = useState<{ data: T[]; loading: boolean; error?: Error }>({ data: [], loading: true });
+  /**
+   * `loading` turns false on the first snapshot, which may come from the offline cache and be
+   * incomplete (docs created on another device). `synced` turns true once the server has
+   * confirmed the result — wait for it before building something from the data.
+   */
+  const [state, setState] = useState<{ data: T[]; loading: boolean; synced: boolean; error?: Error }>({ data: [], loading: true, synced: false });
 
   useEffect(() => {
     const q = build();
     if (!q) {
-      setState({ data: [], loading: false });
+      setState({ data: [], loading: false, synced: true });
       return;
     }
-    setState((s) => ({ ...s, loading: true }));
+    setState((s) => ({ ...s, loading: true, synced: false }));
     return onSnapshot(
       q,
-      (snap) => setState({ data: snap.docs.map((d) => ({ id: d.id, ...d.data() }) as T), loading: false }),
+      { includeMetadataChanges: true },
+      (snap) =>
+        setState({ data: snap.docs.map((d) => ({ id: d.id, ...d.data() }) as T), loading: false, synced: !snap.metadata.fromCache }),
       (error) => {
         console.error(`[firestore] query ${key} failed:`, error);
-        setState({ data: [], loading: false, error });
+        setState({ data: [], loading: false, synced: true, error });
       },
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
