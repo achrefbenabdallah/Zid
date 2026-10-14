@@ -25,6 +25,7 @@ import { DEFAULT_GOALS, DEFAULT_MET, DEFAULT_REMINDERS } from '@/lib/defaults';
 import { uid as newId } from '@/lib/macros';
 import type {
   CustomExercise,
+  WorkoutTemplate,
   DayLog,
   ExerciseRecord,
   Food,
@@ -52,6 +53,8 @@ export const ref = {
   weight: (u: string, id: string) => doc(db, 'users', u, 'weightLogs', id),
   days: (u: string) => collection(db, 'users', u, 'days'),
   customExercises: (u: string) => collection(db, 'users', u, 'customExercises'),
+  templates: (u: string) => collection(db, 'users', u, 'templates'),
+  template: (u: string, id: string) => doc(db, 'users', u, 'templates', id),
   customExercise: (u: string, id: string) => doc(db, 'users', u, 'customExercises', id),
   day: (u: string, date: string) => doc(db, 'users', u, 'days', date),
 };
@@ -270,6 +273,25 @@ export function saveCustomExercise(u: string, ex: CustomExercise) {
 
 export function deleteCustomExercise(u: string, id: string) {
   return deleteDoc(ref.customExercise(u, id));
+}
+
+// ── Workout templates ──────────────────────────────────────────────────────
+
+export function useTemplates() {
+  const { uid } = useAuth();
+  return useLiveQuery<WorkoutTemplate>(() => (uid ? query(ref.templates(uid), orderBy('name')) : null), `templates:${uid}`);
+}
+
+export function saveTemplate(u: string, tpl: WorkoutTemplate) {
+  return setDoc(ref.template(u, tpl.id), withoutId(tpl));
+}
+
+export function deleteTemplate(u: string, id: string) {
+  return deleteDoc(ref.template(u, id));
+}
+
+export function markTemplateUsed(u: string, id: string) {
+  return updateDoc(ref.template(u, id), { lastUsedAt: Date.now() });
 }
 
 // ── Bodyweight ───────────────────────────────────────────────────────────────

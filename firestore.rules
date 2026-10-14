@@ -75,6 +75,17 @@ service cloud.firestore {
           && (!('photo' in request.resource.data) || (request.resource.data.photo is string && request.resource.data.photo.size() < 200000));
       }
 
+      // Reusable sessions ("Jambes", "Push"…) with per-exercise progression settings.
+      match /templates/{templateId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid)
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 60
+          && request.resource.data.exercises is list
+          && request.resource.data.exercises.size() <= 30;
+      }
+
       match /exerciseRecords/{exerciseId} {
         allow read, write: if isOwner(uid);
       }

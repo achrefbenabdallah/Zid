@@ -419,6 +419,32 @@ export const en = {
     },
   },
 
+  templates: {
+    title: 'Templates',
+    new: 'New',
+    empty: 'No templates yet. Start a workout and tap the bookmark icon to save it as a template.',
+    fromHistory: 'Make a template from a past session',
+    saveAsTemplate: 'Save as template',
+    editTitle: 'Edit template',
+    saved: 'Template saved.',
+    name: 'Template name',
+    namePlaceholder: 'e.g. Jambes, Push, Pull',
+    sessionName: 'Session name',
+    sets: 'Sets',
+    repMin: 'Reps min',
+    repMax: 'Reps max',
+    step: 'Step kg',
+    progressionHint: 'Next-weight suggestions: when you reach “Reps max” on a set, it suggests + “Step kg” and back to “Reps min”; otherwise one more rep.',
+    moveUp: 'Move up',
+    moveDown: 'Move down',
+    deleteConfirm: 'Delete this template? Your past workouts are kept.',
+    lastUsed: 'last used {{date}}',
+    neverUsed: 'not used yet',
+    replaceInProgress: 'You have a workout in progress. Replace it with this template?',
+    next: 'Next',
+    apply: 'Apply',
+  },
+
 };
 
 /**

@@ -118,6 +118,29 @@ export interface Workout {
   notes?: string;
   /** Session label, e.g. "Jambes" / "Push". */
   session?: string;
+  /** Template the session was started from. */
+  templateId?: string;
+}
+
+/** One exercise in a template, with its progression settings. */
+export interface TemplateExercise {
+  exerciseId: string;
+  /** Name for custom/imported exercises. */
+  name?: string;
+  /** Sets to prefill when there is no history yet. */
+  sets: number;
+  repMin: number;
+  repMax: number;
+  stepKg: number;
+}
+
+/** users/{uid}/templates/{id} — a reusable session ("Jambes", "Push"…). */
+export interface WorkoutTemplate {
+  id: string;
+  name: string;
+  exercises: TemplateExercise[];
+  createdAt: number;
+  lastUsedAt?: number;
 }
 
 /** Denormalised per-exercise history for "last time" + PR detection. Doc id = exerciseId. */

@@ -1,22 +1,25 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getDoc } from 'firebase/firestore';
-import { Check, Flame, Plus, Timer, Trash2, Trophy, X } from 'lucide-react';
+import { BookmarkPlus, Check, Flame, Plus, Timer, Trash2, TrendingUp, Trophy, X } from 'lucide-react';
 import { Screen, Spinner, Empty } from '@/components/Screen';
 import { Sheet } from '@/components/Sheet';
 import { NumberField } from '@/components/NumberField';
 import { useToast } from '@/components/Toast';
 import { useSession } from '@/features/auth/AuthProvider';
-import { ref, saveWorkout, useExerciseRecords } from '@/services/data';
+import { markTemplateUsed, ref, saveWorkout, useExerciseRecords, useTemplates } from '@/services/data';
 import { estimateWorkoutCalories } from '@/services/calories';
 import { exerciseName } from '@/data/exercises';
 import { formatSets, isPr, mergeRecord } from '@/lib/records';
+import { isProgress, suggestNextSets } from '@/lib/progression';
 import { toDateKey } from '@/lib/dates';
 import { uid as newId } from '@/lib/macros';
-import type { Exercise, ExerciseRecord, Intensity, Workout } from '@/types';
+import type { Exercise, ExerciseRecord, Intensity, Workout, WorkoutTemplate } from '@/types';
 import { ExerciseBrowser, ExerciseDetail, ExerciseThumb } from './ExerciseViews';
 import { useExerciseCatalog } from './useExerciseCatalog';
+import { TemplateEditor } from './TemplateEditor';
+import { draftFromTemplate, progressionFor, templateFromExercises } from './templates';
 import { RestTimer, REST_PRESETS } from './RestTimer';
 import { completedSetCount, draftFromWorkout, loadDraft, storeDraft, type DraftExercise, type WorkoutDraft } from './draft';
 
@@ -42,8 +45,14 @@ export default function SessionPage() {
   const records = useExerciseRecords();
   const recordMap = useMemo(() => new Map(records.data.map((r) => [r.exerciseId, r as ExerciseRecord])), [records.data]);
   const catalog = useExerciseCatalog();
+  const equipmentOf = (exerciseId: string) => catalog.get(exerciseId)?.equipment;
+  const templates = useTemplates();
+  const [params, setParams] = useSearchParams();
+  const templateParam = id ? null : params.get('template');
 
-  const [draft, setDraft] = useState<WorkoutDraft | null>(() => (id ? null : (loadDraft(uid) ?? newDraft())));
+  const [draft, setDraft] = useState<WorkoutDraft | null>(() => (id || templateParam ? null : (loadDraft(uid) ?? newDraft())));
+  const [tplEdit, setTplEdit] = useState<{ tpl: WorkoutTemplate; isNew: boolean } | null>(null);
+  const templateStarted = useRef(false);
   const [picker, setPicker] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
   const [restEnd, setRestEnd] = useState<number | null>(null);
@@ -58,6 +67,19 @@ export default function SessionPage() {
       else nav('/train', { replace: true });
     });
   }, [id, uid, nav]);
+
+  // Starting from a template: wait for templates + "last time" records, then build the session.
+  useEffect(() => {
+    if (!templateParam || templateStarted.current || templates.loading || records.loading) return;
+    templateStarted.current = true;
+    const tpl = templates.data.find((x) => x.id === templateParam);
+    const inProgress = loadDraft(uid);
+    setParams({}, { replace: true });
+    if (!tpl) return setDraft(inProgress ?? newDraft());
+    // Don't silently throw away a workout in progress.
+    if (inProgress?.exercises.length && !confirm(t('templates.replaceInProgress'))) return setDraft(inProgress);
+    setDraft(draftFromTemplate(tpl, recordMap));
+  }, [templateParam, templates.loading, templates.data, records.loading, recordMap, uid, setParams, t]);
 
   // Persist the resumable draft on every change (new sessions only).
   useEffect(() => {
@@ -100,6 +122,27 @@ export default function SessionPage() {
     }
   };
 
+  const openSaveAsTemplate = () => {
+    const base = templateFromExercises(draft.session ?? '', draft.exercises, equipmentOf);
+    const source = templates.data.find((x) => x.id === draft.templateId);
+    // Keep the settings you chose in the template (or on this session) for exercises already there.
+    const exercises = base.exercises.map((te, i) => {
+      const fromSession = draft.exercises.filter((e) => e.sets.length)[i];
+      const fromTemplate = source?.exercises.find((x) => x.exerciseId === te.exerciseId);
+      return {
+        ...te,
+        repMin: fromSession?.repMin ?? fromTemplate?.repMin ?? te.repMin,
+        repMax: fromSession?.repMax ?? fromTemplate?.repMax ?? te.repMax,
+        stepKg: fromSession?.stepKg ?? fromTemplate?.stepKg ?? te.stepKg,
+      };
+    });
+    setTplEdit(
+      source
+        ? { tpl: { ...source, exercises }, isNew: false }
+        : { tpl: { ...base, exercises }, isNew: true },
+    );
+  };
+
   const discard = () => {
     if (!draft.existing && draft.exercises.length && !confirm(t('workouts.discardConfirm'))) return;
     if (!draft.existing) storeDraft(uid, null);
@@ -134,12 +177,14 @@ export default function SessionPage() {
         startedAt: draft.startedAt,
         intensity: draft.intensity,
         notes: draft.notes.trim() || undefined,
-        session: draft.session,
+        session: draft.session?.trim() || undefined,
+        templateId: draft.templateId,
         exercises,
         caloriesBurned: kcal,
       };
       const newRecords = exercises.map((e) => mergeRecord(e.exerciseId, draft.date, e.sets, recordMap.get(e.exerciseId)));
       void saveWorkout(uid, workout, newRecords).catch(() => toast(t('common.error'), 'error'));
+      if (draft.templateId && !draft.existing) void markTemplateUsed(uid, draft.templateId).catch(() => undefined);
       if (!draft.existing) storeDraft(uid, null);
       toast(prCount ? `${t('workouts.saved')} ${t('workouts.newPrs', { count: prCount })}` : t('workouts.saved'), 'success');
       nav('/train', { replace: true });
@@ -153,13 +198,31 @@ export default function SessionPage() {
       title={t('workouts.session')}
       back
       actions={
-        <button className="btn-ghost py-1.5 text-danger" onClick={discard}>
-          {t('workouts.discard')}
-        </button>
+        <>
+          {draft.exercises.length > 0 && (
+            <button className="rounded-full p-2 text-muted hover:bg-surface-2" onClick={openSaveAsTemplate} aria-label={t('templates.saveAsTemplate')} title={t('templates.saveAsTemplate')}>
+              <BookmarkPlus size={20} />
+            </button>
+          )}
+          <button className="btn-ghost py-1.5 text-danger" onClick={discard}>
+            {t('workouts.discard')}
+          </button>
+        </>
       }
     >
       {/* Session settings */}
       <div className="card space-y-3">
+        <div>
+          <label className="label" htmlFor="w-session">{t('templates.sessionName')}</label>
+          <input
+            id="w-session"
+            className="input"
+            maxLength={60}
+            placeholder={t('templates.namePlaceholder')}
+            value={draft.session ?? ''}
+            onChange={(e) => patch((d) => ({ ...d, session: e.target.value }))}
+          />
+        </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="label" htmlFor="w-date">{t('meals.date')}</label>
@@ -201,6 +264,11 @@ export default function SessionPage() {
           const e = catalog.get(ex.exerciseId);
           const rec = recordMap.get(ex.exerciseId);
           const showLast = rec && !(draft.existing && rec.lastDate === draft.date);
+          // Next-weight suggestion (double progression) — new sessions only, and only if it's
+          // different from both last time and what's already in the inputs.
+          const next = showLast && !draft.existing && rec.lastSets.length ? suggestNextSets(rec.lastSets, progressionFor(ex, rec, equipmentOf)) : [];
+          const applied = next.length > 0 && next.length === ex.sets.length && next.every((s, i) => ex.sets[i].kg === s.kg && ex.sets[i].reps === s.reps);
+          const showNext = next.length > 0 && isProgress(rec!.lastSets, next) && !applied;
           return (
             <section key={ex.key} className="card p-3">
               <div className="flex items-center gap-3">
@@ -240,6 +308,21 @@ export default function SessionPage() {
                   <Trash2 size={18} />
                 </button>
               </div>
+
+              {showNext && (
+                <div className="mt-2 flex items-center gap-2 rounded-xl bg-brand/10 px-3 py-2">
+                  <TrendingUp size={16} className="shrink-0 text-brand" />
+                  <p className="min-w-0 flex-1 text-xs">
+                    <span className="font-semibold text-brand">{t('templates.next')}:</span> <span className="num">{formatSets(next)}</span>
+                  </p>
+                  <button
+                    className="shrink-0 rounded-lg bg-brand px-2.5 py-1 text-xs font-semibold text-brand-ink"
+                    onClick={() => patchExercise(ex.key, (x) => ({ ...x, sets: next.map((s) => ({ ...s, done: false })) }))}
+                  >
+                    {t('templates.apply')}
+                  </button>
+                </div>
+              )}
 
               <div className="mt-3 grid grid-cols-[2rem_1fr_1fr_2.75rem_2rem] items-end gap-2 text-xs text-muted">
                 <span className="text-center">#</span>
@@ -330,6 +413,12 @@ export default function SessionPage() {
         <ExerciseBrowser onPick={addExercise} selectedIds={selectedIds} />
       </Sheet>
       <ExerciseDetail exercise={info ? (catalog.get(info) ?? null) : null} onClose={() => setInfo(null)} />
+      <TemplateEditor
+        initial={tplEdit?.tpl ?? null}
+        isNew={tplEdit?.isNew}
+        onClose={() => setTplEdit(null)}
+        onSaved={(tpl) => patch((d) => ({ ...d, templateId: tpl.id, session: d.session?.trim() ? d.session : tpl.name }))}
+      />
     </Screen>
   );
 }

@@ -14,6 +14,10 @@ export interface DraftExercise {
   name?: string;
   chargeKg?: number;
   chargeLabel?: string;
+  /** Progression settings (from a template); inferred from history when absent. */
+  repMin?: number;
+  repMax?: number;
+  stepKg?: number;
   notes: string;
   sets: DraftSet[];
 }
@@ -25,6 +29,7 @@ export interface WorkoutDraft {
   intensity: Intensity;
   notes: string;
   session?: string;
+  templateId?: string;
   exercises: DraftExercise[];
   /** True when editing an already-saved workout (not stored as the resumable draft). */
   existing: boolean;
@@ -58,6 +63,7 @@ export function draftFromWorkout(w: Workout): WorkoutDraft {
     intensity: w.intensity,
     notes: w.notes ?? '',
     session: w.session,
+    templateId: w.templateId,
     existing: true,
     exercises: w.exercises.map((e, i) => ({
       key: `${e.exerciseId}-${i}`,
