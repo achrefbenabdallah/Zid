@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getDoc } from 'firebase/firestore';
-import { BookmarkPlus, Check, Flame, Plus, Timer, Trash2, TrendingUp, Trophy, X } from 'lucide-react';
+import { BookmarkPlus, Calculator, Check, Flame, Plus, Timer, Trash2, TrendingUp, Trophy, X } from 'lucide-react';
 import { Screen, Spinner, Empty } from '@/components/Screen';
 import { Sheet } from '@/components/Sheet';
 import { NumberField } from '@/components/NumberField';
@@ -21,6 +21,7 @@ import { useExerciseCatalog } from './useExerciseCatalog';
 import { TemplateEditor } from './TemplateEditor';
 import { draftFromTemplate, progressionFor, templateFromExercises } from './templates';
 import { RestTimer, REST_PRESETS } from './RestTimer';
+import { PlateSheet, loadKindOf } from './PlateSheet';
 import { completedSetCount, draftFromWorkout, loadDraft, storeDraft, type DraftExercise, type WorkoutDraft } from './draft';
 
 const REST_KEY = 'zid.restSeconds';
@@ -58,6 +59,7 @@ export default function SessionPage() {
   const [restEnd, setRestEnd] = useState<number | null>(null);
   const [restSeconds, setRestSeconds] = useState(readRest);
   const [saving, setSaving] = useState(false);
+  const [plateFor, setPlateFor] = useState<DraftExercise | null>(null);
 
   // Editing a saved workout: load it once.
   useEffect(() => {
@@ -302,6 +304,16 @@ export default function SessionPage() {
                     )}
                   </p>
                 </div>
+                {loadKindOf(equipmentOf(ex.exerciseId) ?? 'other') !== 'none' && (
+                  <button
+                    className="rounded-lg p-2 text-muted hover:bg-surface-2"
+                    onClick={() => setPlateFor(ex)}
+                    aria-label={t('plates.title')}
+                    title={t('plates.title')}
+                  >
+                    <Calculator size={18} />
+                  </button>
+                )}
                 <button
                   className="rounded-lg p-2 text-muted hover:bg-danger/10 hover:text-danger"
                   onClick={() => patch((d) => ({ ...d, exercises: d.exercises.filter((x) => x.key !== ex.key) }))}
@@ -415,6 +427,13 @@ export default function SessionPage() {
         <ExerciseBrowser onPick={addExercise} selectedIds={selectedIds} />
       </Sheet>
       <ExerciseDetail exercise={info ? (catalog.get(info) ?? null) : null} onClose={() => setInfo(null)} />
+      <PlateSheet
+        open={!!plateFor}
+        onClose={() => setPlateFor(null)}
+        initialKg={plateFor ? Math.max(0, ...plateFor.sets.map((s) => s.kg)) : undefined}
+        equipment={plateFor ? (equipmentOf(plateFor.exerciseId) ?? 'other') : undefined}
+        title={plateFor ? exerciseName(catalog.get(plateFor.exerciseId), i18n.language, plateFor.name ?? plateFor.exerciseId) : undefined}
+      />
       <TemplateEditor
         initial={tplEdit?.tpl ?? null}
         isNew={tplEdit?.isNew}

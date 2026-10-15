@@ -355,6 +355,11 @@ export const en = {
     mealReminderBody: 'Snap a photo — it takes 10 seconds.',
     workoutReminder: 'Training time 💪',
     workoutReminderBody: 'Your session is waiting. Beat last time!',
+    weighInTime: 'Weigh-in reminder',
+    weighInDays: 'Weigh-in days',
+    weighInHint: '2–3 weigh-ins a week keep the adaptive calorie target accurate.',
+    weighInReminder: 'Weigh-in time ⚖️',
+    weighInReminderBody: 'Step on the scale before breakfast — it takes 5 seconds.',
     test: 'Send test',
     data: 'Your data',
     exportJson: 'Export backup (Zid JSON)',
@@ -488,6 +493,35 @@ export const en = {
     anyMeal: 'Any meal',
     deleteConfirm: 'Delete this saved meal? Meals you already logged are kept.',
     empty: 'No saved meals yet. When you log a meal you eat often, tap “Save as meal” — next time it’s one tap.',
+  },
+
+  protein: {
+    title: '{{grams}} g protein left — try:',
+    overBudget: 'over your calories',
+  },
+
+  weighIn: {
+    first: 'Log your first weigh-in',
+    today: 'It’s weigh-in day',
+    stale_one: 'Last weigh-in {{count}} day ago',
+    stale_other: 'Last weigh-in {{count}} days ago',
+    hint: 'Best in the morning, after the toilet, before eating.',
+    notToday: 'Not today',
+  },
+
+  plates: {
+    title: 'Plates & warm-up',
+    target: 'Target weight',
+    bar: 'Bar',
+    noBar: 'No bar',
+    perSide: 'Per side',
+    emptyBar: 'empty bar',
+    closest: 'Can’t load exactly with your plates — closest is {{kg}} kg.',
+    available: 'Plates in your gym',
+    warmup: 'Warm-up',
+    workSets: 'work sets',
+    noWarmup: 'Light enough to start with your work sets.',
+    warmupHint: 'Warm-up sets aren’t logged, so they don’t affect your records or next-weight suggestions.',
   },
 
 };

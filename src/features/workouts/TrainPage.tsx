@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { BookmarkPlus, BookOpen, ChevronRight, Dumbbell, Flame, ListChecks, Pencil, Play, Plus, Trash2 } from 'lucide-react';
+import { BookmarkPlus, BookOpen, Calculator, ChevronRight, Dumbbell, Flame, ListChecks, Pencil, Play, Plus, Trash2 } from 'lucide-react';
 import { Screen, Empty, Spinner } from '@/components/Screen';
 import { useSession } from '@/features/auth/AuthProvider';
 import { deleteWorkout, saveTemplate, useRecentWorkouts, useTemplates } from '@/services/data';
@@ -15,6 +15,7 @@ import { uid as newId } from '@/lib/macros';
 import { TemplateEditor } from './TemplateEditor';
 import { templateCandidates, templateFromExercises } from './templates';
 import { useExerciseCatalog } from './useExerciseCatalog';
+import { PlateSheet } from './PlateSheet';
 
 export default function TrainPage() {
   const { t, i18n } = useTranslation();
@@ -27,6 +28,7 @@ export default function TrainPage() {
   const catalog = useExerciseCatalog();
   const templates = useTemplates();
   const [editing, setEditing] = useState<{ tpl: WorkoutTemplate; isNew: boolean } | null>(null);
+  const [plates, setPlates] = useState(false);
   const candidates = useMemo(() => templateCandidates(recent.data, templates.data), [recent.data, templates.data]);
   // Most recently used first, then alphabetical.
   const sortedTemplates = useMemo(
@@ -48,7 +50,14 @@ export default function TrainPage() {
   };
 
   return (
-    <Screen title={t('nav.train')}>
+    <Screen
+      title={t('nav.train')}
+      actions={
+        <button className="rounded-full p-2 text-muted hover:bg-surface-2" onClick={() => setPlates(true)} aria-label={t('plates.title')} title={t('plates.title')}>
+          <Calculator size={20} />
+        </button>
+      }
+    >
       <button className="btn-accent w-full py-4 text-base" onClick={() => nav('/train/session')}>
         <Play size={20} /> {inProgress ? t('workouts.resume') : t('workouts.start')}
       </button>
@@ -161,6 +170,7 @@ export default function TrainPage() {
         </ul>
       )}
       <TemplateEditor initial={editing?.tpl ?? null} isNew={editing?.isNew} onClose={() => setEditing(null)} />
+      <PlateSheet open={plates} onClose={() => setPlates(false)} />
     </Screen>
   );
 }

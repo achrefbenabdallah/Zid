@@ -31,6 +31,8 @@ export interface ReminderSettings {
   /** "HH:MM" local times. */
   meals: string[];
   workout: string | null;
+  /** Morning weigh-in reminder on chosen weekdays (0 = Sunday … 6 = Saturday). Absent = off. */
+  weighIn?: { time: string; days: number[] } | null;
 }
 
 export interface UserProfile {

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Bookmark, BookmarkPlus, Camera, ImagePlus, Info, Plus, ScanBarcode, Search, Star } from 'lucide-react';
@@ -79,6 +79,25 @@ export default function AddMealPage() {
         .filter((i) => i.name.trim() && i.grams > 0)
         .map((i) => ({ foodName: i.name.trim(), foodId: i.foodId, grams: Math.round(i.grams), ...itemMacros(i) })),
     });
+
+  // Deep links from Today's protein ideas: /meal/new?food=<id>&g=<grams> or ?saved=<id>.
+  const prefillDone = useRef(false);
+  useEffect(() => {
+    if (prefillDone.current) return;
+    const foodId = params.get('food');
+    const savedId = params.get('saved');
+    if (!foodId && !savedId) return void (prefillDone.current = true);
+    if (foodId && !foods.loading) {
+      prefillDone.current = true;
+      const food = foods.data.find((f) => f.id === foodId);
+      if (food) addFood(food, Math.max(1, Number(params.get('g')) || 100));
+    } else if (savedId && !savedMeals.loading) {
+      prefillDone.current = true;
+      const sm = savedMeals.data.find((s) => s.id === savedId);
+      if (sm) addSavedMeal(sm);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [foods.loading, savedMeals.loading]);
 
   const favorites = useMemo(() => sortFoods(foods.data.filter((f) => f.favorite), i18n.language).slice(0, 8), [foods.data, i18n.language]);
   const totals = useMemo(() => sumMacros(items.map(itemMacros)), [items]);

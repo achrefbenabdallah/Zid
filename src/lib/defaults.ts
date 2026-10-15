@@ -21,4 +21,6 @@ export const DEFAULT_REMINDERS: ReminderSettings = {
   enabled: false,
   meals: ['08:00', '13:00', '20:00'],
   workout: '18:00',
+  // Mon / Wed / Fri: enough weigh-ins for the adaptive calorie target.
+  weighIn: { time: '07:30', days: [1, 3, 5] },
 };

@@ -26,6 +26,7 @@ import { MEAL_TYPES, type MealEntry } from '@/types';
 import { MacroLine } from '@/features/meals/MacroLine';
 import { EntrySheet } from '@/features/meals/EntrySheet';
 import { SavedMealSheet, type SavedMealDraft } from '@/features/meals/SavedMealSheet';
+import { ProteinIdeasCard, WeighInCard } from './TodayCards';
 
 export function TodayPage() {
   const { t, i18n } = useTranslation();
@@ -138,6 +139,11 @@ export function TodayPage() {
         <MacroBar label={t('macros.carbs')} value={totals.carbs} goal={goals.carbs} color="var(--carbs)" unit={t('common.g')} />
         <MacroBar label={t('macros.fat')} value={totals.fat} goal={goals.fat} color="var(--fat)" unit={t('common.g')} />
       </section>
+
+      {isToday && meals.data.length > 0 && (
+        <ProteinIdeasCard date={date} proteinLeft={goals.protein - totals.protein} kcalLeft={remaining} />
+      )}
+      {isToday && <WeighInCard today={today} />}
 
       {/* Water */}
       <section className="card mt-3">

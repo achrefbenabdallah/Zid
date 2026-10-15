@@ -1,5 +1,5 @@
 /**
- * Meal & workout reminders using local notifications.
+ * Meal, workout & weigh-in reminders using local notifications.
  *
  * Browsers only allow real background scheduling with a push server (FCM), which this app
  * doesn't run. So reminders are timers set while Zid is open; an installed PWA that stays
@@ -80,6 +80,19 @@ export function useReminders(uid: string, settings: ReminderSettings) {
               const done = await getDocs(query(ref.workouts(uid), where('date', '==', toDateKey())));
               if (done.empty && claim('workout'))
                 void notify(i18n.t('settings.workoutReminder'), i18n.t('settings.workoutReminderBody'), '/train/session');
+            }, ms),
+          );
+      }
+      const weighIn = settings.weighIn;
+      if (weighIn && weighIn.days.includes(now.getDay())) {
+        const ms = msUntil(weighIn.time, now);
+        if (ms > 0)
+          timers.push(
+            window.setTimeout(async () => {
+              // Skip if you already weighed in today.
+              const done = await getDocs(query(ref.weights(uid), where('date', '==', toDateKey())));
+              if (done.empty && claim('weighIn'))
+                void notify(i18n.t('settings.weighInReminder'), i18n.t('settings.weighInReminderBody'), '/');
             }, ms),
           );
       }

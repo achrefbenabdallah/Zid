@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Bell, Download, FileUp, Flame, Info, LogOut, Plus, Smartphone, Target, User, X } from 'lucide-react';
+import { Bell, Download, FileUp, Flame, Info, LogOut, Plus, Scale, Smartphone, Target, User, X } from 'lucide-react';
 import { Screen } from '@/components/Screen';
 import { LangSwitch } from '@/components/LangSwitch';
 import { NumberField } from '@/components/NumberField';
@@ -9,7 +9,8 @@ import { useAuth, useSession } from '@/features/auth/AuthProvider';
 import { updateProfile } from '@/services/data';
 import { exportData, type ExportKind } from '@/services/export';
 import { notificationState, notify, requestNotifications, type NotifyState } from '@/services/reminders';
-import { DEFAULT_GOALS, DEFAULT_MET } from '@/lib/defaults';
+import { DEFAULT_GOALS, DEFAULT_MET, DEFAULT_REMINDERS } from '@/lib/defaults';
+import { intlLocale } from '@/i18n';
 import { isIos, isStandalone, useInstallPrompt } from '@/lib/useInstallPrompt';
 import type { Goals, MetSettings, ReminderSettings } from '@/types';
 import { ImportSheet } from './ImportSheet';
@@ -23,6 +24,63 @@ function Section({ icon, title, children }: { icon: ReactNode; title: string; ch
       </h2>
       {children}
     </section>
+  );
+}
+
+/** Weekdays in the user's week order (Monday first), 0 = Sunday like Date.getDay(). */
+const WEEK = [1, 2, 3, 4, 5, 6, 0];
+
+function WeighInReminder({ value, onChange }: { value: ReminderSettings['weighIn']; onChange: (v: ReminderSettings['weighIn']) => void }) {
+  const { t } = useTranslation();
+  const on = !!value;
+  // 2026-10-04 was a Sunday: offset by weekday to get a localized short name.
+  const dayName = (d: number) => new Date(2026, 9, 4 + d).toLocaleDateString(intlLocale(), { weekday: 'short' });
+  return (
+    <div className="space-y-2 border-t border-line pt-3">
+      <label className="flex items-center justify-between gap-3">
+        <span className="flex items-center gap-2 text-sm font-medium">
+          <Scale size={16} className="text-muted" /> {t('settings.weighInTime')}
+        </span>
+        <button
+          role="switch"
+          aria-checked={on}
+          onClick={() => onChange(on ? null : DEFAULT_REMINDERS.weighIn!)}
+          className={`relative h-7 w-12 shrink-0 rounded-full transition ${on ? 'bg-brand' : 'bg-surface-2'}`}
+        >
+          <span className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-all ${on ? 'start-6' : 'start-1'}`} />
+        </button>
+      </label>
+      {value && (
+        <>
+          <input
+            type="time"
+            className="input num"
+            aria-label={t('settings.weighInTime')}
+            value={value.time}
+            onChange={(e) => e.target.value && onChange({ ...value, time: e.target.value })}
+          />
+          <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('settings.weighInDays')}>
+            {WEEK.map((d) => {
+              const active = value.days.includes(d);
+              return (
+                <button
+                  key={d}
+                  aria-pressed={active}
+                  className={active ? 'chip-active px-2.5' : 'chip px-2.5'}
+                  onClick={() => {
+                    const days = active ? value.days.filter((x) => x !== d) : [...value.days, d].sort();
+                    if (days.length) onChange({ ...value, days });
+                  }}
+                >
+                  {dayName(d)}
+                </button>
+              );
+            })}
+          </div>
+          <p className="text-xs text-muted">{t('settings.weighInHint')}</p>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -202,6 +260,7 @@ export default function MorePage() {
                   {t('settings.test')}
                 </button>
               </div>
+              <WeighInReminder value={reminders.weighIn ?? null} onChange={(weighIn) => setReminders({ ...reminders, weighIn })} />
             </>
           )}
         </Section>
