@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import { useSearchParams, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { BookmarkPlus, ChevronLeft, ChevronRight, Copy, Dumbbell, Flame, GlassWater, Minus, Plus } from 'lucide-react';
@@ -27,6 +27,9 @@ import { MacroLine } from '@/features/meals/MacroLine';
 import { EntrySheet } from '@/features/meals/EntrySheet';
 import { SavedMealSheet, type SavedMealDraft } from '@/features/meals/SavedMealSheet';
 import { ProteinIdeasCard, WeighInCard } from './TodayCards';
+
+// Loaded on demand: it pulls in the exercise library, which the first screen doesn't need.
+const WeeklySummaryCard = lazy(() => import('@/features/progress/WeeklySummaryCard').then((m) => ({ default: m.WeeklySummaryCard })));
 
 export function TodayPage() {
   const { t, i18n } = useTranslation();
@@ -144,6 +147,12 @@ export function TodayPage() {
         <ProteinIdeasCard date={date} proteinLeft={goals.protein - totals.protein} kcalLeft={remaining} />
       )}
       {isToday && <WeighInCard today={today} />}
+      {/* Monday–Thursday: last week's recap. */}
+      {isToday && new Date().getDay() >= 1 && new Date().getDay() <= 4 && (
+        <Suspense fallback={null}>
+          <WeeklySummaryCard variant="today" />
+        </Suspense>
+      )}
 
       {/* Water */}
       <section className="card mt-3">

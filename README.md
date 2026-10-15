@@ -90,7 +90,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173. The dev server also serves the Gemini function at `/.netlify/functions/analyze-meal` (no Netlify CLI needed) and re-reads `.env.local` on every call.
+Open http://localhost:5173. The dev server also serves the Gemini functions at `/.netlify/functions/*` (no Netlify CLI needed) and re-reads `.env.local` on every call.
 
 Other scripts:
 
@@ -149,7 +149,10 @@ Every `git push` to `main` redeploys automatically. If you change `firestore.rul
 
 ```
 zid/
-├─ netlify/functions/analyze-meal.ts   # Gemini proxy: verifies Firebase ID token, model fallback, 9 s budget
+├─ netlify/lib/gemini.ts               # shared: Firebase ID token check, Gemini model fallback, 9 s budget
+├─ netlify/functions/analyze-meal.ts   # photo → food items
+├─ netlify/functions/describe-meal.ts  # text / dictation ("2 œufs, une tabouna…") → the same food items
+├─ netlify/functions/weekly-summary.ts # weekly totals → AI recap (headline, wins, focus, tip)
 ├─ public/                             # icons, sw-notify.js, exercises/<id>/{0,1}.webp
 ├─ scripts/                            # build-exercises.mjs (+ curation list), build-icons.mjs
 ├─ src/
@@ -188,6 +191,7 @@ Everything lives under the signed-in user's document, so one rule (`request.auth
 | `users/{uid}/exerciseRecords/{exerciseId}` | last session's sets + best weight / best estimated 1RM → instant "last time" and PRs |
 | `users/{uid}/weightLogs/{id}` | `date`, `kg`, optional `arm/chest/thigh/waist/bodyFat` |
 | `users/{uid}/days/{date}` | `waterMl`, `trainingDay`, `mealCount` (drives streaks) |
+| `users/{uid}/summaries/{weekStart}` | AI weekly recap (Monday date as id): `headline`, `wins`, `focus`, `tip`, `lang` — generated once per week on request |
 
 Design choices: sets are embedded in the workout document (one read per session, natural pyramid sets); daily totals and charts are computed on the client from date-range queries (no aggregates to drift); the exercise library ships as static JSON (no reads, works offline). No composite indexes are required.
 
@@ -199,6 +203,8 @@ Design choices: sets are embedded in the workout document (one read per session,
 ### Food photo analysis
 
 `src/services/foodVision.ts` → `POST /.netlify/functions/analyze-meal` with a ~1024 px JPEG → Gemini with a JSON response schema and a Tunisian-aware prompt → `[{ name, nameAr, grams, kcal, protein, carbs, fat, confidence }]`. The review screen keeps per-100 g values so changing grams rescales the macros.
+
+**Describe a meal** uses `describe-meal`: the same response shape from a typed or dictated description (Web Speech API where the browser supports it). **Weekly recap** uses `weekly-summary`: the app computes the week's aggregates on the phone (`src/lib/weekly.ts`) and sends only those — never meals, photos or notes.
 
 **Switching provider (Claude / OpenAI):** rewrite `callGemini` in the function (or add a new function) and keep the same response shape; `foodVision.ts` is the only client file that references the endpoint.
 

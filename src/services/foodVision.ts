@@ -1,7 +1,7 @@
 /**
- * Food photo analysis — the ONE place that knows which vision provider is used.
+ * Food photo / text analysis — the ONE place that knows which AI provider is used.
  *
- * Today: Gemini, via the Netlify Function `analyze-meal` (keeps the API key server-side).
+ * Today: Gemini, via the Netlify Functions `analyze-meal` and `describe-meal` (API key stays server-side).
  * To switch to Claude / OpenAI: change the function (or add a new one) and keep the
  * `DetectedFood[]` contract below. Nothing else in the app needs to change.
  */
@@ -21,26 +21,36 @@ export interface DetectedFood {
   confidence: number;
 }
 
-const ENDPOINT = '/.netlify/functions/analyze-meal';
-
 export class VisionError extends Error {
   constructor(message: string, readonly status?: number) {
     super(message);
   }
 }
 
-export async function analyzeMealPhoto(image: Blob): Promise<DetectedFood[]> {
+/** POST to one of our Gemini functions with the user's Firebase ID token. */
+export async function callAiFunction<T>(name: string, payload: unknown): Promise<T> {
   const token = await auth.currentUser?.getIdToken();
   if (!token) throw new VisionError('Not signed in', 401);
-
-  const res = await fetch(ENDPOINT, {
+  const res = await fetch(`/.netlify/functions/${name}`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
-    body: JSON.stringify({ image: await blobToBase64(image), mimeType: image.type || 'image/jpeg' }),
+    body: JSON.stringify(payload),
   });
-  const body = (await res.json().catch(() => ({}))) as { items?: unknown[]; error?: string };
+  const body = (await res.json().catch(() => ({}))) as T & { error?: string };
   if (!res.ok) throw new VisionError(body.error ?? `HTTP ${res.status}`, res.status);
-  return (body.items ?? []).map(sanitize).filter((x): x is DetectedFood => x !== null);
+  return body;
+}
+
+const toItems = (body: { items?: unknown[] }) => (body.items ?? []).map(sanitize).filter((x): x is DetectedFood => x !== null);
+
+export async function analyzeMealPhoto(image: Blob): Promise<DetectedFood[]> {
+  const payload = { image: await blobToBase64(image), mimeType: image.type || 'image/jpeg' };
+  return toItems(await callAiFunction<{ items?: unknown[] }>('analyze-meal', payload));
+}
+
+/** "2 œufs, une tabouna, harissa" → the same items a photo gives. */
+export async function describeMeal(text: string): Promise<DetectedFood[]> {
+  return toItems(await callAiFunction<{ items?: unknown[] }>('describe-meal', { text }));
 }
 
 /** Guard against odd model output: coerce numbers, drop empty rows. */

@@ -35,6 +35,7 @@ import type {
   MealPhoto,
   UserProfile,
   WeightLog,
+  WeeklySummary,
   Workout,
 } from '@/types';
 
@@ -60,6 +61,7 @@ export const ref = {
   template: (u: string, id: string) => doc(db, 'users', u, 'templates', id),
   customExercise: (u: string, id: string) => doc(db, 'users', u, 'customExercises', id),
   day: (u: string, date: string) => doc(db, 'users', u, 'days', date),
+  summary: (u: string, weekStart: string) => doc(db, 'users', u, 'summaries', weekStart),
 };
 
 /** Firestore rejects `undefined` field values — strip them before writing. */
@@ -320,6 +322,17 @@ export function deleteTemplate(u: string, id: string) {
 
 export function markTemplateUsed(u: string, id: string) {
   return updateDoc(ref.template(u, id), { lastUsedAt: Date.now() });
+}
+
+// ── Weekly AI summaries ──────────────────────────────────────────────────
+
+export function useWeeklySummary(weekStart: string) {
+  const { uid } = useAuth();
+  return useLiveDoc<WeeklySummary>(() => (uid ? ref.summary(uid, weekStart) : null), `summary:${uid}:${weekStart}`);
+}
+
+export function saveWeeklySummary(u: string, s: WeeklySummary) {
+  return setDoc(ref.summary(u, s.weekStart), s);
 }
 
 // ── Bodyweight ───────────────────────────────────────────────────────────────

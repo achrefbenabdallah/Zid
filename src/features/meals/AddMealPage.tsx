@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Bookmark, BookmarkPlus, Camera, ImagePlus, Info, Plus, ScanBarcode, Search, Star } from 'lucide-react';
+import { Bookmark, BookmarkPlus, Camera, ImagePlus, Info, MessageSquareText, Plus, ScanBarcode, Search, Star } from 'lucide-react';
 import { Screen, Spinner } from '@/components/Screen';
 import { Sheet } from '@/components/Sheet';
 import { useToast } from '@/components/Toast';
 import { useSession } from '@/features/auth/AuthProvider';
 import { addMealEntries, findFoodByBarcode, markSavedMealUsed, saveFood, useFoods, useSavedMeals } from '@/services/data';
-import { analyzeMealPhoto, VisionError } from '@/services/foodVision';
+import { analyzeMealPhoto, describeMeal, VisionError, type DetectedFood } from '@/services/foodVision';
 import { lookupBarcode } from '@/services/openFoodFacts';
 import { makeThumbnail, resizeImage } from '@/lib/image';
 import { sumMacros, toPer100g, uid as newId } from '@/lib/macros';
@@ -17,12 +17,13 @@ import { MEAL_TYPES, type Food, type MealEntry, type MealType, type SavedMeal } 
 import { FoodList } from '@/features/foods/FoodList';
 import { FoodForm, type FoodDraft } from '@/features/foods/FoodForm';
 import { BarcodeScanner } from './BarcodeScanner';
+import { DescribeMeal } from './DescribeMeal';
 import { ReviewItem } from './ReviewItem';
 import { MacroLine } from './MacroLine';
 import { SavedMealSheet, type SavedMealDraft } from './SavedMealSheet';
 import { defaultMealType, itemMacros, type DraftItem } from './draft';
 
-type Step = 'choose' | 'analyzing' | 'scan' | 'review';
+type Step = 'choose' | 'describe' | 'analyzing' | 'scan' | 'review';
 
 export default function AddMealPage() {
   const { t, i18n } = useTranslation();
@@ -38,6 +39,7 @@ export default function AddMealPage() {
   const [mealType, setMealType] = useState<MealType>(defaultMealType());
   const [photo, setPhoto] = useState<{ file: Blob; preview: string } | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [description, setDescription] = useState('');
   const [pickerOpen, setPickerOpen] = useState(false);
   const [foodForm, setFoodForm] = useState<FoodDraft | null>(null);
   const [scanStatus, setScanStatus] = useState<string | null>(null);
@@ -124,30 +126,48 @@ export default function AddMealPage() {
     setStep('analyzing');
     try {
       const small = await resizeImage(file, 1024, 0.8);
-      const detected = await analyzeMealPhoto(small);
-      if (!detected.length) setAiError(t('meals.noFoodFound'));
-      setItems((xs) => [
-        ...xs.filter((x) => x.origin !== 'ai'),
-        ...detected.map((d): DraftItem => {
-          const match = findByName(foods.data, d.name, d.nameAr);
-          return {
-            key: newId(),
-            name: i18n.language === 'ar' && d.nameAr ? d.nameAr : d.name,
-            nameAr: d.nameAr,
-            grams: d.grams,
-            per100g: toPer100g(d, d.grams),
-            foodId: match?.id,
-            origin: 'ai',
-            confidence: d.confidence,
-          };
-        }),
-      ]);
+      applyDetected(await analyzeMealPhoto(small));
     } catch (e) {
       console.error(e);
       setAiError(e instanceof VisionError && (e.status === 429 || e.status === 503) ? t('meals.busy') : t('meals.analyzeFailed'));
     }
     setStep('review');
   };
+
+  // ── Text / voice description ───────────────────────────────────────────────
+  const runDescribe = async (text: string) => {
+    setDescription(text);
+    setAiError(null);
+    setStep('analyzing');
+    try {
+      applyDetected(await describeMeal(text));
+    } catch (e) {
+      console.error(e);
+      setAiError(e instanceof VisionError && (e.status === 429 || e.status === 503) ? t('meals.busy') : t('describe.failed'));
+    }
+    setStep('review');
+  };
+
+  /** AI results replace earlier AI items; foods you added yourself stay. */
+  function applyDetected(detected: DetectedFood[]) {
+    if (!detected.length) setAiError(t('meals.noFoodFound'));
+    setItems((xs) => [
+      ...xs.filter((x) => x.origin !== 'ai'),
+      ...detected.map((d): DraftItem => {
+        const match = findByName(foods.data, d.name, d.nameAr);
+        return {
+          key: newId(),
+          name: i18n.language === 'ar' && d.nameAr ? d.nameAr : d.name,
+          nameAr: d.nameAr,
+          grams: d.grams,
+          per100g: toPer100g(d, d.grams),
+          foodId: match?.id,
+          origin: 'ai',
+          confidence: d.confidence,
+        };
+      }),
+    ]);
+  }
 
   // ── Barcode ────────────────────────────────────────────────────────────────
   const onBarcode = async (code: string) => {
@@ -264,7 +284,7 @@ export default function AddMealPage() {
     </>
   );
 
-  const title = step === 'scan' ? t('barcode.title') : step === 'review' ? t('meals.review') : t('meals.addMeal');
+  const title = step === 'scan' ? t('barcode.title') : step === 'review' ? t('meals.review') : step === 'describe' ? t('describe.title') : t('meals.addMeal');
 
   return (
     <Screen title={title} back>
@@ -279,6 +299,15 @@ export default function AddMealPage() {
             <span className="min-w-0 flex-1">
               <span className="block font-bold">{t('meals.takePhoto')}</span>
               <span className="block text-sm text-muted">{t('meals.photoHint')}</span>
+            </span>
+          </button>
+          <button onClick={() => setStep('describe')} className="card flex w-full items-center gap-4 text-start">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand/15 text-brand">
+              <MessageSquareText size={24} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block font-bold">{t('describe.title')}</span>
+              <span className="block text-sm text-muted">{t('describe.tileHint')}</span>
             </span>
           </button>
           <div className="grid grid-cols-3 gap-3">
@@ -325,6 +354,8 @@ export default function AddMealPage() {
         </div>
       )}
 
+      {step === 'describe' && <DescribeMeal initial={description} onSubmit={(text) => void runDescribe(text)} />}
+
       {step === 'analyzing' && (
         <div>
           {photo && <img src={photo.preview} alt="" className="aspect-[4/3] w-full rounded-3xl object-cover opacity-70" />}
@@ -337,6 +368,11 @@ export default function AddMealPage() {
       {step === 'review' && (
         <div className="space-y-3">
           {photo && <img src={photo.preview} alt="" className="aspect-[16/9] w-full rounded-3xl object-cover" />}
+          {!photo && description && (
+            <p className="rounded-xl bg-surface-2 px-3 py-2 text-sm text-muted" dir="auto">
+              “{description}”
+            </p>
+          )}
 
           {hasAi && (
             <p className="flex gap-2 rounded-xl bg-carbs/15 px-3 py-2.5 text-sm">
@@ -347,10 +383,16 @@ export default function AddMealPage() {
           {aiError && (
             <div className="flex items-center justify-between gap-3 rounded-xl bg-danger/10 px-3 py-2.5 text-sm text-danger">
               <span>{aiError}</span>
-              {photo && (
+              {photo ? (
                 <button className="btn-ghost shrink-0 py-1.5" onClick={() => void runAnalysis(photo.file)}>
                   {t('common.retry')}
                 </button>
+              ) : (
+                description && (
+                  <button className="btn-ghost shrink-0 py-1.5" onClick={() => setStep('describe')}>
+                    {t('common.edit')}
+                  </button>
+                )
               )}
             </div>
           )}

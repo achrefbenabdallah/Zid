@@ -571,6 +571,35 @@ export const en = {
     warmupHint: 'Warm-up sets aren’t logged, so they don’t affect your records or next-weight suggestions.',
   },
 
+  describe: {
+    title: 'Describe your meal',
+    tileHint: 'Type or say what you ate — AI does the rest',
+    label: 'What did you eat?',
+    placeholder: 'e.g. 2 œufs, une tabouna, harissa et un café au lait',
+    hint: 'Any language — French, Tunisian, Arabic or English. Add quantities when you know them (“200 g poulet”, “2 bols”). You’ll review everything before saving.',
+    analyze: 'Estimate',
+    speak: 'Speak',
+    stop: 'Stop',
+    listening: 'Listening… speak now',
+    voiceLang: 'Voice:',
+    noVoice: 'Tip: use your keyboard’s microphone key to dictate.',
+    micBlocked: 'Microphone access is blocked for this site.',
+    micFailed: 'Couldn’t use the microphone. Try again or type instead.',
+    failed: 'Couldn’t estimate this meal. Edit the text and retry, or add items manually.',
+  },
+
+  summary: {
+    title: 'Your week in review',
+    generate: 'Write my weekly recap (AI)',
+    writing: 'Writing your recap…',
+    regenerate: 'Rewrite',
+    inMyLanguage: 'Rewrite in my language',
+    aiNote: 'Written by AI from your numbers.',
+    privacy: 'Only weekly totals are sent (averages, counts, PRs) — not your meals or photos.',
+    empty: 'Nothing was logged that week.',
+    failed: 'Couldn’t write the recap. Try again in a moment.',
+  },
+
 };
 
 /**

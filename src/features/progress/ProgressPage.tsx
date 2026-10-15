@@ -10,6 +10,7 @@ import { BodyPanel } from '@/features/body/BodyPanel';
 import { ChartCard, DailyBars, Stat, type DailyPoint } from './charts';
 import { AdaptiveCard } from './AdaptiveCard';
 import { TrainingPanel } from './TrainingPanel';
+import { WeeklySummaryCard } from './WeeklySummaryCard';
 
 type Tab = 'nutrition' | 'training' | 'body';
 const TABS: Tab[] = ['nutrition', 'training', 'body'];
@@ -128,6 +129,7 @@ function NutritionPanel({ start, end, range }: { start: string; end: string; ran
 
   return (
     <div className="space-y-3">
+      <WeeklySummaryCard />
       <AdaptiveCard />
       <div className="grid grid-cols-2 gap-3">
         <Stat label={t('progress.avgKcal')} value={series.avgKcal.toLocaleString('en-US')} sub={`${t('progress.goal')} ${goals.kcal.toLocaleString('en-US')}`} />

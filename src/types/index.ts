@@ -240,3 +240,14 @@ export interface CustomExercise {
   photo?: string;
   createdAt: number;
 }
+
+/** users/{uid}/summaries/{weekStart} — the AI recap of one week (Mon–Sun), generated once. */
+export interface WeeklySummary {
+  weekStart: string;
+  lang: Lang;
+  headline: string;
+  wins: string[];
+  focus: string[];
+  tip: string;
+  createdAt: number;
+}
