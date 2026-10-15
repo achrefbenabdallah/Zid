@@ -16,6 +16,7 @@ const FoodsPage = lazy(() => import('@/features/foods/FoodsPage'));
 const TrainPage = lazy(() => import('@/features/workouts/TrainPage'));
 const SessionPage = lazy(() => import('@/features/workouts/SessionPage'));
 const LibraryPage = lazy(() => import('@/features/workouts/LibraryPage'));
+const ExerciseHistoryPage = lazy(() => import('@/features/workouts/ExerciseHistoryPage'));
 const ProgressPage = lazy(() => import('@/features/progress/ProgressPage'));
 const MorePage = lazy(() => import('@/features/settings/MorePage'));
 
@@ -68,6 +69,7 @@ function Gate() {
           <Route path="food" element={<FoodsPage />} />
           <Route path="train" element={<TrainPage />} />
           <Route path="train/library" element={<LibraryPage />} />
+          <Route path="train/exercise/:id" element={<ExerciseHistoryPage />} />
           <Route path="progress" element={<ProgressPage />} />
           <Route path="more" element={<MorePage />} />
         </Route>

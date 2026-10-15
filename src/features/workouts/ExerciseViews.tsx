@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Check, Dumbbell, Info, Pencil, Plus, Search } from 'lucide-react';
+import { Link } from 'react-router';
+import { Check, Dumbbell, History, Info, Pencil, Plus, Search } from 'lucide-react';
 import { Sheet } from '@/components/Sheet';
 import { MUSCLE_GROUPS, exerciseImage, exerciseName } from '@/data/exercises';
 import { matchesQuery } from '@/lib/foods';
 import type { CustomExercise, Exercise, MuscleGroup } from '@/types';
-import { CUSTOM_PREFIX, customToExercise, useExerciseCatalog } from './useExerciseCatalog';
+import { CUSTOM_PREFIX, customToExercise, historyPath, useExerciseCatalog } from './useExerciseCatalog';
 import { CustomExerciseForm, type CustomDraft } from './CustomExerciseForm';
 import { useEquipmentLabel } from './equipment';
 
@@ -60,11 +61,13 @@ export function ExerciseThumb({ exercise, size = 56 }: { exercise: Exercise; siz
   );
 }
 
-export function ExerciseDetail({ exercise, onClose, onAdd, onEdit }: {
+export function ExerciseDetail({ exercise, onClose, onAdd, onEdit, showHistory = true }: {
   exercise: Exercise | null;
   onClose: () => void;
   onAdd?: (e: Exercise) => void;
   onEdit?: (e: Exercise) => void;
+  /** Link to the exercise's history page (off on that page itself). */
+  showHistory?: boolean;
 }) {
   const { t, i18n } = useTranslation();
   const eq = useEquipmentLabel();
@@ -98,6 +101,11 @@ export function ExerciseDetail({ exercise, onClose, onAdd, onEdit }: {
         {exercise.custom && <span className="chip-active">{t('workouts.custom.mine')}</span>}
         <span className="chip">{t(`muscles.${exercise.group}`)}</span>
         <span className="chip">{eq(exercise.equipment)}</span>
+        {showHistory && (
+          <Link to={historyPath(exercise.id)} className="chip ms-auto text-brand">
+            <History size={14} /> {t('history.open')}
+          </Link>
+        )}
       </div>
       {/* English name kept for gym talk; LTR text, aligned with the RTL column. */}
       {ar && !exercise.custom && <p className="mt-2 text-end text-sm text-muted" dir="ltr">{exercise.name}</p>}

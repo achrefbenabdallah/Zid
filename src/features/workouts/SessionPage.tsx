@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getDoc } from 'firebase/firestore';
 import { BookmarkPlus, Calculator, Check, Flame, Plus, Timer, Trash2, TrendingUp, Trophy, X } from 'lucide-react';
@@ -17,7 +17,7 @@ import { toDateKey } from '@/lib/dates';
 import { uid as newId } from '@/lib/macros';
 import type { Exercise, ExerciseRecord, Intensity, Workout, WorkoutTemplate } from '@/types';
 import { ExerciseBrowser, ExerciseDetail, ExerciseThumb } from './ExerciseViews';
-import { useExerciseCatalog } from './useExerciseCatalog';
+import { historyPath, useExerciseCatalog } from './useExerciseCatalog';
 import { TemplateEditor } from './TemplateEditor';
 import { draftFromTemplate, progressionFor, templateFromExercises } from './templates';
 import { RestTimer, REST_PRESETS } from './RestTimer';
@@ -282,7 +282,16 @@ export default function SessionPage() {
                   </button>
                 )}
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate font-semibold">{exerciseName(e, i18n.language, ex.name ?? ex.exerciseId)}</h3>
+                  <h3 className="truncate font-semibold">
+                    {/* New sessions are kept as a draft, so it's safe to look at the history mid-workout. */}
+                    {rec && !draft.existing ? (
+                      <Link to={historyPath(ex.exerciseId)} className="hover:underline">
+                        {exerciseName(e, i18n.language, ex.name ?? ex.exerciseId)}
+                      </Link>
+                    ) : (
+                      exerciseName(e, i18n.language, ex.name ?? ex.exerciseId)
+                    )}
+                  </h3>
                   <p className="truncate text-xs text-muted">
                     {showLast ? (
                       <>

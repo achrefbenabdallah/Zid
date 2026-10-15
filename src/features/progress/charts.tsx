@@ -180,7 +180,7 @@ export function WeightLine({ data, color, unit, valueLabel, height = 200 }: {
           tickLine={false}
           axisLine={false}
           width={40}
-          domain={[(min: number) => Math.floor(min - 1), (max: number) => Math.ceil(max + 1)]}
+          domain={[(min: number) => Math.max(0, Math.floor(min - 1)), (max: number) => Math.ceil(max + 1)]}
           tickFormatter={(v: number) => nf(v)}
         />
         <Tooltip

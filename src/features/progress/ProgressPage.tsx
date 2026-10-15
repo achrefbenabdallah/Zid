@@ -9,14 +9,16 @@ import { intlLocale } from '@/i18n';
 import { BodyPanel } from '@/features/body/BodyPanel';
 import { ChartCard, DailyBars, Stat, type DailyPoint } from './charts';
 import { AdaptiveCard } from './AdaptiveCard';
+import { TrainingPanel } from './TrainingPanel';
 
-type Tab = 'nutrition' | 'body';
+type Tab = 'nutrition' | 'training' | 'body';
+const TABS: Tab[] = ['nutrition', 'training', 'body'];
 type Range = 7 | 30;
 
 export default function ProgressPage() {
   const { t } = useTranslation();
   const [params, setParams] = useSearchParams();
-  const tab: Tab = params.get('tab') === 'body' ? 'body' : 'nutrition';
+  const tab: Tab = TABS.find((k) => k === params.get('tab')) ?? 'nutrition';
   const range: Range = params.get('r') === '30' ? 30 : 7;
   const today = toDateKey();
   const start = addDays(today, -(range - 1));
@@ -29,26 +31,27 @@ export default function ProgressPage() {
   return (
     <Screen title={t('nav.progress')}>
       {/* Filters: one row above the charts */}
-      <div className="mb-4 flex items-center justify-between gap-2">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div className="inline-flex rounded-xl bg-surface-2 p-1" role="tablist">
-          {(['nutrition', 'body'] as Tab[]).map((k) => (
+          {TABS.map((k) => (
             <button
               key={k}
               role="tab"
               aria-selected={tab === k}
-              className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${tab === k ? 'bg-surface text-ink shadow-sm' : 'text-muted'}`}
+              className={`rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap ${tab === k ? 'bg-surface text-ink shadow-sm' : 'text-muted'}`}
               onClick={() => set({ tab: k })}
             >
               {t(`progress.${k}`)}
             </button>
           ))}
         </div>
-        <div className="inline-flex rounded-xl bg-surface-2 p-1">
+        {/* Training has its own week switcher. */}
+        <div className={`inline-flex rounded-xl bg-surface-2 p-1 ${tab === 'training' ? 'hidden' : ''}`}>
           {([7, 30] as Range[]).map((r) => (
             <button
               key={r}
               aria-pressed={range === r}
-              className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${range === r ? 'bg-surface text-ink shadow-sm' : 'text-muted'}`}
+              className={`rounded-lg px-3 py-1.5 text-sm font-semibold whitespace-nowrap ${range === r ? 'bg-surface text-ink shadow-sm' : 'text-muted'}`}
               onClick={() => set({ r })}
             >
               {r === 7 ? t('progress.week') : t('progress.month')}
@@ -57,7 +60,13 @@ export default function ProgressPage() {
         </div>
       </div>
 
-      {tab === 'nutrition' ? <NutritionPanel start={start} end={today} range={range} /> : <BodyPanel rangeStart={range === 7 ? addDays(today, -29) : addDays(today, -179)} />}
+      {tab === 'nutrition' ? (
+        <NutritionPanel start={start} end={today} range={range} />
+      ) : tab === 'training' ? (
+        <TrainingPanel />
+      ) : (
+        <BodyPanel rangeStart={range === 7 ? addDays(today, -29) : addDays(today, -179)} />
+      )}
     </Screen>
   );
 }

@@ -36,3 +36,6 @@ export function useExerciseCatalog() {
     };
   }, [custom.data]);
 }
+
+/** Link to an exercise's history page (custom ids contain ":"). */
+export const historyPath = (exerciseId: string) => `/train/exercise/${encodeURIComponent(exerciseId)}`;

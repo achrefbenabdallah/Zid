@@ -245,6 +245,12 @@ export function useRecentWorkouts(n = 20) {
   );
 }
 
+/** Every workout, oldest first — for exercise history and weekly volume (a few hundred docs at most). */
+export function useAllWorkouts() {
+  const { uid } = useAuth();
+  return useLiveQuery<Workout>(() => (uid ? query(ref.workouts(uid), orderBy('date')) : null), `workouts-all:${uid}`);
+}
+
 export function useExerciseRecords() {
   const { uid } = useAuth();
   return useLiveQuery<ExerciseRecord & { id: string }>(() => (uid ? ref.records(uid) : null), `records:${uid}`);
